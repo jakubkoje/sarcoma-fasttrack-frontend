@@ -4,7 +4,7 @@ function normalizeApiBase(value) {
   return (value || "http://localhost:8000").replace(/\/+$/, "");
 }
 
-class SarcomaFasttrackCv2App extends HTMLElement {
+class SarcomaFasttrackApp extends HTMLElement {
   static observedAttributes = ["api-base"];
 
   constructor() {
@@ -102,7 +102,7 @@ function escapeHtml(value) {
 }
 
 if (!customElements.get(tagName)) {
-  customElements.define(tagName, SarcomaFasttrackCv2App);
+  customElements.define(tagName, SarcomaFasttrackApp);
 }
 
 export { normalizeApiBase };
