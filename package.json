@@ -1,10 +1,31 @@
 {
-  "name": "sarcoma-fasttrack-frontend",
-  "private": true,
+  "name": "frontend",
   "type": "module",
+  "private": true,
   "scripts": {
-    "build": "node scripts/build.mjs",
-    "test": "node --test test/*.test.js",
-    "preview": "node scripts/preview.mjs"
+    "build": "nuxt build",
+    "build:wc": "vite build && node scripts/copy-wc-test.mjs",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "preview:wc": "vite preview --host 0.0.0.0 --port 4173",
+    "postinstall": "nuxt prepare",
+    "test": "npm run test:unit",
+    "test:e2e": "node scripts/e2e-local.mjs",
+    "test:functional": "node scripts/api-smoke.mjs",
+    "test:smoke": "node scripts/verify-wc-build.mjs",
+    "test:unit": "node --test app/components/*.test.js"
+  },
+  "dependencies": {
+    "@nuxt/ui": "^4.2.1",
+    "nuxt": "^4.2.1",
+    "vue": "^3.5.25",
+    "vue-router": "^4.6.3",
+    "zod": "^4.1.13"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^6.0.2",
+    "vite": "^7.2.4",
+    "tailwindcss": "^4.1.17"
   }
 }

@@ -1,0 +1,43 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme static {
+    /* Override green to our pink color #D89FC4 */
+    --color-green-50: #fdf4f9;
+    --color-green-100: #fce8f3;
+    --color-green-200: #fad1e8;
+    --color-green-300: #f6acd4;
+    --color-green-400: #ef7bb7;
+    --color-green-500: #D89FC4;
+    --color-green-600: #c67aa8;
+    --color-green-700: #a8608a;
+    --color-green-800: #8b5172;
+    --color-green-900: #73455f;
+    --color-green-950: #462738;
+
+    /* Also set primary color */
+    --color-primary-50: #fdf4f9;
+    --color-primary-100: #fce8f3;
+    --color-primary-200: #fad1e8;
+    --color-primary-300: #f6acd4;
+    --color-primary-400: #ef7bb7;
+    --color-primary-500: #D89FC4;
+    --color-primary-600: #c67aa8;
+    --color-primary-700: #a8608a;
+    --color-primary-800: #8b5172;
+    --color-primary-900: #73455f;
+    --color-primary-950: #462738;
+
+    /* Ensure warning/yellow colors are defined */
+    --color-yellow-50: #fefce8;
+    --color-yellow-100: #fef9c3;
+    --color-yellow-200: #fef08a;
+    --color-yellow-300: #fde047;
+    --color-yellow-400: #facc15;
+    --color-yellow-500: #eab308;
+    --color-yellow-600: #ca8a04;
+    --color-yellow-700: #a16207;
+    --color-yellow-800: #854d0e;
+    --color-yellow-900: #713f12;
+    --color-yellow-950: #422006;
+  }
