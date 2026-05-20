@@ -15,8 +15,7 @@ export default defineNuxtRouteMiddleware((to) => {
   // Define role-based route restrictions (routes that require specific roles)
   const restrictedRoutes: Record<string, string[]> = {
     '/sarcoma-form': ['doctor', 'admin'],
-    '/clanky': ['doctor', 'admin'],
-    '/analytics': ['specialist', 'admin']
+    '/clanky': ['doctor', 'admin']
   }
 
   // Reports and dashboard are accessible to all authenticated users
@@ -44,14 +43,7 @@ export default defineNuxtRouteMiddleware((to) => {
     
     // Check if user's role is allowed
     if (!userRole || !allowedRoles.includes(userRole)) {
-      // Redirect based on role
-      if (userRole === 'doctor') {
-        return navigateTo('/dashboard')
-      } else if (userRole === 'specialist') {
-        return navigateTo('/analytics')
-      } else {
-        return navigateTo('/dashboard')
-      }
+      return navigateTo('/dashboard')
     }
   }
 })

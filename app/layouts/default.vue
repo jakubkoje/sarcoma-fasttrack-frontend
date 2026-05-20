@@ -37,15 +37,6 @@ const items = computed<NavigationMenuItem[]>(() => {
     })
   }
 
-  // Specialist: analytics
-  if (userRole === 'specialist' || userRole === 'admin') {
-    menuItems.push({
-      label: 'Analytics',
-      to: '/analytics',
-      active: route.path.includes('/analytics')
-    })
-  }
-
   return menuItems
 })
 

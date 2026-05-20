@@ -10,7 +10,6 @@
           <UButton size="sm" variant="ghost" icon="i-lucide-layout-dashboard" @click="go('dashboard')">Dashboard</UButton>
           <UButton size="sm" variant="ghost" icon="i-lucide-list" @click="go('reports')">Overview</UButton>
           <UButton v-if="isDoctor" size="sm" variant="ghost" icon="i-lucide-plus" @click="go('new')">New record</UButton>
-          <UButton v-if="isSpecialist" size="sm" variant="ghost" icon="i-lucide-chart-column" @click="go('analytics')">Analytics</UButton>
           <UButton size="sm" variant="ghost" icon="i-lucide-book-open" @click="go('articles')">Articles</UButton>
           <UButton size="sm" variant="ghost" icon="i-lucide-flask-conical" @click="go('api-tester')">API</UButton>
           <UButton size="sm" color="neutral" variant="outline" icon="i-lucide-log-out" @click="logout">Log out</UButton>
@@ -95,7 +94,6 @@
           </div>
           <div class="sft-submit">
             <UButton v-if="isDoctor" icon="i-lucide-plus" @click="go('new')">New case</UButton>
-            <UButton v-if="isSpecialist" color="neutral" variant="outline" icon="i-lucide-chart-column" @click="go('analytics')">Analytics</UButton>
           </div>
         </div>
 
@@ -390,57 +388,6 @@
         </div>
       </section>
 
-      <section v-else-if="visibleView === 'analytics'" class="sft-stack">
-        <div class="sft-hero">
-          <div>
-            <p class="sft-kicker">Analytics</p>
-            <h2>Visual effectiveness analysis</h2>
-            <p class="sft-muted">Web component version of the analytics screen with current API counts and static impact metrics.</p>
-          </div>
-          <strong class="sft-impact">86%</strong>
-        </div>
-        <div class="sft-grid">
-          <article class="sft-panel">
-            <h3>Status distribution</h3>
-            <div class="sft-bars">
-              <div v-for="row in statusChartRows" :key="row.label">
-                <span>{{ row.label }}</span>
-                <div><i :style="{ width: `${row.percent}%` }" /></div>
-                <b>{{ row.count }}</b>
-              </div>
-            </div>
-          </article>
-          <article class="sft-panel">
-            <h3>Monthly trends</h3>
-            <div class="sft-bars">
-              <div v-for="row in monthlyTrend" :key="row.month">
-                <span>{{ row.month }}</span>
-                <div><i :style="{ width: `${row.cases}%` }" /></div>
-                <b>{{ row.cases }}</b>
-              </div>
-            </div>
-          </article>
-          <article class="sft-panel">
-            <h3>Time reduction</h3>
-            <dl class="sft-facts two">
-              <div v-for="item in timeComparison" :key="item.metric">
-                <dt>{{ item.metric }}</dt>
-                <dd>{{ item.before }} days → {{ item.after }} days</dd>
-              </div>
-            </dl>
-          </article>
-          <article class="sft-panel">
-            <h3>Center performance</h3>
-            <div class="sft-mini-list">
-              <button v-for="hospital in hospitalPerformance" :key="hospital.hospital" type="button">
-                <span>{{ hospital.hospital }}</span>
-                <small>{{ hospital.cases }} cases · {{ hospital.avgTime }} days average</small>
-              </button>
-            </div>
-          </article>
-        </div>
-      </section>
-
       <section v-else-if="visibleView === 'articles'" class="sft-stack">
         <div class="sft-hero">
           <div>
@@ -570,10 +517,10 @@ const props = withDefaults(defineProps<{
 });
 
 type Message = { kind: "ok" | "error"; text: string };
-type View = "login" | "signup" | "dashboard" | "reports" | "new" | "detail" | "analytics" | "articles" | "article" | "api-tester";
+type View = "login" | "signup" | "dashboard" | "reports" | "new" | "detail" | "articles" | "article" | "api-tester";
 type ApiProbeOptions = RequestInit & { raw?: boolean };
 
-const knownViews = new Set<View>(["login", "signup", "dashboard", "reports", "new", "detail", "analytics", "articles", "article", "api-tester"]);
+const knownViews = new Set<View>(["login", "signup", "dashboard", "reports", "new", "detail", "articles", "article", "api-tester"]);
 const publicViews = new Set<View>(["login", "signup", "articles", "article"]);
 const storageKey = "sarcoma-fasttrack-wc";
 
@@ -655,29 +602,6 @@ const imagingOptions = [
   { value: "mri", label: "MRI" },
 ];
 
-const monthlyTrend = [
-  { month: "January", cases: 42 },
-  { month: "February", cases: 58 },
-  { month: "March", cases: 67 },
-  { month: "April", cases: 80 },
-  { month: "May", cases: 92 },
-  { month: "June", cases: 100 },
-];
-
-const timeComparison = [
-  { metric: "Expert consultation", before: 28, after: 4 },
-  { metric: "Request processing", before: 14, after: 2 },
-  { metric: "First consultation", before: 21, after: 3 },
-  { metric: "Total time", before: 35, after: 5 },
-];
-
-const hospitalPerformance = [
-  { hospital: "Motol University Hospital", cases: 178, avgTime: 2.8 },
-  { hospital: "University Hospital Brno", cases: 89, avgTime: 3.2 },
-  { hospital: "University Hospital Olomouc", cases: 45, avgTime: 4.1 },
-  { hospital: "Other", cases: 35, avgTime: 4.5 },
-];
-
 const apiRoot = computed(() => normalizeApiBase(props.apiBase));
 const isDoctor = computed(() => role.value === "doctor" || role.value === "admin");
 const isSpecialist = computed(() => role.value === "specialist" || role.value === "admin");
@@ -690,7 +614,6 @@ const title = computed(() => {
     reports: "Reports overview",
     new: "New record",
     detail: "Report detail",
-    analytics: "Analytics",
     articles: "Expert articles",
     article: "Article detail",
     "api-tester": "API Tester",
@@ -734,14 +657,6 @@ const filteredReports = computed(() => {
     return haystack.includes(needle);
   });
 });
-const statusChartRows = computed(() => {
-  const total = Math.max(reports.value.length, 1);
-  return statusOptions.map((option) => {
-    const count = reports.value.filter((report) => report.status === option.value).length;
-    return { label: option.label, count, percent: Math.max(4, Math.round((count / total) * 100)) };
-  });
-});
-
 watch(selectedReport, (report) => {
   feedbackText.value = report?.feedback_specialist || "";
 });
@@ -1185,12 +1100,6 @@ onUnmounted(() => {
   justify-content: space-between;
   gap: 1rem;
   align-items: center;
-}
-
-.sft-impact {
-  color: var(--ui-primary);
-  font-size: clamp(2.5rem, 8vw, 5rem);
-  line-height: 1;
 }
 
 .sft-grid,

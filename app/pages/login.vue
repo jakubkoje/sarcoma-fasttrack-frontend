@@ -57,16 +57,7 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
     api.setToken(res.access_token)
     toast.add({ title: 'Logged in', description: 'Token saved' })
     
-    // Redirect based on role
-    if (userRole === 'doctor') {
-      router.push('/dashboard')
-    } else if (userRole === 'specialist') {
-      router.push('/analytics')
-    } else if (userRole === 'admin') {
-      router.push('/dashboard')
-    } else {
-      router.push('/dashboard')
-    }
+    router.push('/dashboard')
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Login failed'
     errorMessage.value = message

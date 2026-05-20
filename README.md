@@ -56,7 +56,6 @@ The bundle registers one main app element and separate roots for every original 
 <sarcoma-fasttrack-case-form></sarcoma-fasttrack-case-form>
 <sarcoma-fasttrack-report-list></sarcoma-fasttrack-report-list>
 <sarcoma-fasttrack-report-detail report-id="1"></sarcoma-fasttrack-report-detail>
-<sarcoma-fasttrack-analytics></sarcoma-fasttrack-analytics>
 <sarcoma-fasttrack-articles></sarcoma-fasttrack-articles>
 <sarcoma-fasttrack-article-detail article-id="0"></sarcoma-fasttrack-article-detail>
 <sarcoma-fasttrack-api-tester></sarcoma-fasttrack-api-tester>
@@ -66,7 +65,7 @@ Common attributes:
 
 - `api-base` - backend base URL, default `http://localhost:8000`
 - `base-path` - host route prefix used for pushState navigation
-- `initial-view` - one of `dashboard`, `login`, `signup`, `reports`, `new`, `detail`, `analytics`, `articles`, `article`, `api-tester`
+- `initial-view` - one of `dashboard`, `login`, `signup`, `reports`, `new`, `detail`, `articles`, `article`, `api-tester`
 - `report-id` - initial report for detail roots
 - `article-id` - initial article for article detail roots
 
@@ -90,7 +89,6 @@ The custom element includes:
 - full case creation form
 - reports list
 - report detail with status, feedback and reclassification
-- analytics
 - article list
 - article detail
 - API tester

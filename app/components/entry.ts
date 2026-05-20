@@ -90,7 +90,6 @@ const rootViews: Record<string, string> = {
   "sarcoma-fasttrack-case-form": "new",
   "sarcoma-fasttrack-report-list": "reports",
   "sarcoma-fasttrack-report-detail": "detail",
-  "sarcoma-fasttrack-analytics": "analytics",
   "sarcoma-fasttrack-articles": "articles",
   "sarcoma-fasttrack-article-detail": "article",
   "sarcoma-fasttrack-api-tester": "api-tester",

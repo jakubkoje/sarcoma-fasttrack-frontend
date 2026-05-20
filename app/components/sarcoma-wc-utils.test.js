@@ -32,7 +32,6 @@ test("pathToView maps host paths to internal custom element views", () => {
   assert.deepEqual(pathToView("/sarcoma/sarcoma-form", "/sarcoma/"), { view: "new" });
   assert.deepEqual(pathToView("/sarcoma/reports", "/sarcoma/"), { view: "reports" });
   assert.deepEqual(pathToView("/sarcoma/reports/42", "/sarcoma/"), { view: "detail", reportId: 42 });
-  assert.deepEqual(pathToView("/sarcoma/analytics", "/sarcoma/"), { view: "analytics" });
   assert.deepEqual(pathToView("/sarcoma/clanky", "/sarcoma/"), { view: "articles" });
   assert.deepEqual(pathToView("/sarcoma/clanky/2", "/sarcoma/"), { view: "article", articleId: "2" });
   assert.deepEqual(pathToView("/sarcoma/api-tester", "/sarcoma/"), { view: "api-tester" });
