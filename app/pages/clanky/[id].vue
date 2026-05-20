@@ -95,9 +95,9 @@ The treatment of rare sarcomas is constantly evolving. For optimal care, consult
     image: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80',
     authors: [
       {
-        name: 'Prof. MUDr. Petr Dvořák, CSc.',
+        name: 'Prof. MUDr. Peter Dvorák, CSc.',
         avatar: {
-          src: 'https://ui-avatars.com/api/?name=Petr+Dvorak&background=9333ea&color=fff'
+          src: 'https://ui-avatars.com/api/?name=Peter+Dvorak&background=9333ea&color=fff'
         }
       }
     ],
@@ -162,9 +162,9 @@ Proper sarcoma diagnostics requires a multidisciplinary approach and the use of 
     image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80',
     authors: [
       {
-        name: 'MUDr. Marie Svobodová',
+        name: 'MUDr. Mária Slobodová',
         avatar: {
-          src: 'https://ui-avatars.com/api/?name=Marie+Svobodova&background=9333ea&color=fff'
+          src: 'https://ui-avatars.com/api/?name=Maria+Slobodova&background=9333ea&color=fff'
         }
       }
     ],

@@ -57,9 +57,9 @@ const articles = ref<Article[]>([
     image: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80',
     authors: [
       {
-        name: 'Prof. MUDr. Petr Dvořák, CSc.',
+        name: 'Prof. MUDr. Peter Dvorák, CSc.',
         avatar: {
-          src: 'https://ui-avatars.com/api/?name=Petr+Dvorak&background=9333ea&color=fff'
+          src: 'https://ui-avatars.com/api/?name=Peter+Dvorak&background=9333ea&color=fff'
         }
       }
     ],
@@ -77,9 +77,9 @@ const articles = ref<Article[]>([
     image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80',
     authors: [
       {
-        name: 'MUDr. Marie Svobodová',
+        name: 'MUDr. Mária Slobodová',
         avatar: {
-          src: 'https://ui-avatars.com/api/?name=Marie+Svobodova&background=9333ea&color=fff'
+          src: 'https://ui-avatars.com/api/?name=Maria+Slobodova&background=9333ea&color=fff'
         }
       }
     ],
@@ -97,9 +97,9 @@ const articles = ref<Article[]>([
     image: 'https://images.unsplash.com/photo-1582719471137-c3967ffb1c42?w=800&q=80',
     authors: [
       {
-        name: 'MUDr. Tomáš Procházka, Ph.D.',
+        name: 'MUDr. Tomáš Prochádzka, Ph.D.',
         avatar: {
-          src: 'https://ui-avatars.com/api/?name=Tomas+Prochazka&background=9333ea&color=fff'
+          src: 'https://ui-avatars.com/api/?name=Tomas+Prochadzka&background=9333ea&color=fff'
         }
       }
     ],
@@ -137,9 +137,9 @@ const articles = ref<Article[]>([
     image: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80',
     authors: [
       {
-        name: 'MUDr. Kateřina Horáková',
+        name: 'MUDr. Katarína Horáková',
         avatar: {
-          src: 'https://ui-avatars.com/api/?name=Katerina+Horakova&background=9333ea&color=fff'
+          src: 'https://ui-avatars.com/api/?name=Katarina+Horakova&background=9333ea&color=fff'
         }
       }
     ],
@@ -157,7 +157,7 @@ const articles = ref<Article[]>([
     image: 'https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=800&q=80',
     authors: [
       {
-        name: 'Prof. MUDr. Martin Kolář, Ph.D.',
+        name: 'Prof. MUDr. Martin Kolár, Ph.D.',
         avatar: {
           src: 'https://ui-avatars.com/api/?name=Martin+Kolar&background=9333ea&color=fff'
         }
@@ -177,9 +177,9 @@ const articles = ref<Article[]>([
     image: 'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=800&q=80',
     authors: [
       {
-        name: 'MUDr. Lucie Čermáková',
+        name: 'MUDr. Lucia Čermáková',
         avatar: {
-          src: 'https://ui-avatars.com/api/?name=Lucie+Cermakova&background=9333ea&color=fff'
+          src: 'https://ui-avatars.com/api/?name=Lucia+Cermakova&background=9333ea&color=fff'
         }
       }
     ],

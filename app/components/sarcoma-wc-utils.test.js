@@ -18,7 +18,7 @@ test("normalizeApiBase strips trailing slash and falls back to local API", () =>
 });
 
 test("patientDisplayName uses legacy and FHIR names", () => {
-  assert.equal(patientDisplayName({ id: 7, first_name: "Jan", last_name: "Novák" }), "Jan Novák");
+  assert.equal(patientDisplayName({ id: 7, first_name: "Ján", last_name: "Novák" }), "Ján Novák");
   assert.equal(patientDisplayName({ id: 8, given_name: "Eva", family_name: "Malá" }), "Eva Malá");
   assert.equal(patientDisplayName({ id: 9 }), "#9");
 });

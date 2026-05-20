@@ -53,7 +53,7 @@ interface Notification {
 const notifications = ref<Notification[]>([
   {
     id: 1,
-    patientName: 'Jan Novák',
+    patientName: 'Ján Novák',
     reportId: 1,
     message: 'Note has been updated',
     timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(), // 15 min ago
@@ -62,7 +62,7 @@ const notifications = ref<Notification[]>([
   },
   {
     id: 2,
-    patientName: 'Marie Svobodová',
+    patientName: 'Mária Slobodová',
     reportId: 3,
     message: 'A new note has been added',
     timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2 hours ago
@@ -71,7 +71,7 @@ const notifications = ref<Notification[]>([
   },
   {
     id: 3,
-    patientName: 'Petr Dvořák',
+    patientName: 'Peter Dvorák',
     reportId: 4,
     message: 'Report status was changed to "Processed"',
     timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(), // 5 hours ago
@@ -80,7 +80,7 @@ const notifications = ref<Notification[]>([
   },
   {
     id: 4,
-    patientName: 'Jan Novák',
+    patientName: 'Ján Novák',
     reportId: 1,
     message: 'A note was added to the case',
     timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1 day ago

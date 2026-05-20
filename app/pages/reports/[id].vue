@@ -94,7 +94,7 @@ const loadData = async () => {
     
     // Generate specialist recommendation result (single variable)
     const recommendationResult = (seed % 4) === 0 ? null : {
-      specialist: `Dr. ${['Novák', 'Svoboda', 'Dvořák', 'Němec'][seed % 4]}`,
+      specialist: `Dr. ${['Novák', 'Sloboda', 'Dvorák', 'Nemec'][seed % 4]}`,
       type: ['Surgeon', 'Oncologist', 'Radiation oncologist', 'Pathologist'][seed % 4],
       confidence: Math.floor((seed * 3) % 30) + 70, // 70-99%
       reason: seed % 2 === 0
@@ -251,7 +251,7 @@ async function updateStatus(newStatus: string) {
                   statusLabels[report.status]?.textColor || 'text-gray-700'
                 ]"
               >
-                <span>{{ report.status_cz || statusLabels[report.status]?.label || report.status }}</span>
+                <span>{{ statusLabels[report.status]?.label || report.status }}</span>
                 <UIcon name="i-lucide-chevron-down" class="w-3 h-3" />
               </div>
               <div
@@ -303,14 +303,14 @@ async function updateStatus(newStatus: string) {
                 statusLabels[report.status]?.textColor || 'text-gray-700'
               ]"
             >
-              <span>{{ report.status_cz || statusLabels[report.status]?.label || report.status }}</span>
+              <span>{{ statusLabels[report.status]?.label || report.status }}</span>
             </div>
             <UBadge
               v-else
               :color="statusLabels[report.status]?.color || 'neutral'"
               variant="subtle"
             >
-              {{ report.status_cz || report.status }}
+              {{ statusLabels[report.status]?.label || report.status }}
             </UBadge>
           </div>
 
@@ -378,7 +378,7 @@ async function updateStatus(newStatus: string) {
             <div class="space-y-3 text-gray-800 dark:text-gray-100">
               <div class="flex justify-between">
                 <span class="text-gray-600 dark:text-gray-400">Status</span>
-                <span class="font-semibold">{{ report.status_cz || report.status }}</span>
+                <span class="font-semibold">{{ statusLabels[report.status]?.label || report.status }}</span>
               </div>
               <div v-if="isSpecialist && (report as any).severity" class="flex justify-between items-center">
                 <span class="text-gray-600 dark:text-gray-400">Severity</span>

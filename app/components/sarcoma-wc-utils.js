@@ -42,7 +42,7 @@ export const articles = [
     description: "The importance of MRI, CT and PET/CT scans in the diagnosis and staging of sarcomas.",
     date: "2024-10-28",
     category: "Diagnostics",
-    author: "Prof. MUDr. Petr Dvořák, CSc.",
+    author: "Prof. MUDr. Peter Dvorák, CSc.",
     readTime: "10 min",
     image: "./fn-motol.jpg",
     sections: [
@@ -57,7 +57,7 @@ export const articles = [
     description: "Collaboration of oncologists, surgeons, radiologists and pathologists in the care of sarcoma patients.",
     date: "2024-10-10",
     category: "Care",
-    author: "MUDr. Marie Svobodová",
+    author: "MUDr. Mária Slobodová",
     readTime: "12 min",
     image: "./sarkom-logo.png",
     sections: [
@@ -72,7 +72,7 @@ export const articles = [
     description: "Diagnostic pitfalls, manifestations and therapeutic options for angiosarcoma.",
     date: "2024-09-22",
     category: "Case study",
-    author: "MUDr. Tomáš Procházka, Ph.D.",
+    author: "MUDr. Tomáš Prochádzka, Ph.D.",
     readTime: "7 min",
     image: "./hop-logo.png",
     sections: [
@@ -100,7 +100,7 @@ export const articles = [
     description: "Most common types, prognostic factors and follow-up after treatment in pediatric patients.",
     date: "2024-08-18",
     category: "Pediatrics",
-    author: "MUDr. Kateřina Horáková",
+    author: "MUDr. Katarína Horáková",
     readTime: "11 min",
     image: "./fn-brno.jpg",
     sections: [
@@ -114,7 +114,7 @@ export const articles = [
     description: "Current state of knowledge on the use of immunotherapy in sarcoma treatment.",
     date: "2024-08-01",
     category: "Immunotherapy",
-    author: "Prof. MUDr. Martin Kolář, Ph.D.",
+    author: "Prof. MUDr. Martin Kolár, Ph.D.",
     readTime: "8 min",
     image: "./mou-logo.jpg",
     sections: [
@@ -128,7 +128,7 @@ export const articles = [
     description: "Recommended follow-up schedule and early detection of recurrence after treatment completion.",
     date: "2024-07-15",
     category: "Follow-up",
-    author: "MUDr. Lucie Čermáková",
+    author: "MUDr. Lucia Čermáková",
     readTime: "6 min",
     image: "./sarkom-logo.png",
     sections: [
