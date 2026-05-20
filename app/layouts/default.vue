@@ -13,7 +13,7 @@ const items = computed<NavigationMenuItem[]>(() => {
   // Doctor: sarcoma-form, reports, clanky
   if (userRole === 'doctor' || userRole === 'admin') {
     menuItems.push({
-      label: 'Nový záznam',
+      label: 'New record',
       to: '/sarcoma-form',
       active: route.path.includes('/sarcoma-form')
     })
@@ -22,7 +22,7 @@ const items = computed<NavigationMenuItem[]>(() => {
   // All authenticated users: reports
   if (isAuthenticated.value) {
     menuItems.push({
-      label: 'Přehled zpráv',
+      label: 'Reports overview',
       to: '/reports',
       active: route.path.includes('/reports')
     })
@@ -31,7 +31,7 @@ const items = computed<NavigationMenuItem[]>(() => {
   // Doctor: clanky
   if (userRole === 'doctor' || userRole === 'admin') {
     menuItems.push({
-      label: 'Edukační materiály',
+      label: 'Educational materials',
       to: '/clanky',
       active: route.path.includes('/clanky')
     })
@@ -40,7 +40,7 @@ const items = computed<NavigationMenuItem[]>(() => {
   // Specialist: analytics
   if (userRole === 'specialist' || userRole === 'admin') {
     menuItems.push({
-      label: 'Analytika',
+      label: 'Analytics',
       to: '/analytics',
       active: route.path.includes('/analytics')
     })
@@ -64,7 +64,7 @@ const notifications = ref<Notification[]>([
     id: 1,
     patientName: 'Jan Novák',
     reportId: 1,
-    message: 'Poznámka byla aktualizována',
+    message: 'Note has been updated',
     timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(), // 15 min ago
     read: false,
     type: 'note_updated'
@@ -73,7 +73,7 @@ const notifications = ref<Notification[]>([
     id: 2,
     patientName: 'Marie Svobodová',
     reportId: 3,
-    message: 'Nová poznámka byla přidána',
+    message: 'A new note has been added',
     timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2 hours ago
     read: false,
     type: 'note_added'
@@ -82,7 +82,7 @@ const notifications = ref<Notification[]>([
     id: 3,
     patientName: 'Petr Dvořák',
     reportId: 4,
-    message: 'Stav zprávy byl změněn na "Zpracováno"',
+    message: 'Report status was changed to "Processed"',
     timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(), // 5 hours ago
     read: true,
     type: 'status_change'
@@ -91,7 +91,7 @@ const notifications = ref<Notification[]>([
     id: 4,
     patientName: 'Jan Novák',
     reportId: 1,
-    message: 'Poznámka byla přidána k případu',
+    message: 'A note was added to the case',
     timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1 day ago
     read: true,
     type: 'note_added'
@@ -131,11 +131,11 @@ const formatTimestamp = (timestamp: string) => {
   const days = Math.floor(diff / (1000 * 60 * 60 * 24))
   
   if (minutes < 60) {
-    return `před ${minutes} min`
+    return `${minutes} min ago`
   } else if (hours < 24) {
-    return `před ${hours} hod`
+    return `${hours} h ago`
   } else {
-    return `před ${days} dny`
+    return `${days} days ago`
   }
 }
 
@@ -170,7 +170,7 @@ const handleLogout = () => {
             color="neutral"
             variant="ghost"
             icon="i-lucide-bell"
-            aria-label="Notifikace"
+            aria-label="Notifications"
             class="relative"
           >
             <template v-if="unreadCount > 0">
@@ -184,7 +184,7 @@ const handleLogout = () => {
             <UCard class="w-96 max-h-[500px] overflow-hidden">
               <!-- Header -->
               <div class="flex items-center justify-between mb-4">
-                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-300">Notifikace</h3>
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-300">Notifications</h3>
                 <UButton
                   v-if="unreadCount > 0"
                   size="xs"
@@ -192,7 +192,7 @@ const handleLogout = () => {
                   variant="ghost"
                   @click="markAllAsRead"
                 >
-                  Označit vše jako přečtené
+                  Mark all as read
                 </UButton>
               </div>
 
@@ -246,7 +246,7 @@ const handleLogout = () => {
                   <svg class="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                   </svg>
-                  <p class="text-sm text-gray-500">Žádné notifikace</p>
+                  <p class="text-sm text-gray-500">No notifications</p>
                 </div>
               </div>
             </UCard>
@@ -260,10 +260,10 @@ const handleLogout = () => {
           variant="ghost"
           icon="i-lucide-log-out"
           @click="handleLogout"
-          aria-label="Odhlásit se"
+          aria-label="Log out"
           class="hidden lg:flex"
         >
-          Odhlásit se
+          Log out
         </UButton>
       </template>
 
@@ -277,14 +277,14 @@ const handleLogout = () => {
             @click="router.push('/login')"
             class="hidden lg:flex"
           >
-            Přihlásit se
+            Log in
           </UButton>
           <UButton
             color="primary"
             @click="router.push('/signup')"
             class="hidden lg:flex"
           >
-            Registrovat
+            Sign up
           </UButton>
         </div>
       </template>
@@ -316,10 +316,10 @@ const handleLogout = () => {
                   </div>
                   <div class="flex-1">
                     <p class="text-sm font-semibold text-gray-900 dark:text-gray-100">
-                      {{ unreadCount === 1 ? 'Nová notifikace' : 'Nové notifikace' }}
+                      {{ unreadCount === 1 ? 'New notification' : 'New notifications' }}
                     </p>
                     <p class="text-xs text-gray-600 dark:text-gray-400 mt-0.5">
-                      Zkontrolujte přehled zpráv
+                      Check the reports overview
                     </p>
                   </div>
                 </div>
@@ -330,7 +330,7 @@ const handleLogout = () => {
                   @click.stop="markAllAsRead"
                   class="shrink-0"
                 >
-                  Označit
+                  Mark
                 </UButton>
               </div>
             </UCard>
@@ -349,7 +349,7 @@ const handleLogout = () => {
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
-                Změnit motiv
+                Change theme
               </span>
               <UColorModeButton />
             </UButton>
@@ -361,7 +361,7 @@ const handleLogout = () => {
               size="lg"
               block
             >
-              Odhlásit se
+              Log out
             </UButton>
           </div>
         </div>
@@ -373,10 +373,10 @@ const handleLogout = () => {
           <!-- Welcome Message -->
           <div class="py-4">
             <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">
-              Vítejte v Sarkom FastTrack
+              Welcome to Sarkom FastTrack
             </h3>
             <p class="text-sm text-gray-600 dark:text-gray-400">
-              Přihlaste se nebo se zaregistrujte pro přístup k aplikaci
+              Log in or sign up to access the application
             </p>
           </div>
 
@@ -393,7 +393,7 @@ const handleLogout = () => {
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                 </svg>
-                Změnit motiv
+                Change theme
               </span>
               <UColorModeButton />
             </UButton>
@@ -405,7 +405,7 @@ const handleLogout = () => {
               size="lg"
               block
             >
-              Přihlásit se
+              Log in
             </UButton>
             <UButton
               color="primary"
@@ -414,7 +414,7 @@ const handleLogout = () => {
               size="lg"
               block
             >
-              Registrovat se
+              Sign up
             </UButton>
           </div>
         </div>

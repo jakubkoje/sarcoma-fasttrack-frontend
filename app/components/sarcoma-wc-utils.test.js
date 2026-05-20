@@ -36,7 +36,7 @@ test("pathToView maps host paths to internal custom element views", () => {
   assert.deepEqual(pathToView("/sarcoma/clanky", "/sarcoma/"), { view: "articles" });
   assert.deepEqual(pathToView("/sarcoma/clanky/2", "/sarcoma/"), { view: "article", articleId: "2" });
   assert.deepEqual(pathToView("/sarcoma/api-tester", "/sarcoma/"), { view: "api-tester" });
-  assert.equal(statusLabels.ACTIVE, "Aktivní");
+  assert.equal(statusLabels.ACTIVE, "Active");
 });
 
 test("viewToPath maps custom element views back to host routes", () => {

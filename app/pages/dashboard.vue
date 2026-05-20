@@ -7,7 +7,7 @@
           Dashboard
         </h1>
         <p class="text-lg text-gray-600 dark:text-gray-300">
-          Rychlý přehled všech případů sarkomu
+          Quick overview of all sarcoma cases
         </p>
       </div>
 
@@ -23,10 +23,10 @@
               </div>
               <div>
                 <h2 class="text-2xl font-bold text-primary-700 mb-1">
-                  Nový případ
+                  New case
                 </h2>
                 <p class="text-primary-700">
-                  Odešlete pacienta s podezřením na sarkom do specializovaného centra
+                  Refer a patient with suspected sarcoma to a specialized center
                 </p>
               </div>
             </div>
@@ -47,10 +47,10 @@
               </div>
               <div>
                 <h2 class="text-2xl font-bold text-white mb-1">
-                  Analytika
+                  Analytics
                 </h2>
                 <p class="text-primary-100">
-                  Přehled dat a statistik o efektivitě systému
+                  Overview of data and statistics on system effectiveness
                 </p>
               </div>
             </div>
@@ -75,13 +75,13 @@
                     </svg>
                   </div>
                   <UBadge color="primary" variant="solid" size="sm">
-                    Klikněte zde
+                    Click here
                   </UBadge>
                 </div>
-                <p class="text-sm font-semibold text-primary-700 mb-1">Čekající případy</p>
+                <p class="text-sm font-semibold text-primary-700 mb-1">Pending cases</p>
                 <p class="text-4xl font-bold text-primary-600 mb-2">{{ stats.pending }}</p>
                 <p class="text-xs text-gray-600 dark:text-gray-300 flex items-center gap-1">
-                  Vyžadují posouzení
+                  Require assessment
                   <svg class="w-4 h-4 text-primary-500 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>
@@ -102,7 +102,7 @@
                   </svg>
                 </div>
               </div>
-              <p class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Celkem případů</p>
+              <p class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Total cases</p>
               <p class="text-4xl font-bold text-gray-900 dark:text-gray-300">{{ stats.total }}</p>
             </div>
           </div>
@@ -119,7 +119,7 @@
                   </svg>
                 </div>
               </div>
-              <p class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Zpracované</p>
+              <p class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-1">Processed</p>
               <p class="text-4xl font-bold text-gray-900 dark:text-gray-300">{{ stats.completed }}</p>
             </div>
           </div>
@@ -135,13 +135,13 @@
                 <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                 </svg>
-                Odborné články o sarkomech
+                Expert articles on sarcomas
               </h2>
-              <p class="text-gray-600">Aktuální poznatky z diagnostiky a léčby</p>
+              <p class="text-gray-600">Current findings in diagnostics and treatment</p>
             </div>
             <NuxtLink to="/clanky">
               <UButton color="primary" variant="outline" trailing-icon="i-lucide-arrow-right">
-                Všechny články
+                All articles
               </UButton>
             </NuxtLink>
           </div>
@@ -152,29 +152,29 @@
               <UCard class="overflow-hidden hover:shadow-xl transition-all h-full">
                 <!-- Image -->
                 <div class="relative h-48 overflow-hidden">
-                  <img 
-                    src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80" 
-                    alt="Léčba sarkomů"
+                  <img
+                    src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80"
+                    alt="Sarcoma treatment"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div class="absolute top-3 left-3">
-                    <UBadge color="primary" variant="solid" size="sm">Léčba</UBadge>
+                    <UBadge color="primary" variant="solid" size="sm">Treatment</UBadge>
                   </div>
                 </div>
-                
+
                 <!-- Content -->
                 <div class="p-4">
                   <h3 class="font-semibold text-gray-900 dark:text-gray-300 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2">
-                    Nové možnosti léčby vzácných sarkomů v roce 2024
+                    New treatment options for rare sarcomas in 2024
                   </h3>
                   <p class="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-2">
-                    Přehled nejnovějších terapeutických přístupů a klinických studií
+                    Overview of the latest therapeutic approaches and clinical trials
                   </p>
                   <div class="flex items-center text-xs text-gray-500 dark:text-gray-300">
                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    15. 11. 2024
+                    Nov 15, 2024
                   </div>
                 </div>
               </UCard>
@@ -185,29 +185,29 @@
               <UCard class="overflow-hidden hover:shadow-xl transition-all h-full">
                 <!-- Image -->
                 <div class="relative h-48 overflow-hidden">
-                  <img 
-                    src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80" 
-                    alt="Diagnostika sarkomů"
+                  <img
+                    src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80"
+                    alt="Sarcoma diagnostics"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div class="absolute top-3 left-3">
-                    <UBadge color="primary" variant="solid" size="sm">Diagnostika</UBadge>
+                    <UBadge color="primary" variant="solid" size="sm">Diagnostics</UBadge>
                   </div>
                 </div>
-                
+
                 <!-- Content -->
                 <div class="p-4">
                   <h3 class="font-semibold text-gray-900 dark:text-gray-300 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2">
-                    Diagnostika sarkomů: Role moderního zobrazení
+                    Sarcoma diagnostics: The role of modern imaging
                   </h3>
                   <p class="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-2">
-                    Význam MRI, CT a PET/CT vyšetření v diagnostice sarkomů
+                    The importance of MRI, CT and PET/CT scans in sarcoma diagnostics
                   </p>
                   <div class="flex items-center text-xs text-gray-500 dark:text-gray-300">
                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    28. 10. 2024
+                    Oct 28, 2024
                   </div>
                 </div>
               </UCard>
@@ -218,29 +218,29 @@
               <UCard class="overflow-hidden hover:shadow-xl transition-all h-full">
                 <!-- Image -->
                 <div class="relative h-48 overflow-hidden">
-                  <img 
-                    src="https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80" 
-                    alt="Multidisciplinární péče"
+                  <img
+                    src="https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80"
+                    alt="Multidisciplinary care"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                   <div class="absolute top-3 left-3">
-                    <UBadge color="primary" variant="solid" size="sm">Péče</UBadge>
+                    <UBadge color="primary" variant="solid" size="sm">Care</UBadge>
                   </div>
                 </div>
-                
+
                 <!-- Content -->
                 <div class="p-4">
                   <h3 class="font-semibold text-gray-900 dark:text-gray-300 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2">
-                    Multidisciplinární přístup v léčbě sarkomů
+                    Multidisciplinary approach in sarcoma treatment
                   </h3>
                   <p class="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-2">
-                    Spolupráce specialistů v péči o pacienty se sarkomy
+                    Collaboration of specialists in care for sarcoma patients
                   </p>
                   <div class="flex items-center text-xs text-gray-500 dark:text-gray-300">
                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    10. 10. 2024
+                    Oct 10, 2024
                   </div>
                 </div>
               </UCard>

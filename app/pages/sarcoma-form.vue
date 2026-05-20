@@ -14,19 +14,19 @@ definePageMeta({
 
 // Care center options
 const careCenters = [
-  { label: 'Masarykův onkologický ústav', value: 'mos' },
-  { label: 'FN Motol', value: 'fn-motol' }
+  { label: 'Masaryk Memorial Cancer Institute', value: 'mos' },
+  { label: 'Motol University Hospital', value: 'fn-motol' }
 ]
 
 // Patient type options
 const patientTypes = [
-  { value: 'new', label: 'Nový pacient' },
-  { value: 'existing', label: 'Existující pacient' }
+  { value: 'new', label: 'New patient' },
+  { value: 'existing', label: 'Existing patient' }
 ]
 
 // Imaging options
 const imagingOptions = [
-  { value: 'sonografie', label: 'Sonografie' },
+  { value: 'sonografie', label: 'Sonography' },
   { value: 'ct', label: 'CT' },
   { value: 'pet-ct', label: 'PET' },
   { value: 'pet-mri', label: 'MRI' }
@@ -43,13 +43,13 @@ const insuranceCompanies = [
   { value: 'rbp', label: 'RBP' }
 ]
 
-// MKN10 options
+// ICD-10 options
 const mkn10Options = [
-  { value: 'C49.0', label: 'C49.0 - Pojivová a měkká tkáň hlavy‚ obličeje a krku' },
-  { value: 'C49.1', label: 'C49.1 - Pojivová a měkká tkáň horní končetiny včetně ramene' },
-  { value: 'C49.2', label: 'C49.2 - Pojivová a měkká tkáň dolní končetiny včetně boku' },
-  { value: 'C49.3', label: 'C49.3 - Pojivová a měkká tkáň hrudníku' },
-  { value: 'C49.4', label: 'C49.4 - Pojivová a měkká tkáň břicha' }
+  { value: 'C49.0', label: 'C49.0 - Connective and soft tissue of head, face and neck' },
+  { value: 'C49.1', label: 'C49.1 - Connective and soft tissue of upper limb, including shoulder' },
+  { value: 'C49.2', label: 'C49.2 - Connective and soft tissue of lower limb, including hip' },
+  { value: 'C49.3', label: 'C49.3 - Connective and soft tissue of thorax' },
+  { value: 'C49.4', label: 'C49.4 - Connective and soft tissue of abdomen' }
 ]
 
 const { formData, currentStep, reset } = useSarcomaFormStore()
@@ -58,34 +58,34 @@ const { formData, currentStep, reset } = useSarcomaFormStore()
 const isMobile = useMediaQuery('(max-width: 767px)')
 const steps = computed(() => [
   {
-    title: 'Centrum péče',
+    title: 'Care center',
     value: 0
   },
   {
-    title: 'Typ pacienta',
+    title: 'Patient type',
     value: 1
   },
   {
-    title: 'Kontakt na pacienta',
+    title: 'Patient contact',
     value: 2
   },
   {
-    title: 'Zobrazovací vyšetření',
+    title: 'Imaging examination',
     value: 3
   },
   {
-    title: 'Anamnéza',
+    title: 'Medical history',
     value: 4
   },
   {
-    title: formData.value.patientType === 'existing' ? 'Diagnostický souhrn' : 'Histologická verifikace',
+    title: formData.value.patientType === 'existing' ? 'Diagnostic summary' : 'Histological verification',
     value: 5
   },
   {
-    title: 'Finalizace',
+    title: 'Finalization',
   },
   {
-    title: 'Shrnutí',
+    title: 'Summary',
     ui: {
       indicator: 'w-10 h-10 text-lg font-bold'
     }
@@ -101,13 +101,13 @@ watch(steps, (items) => {
 
 // Validation schemas
 const step2Schema = z.object({
-  firstName: z.string().min(1, 'Povinné pole'),
-  lastName: z.string().min(1, 'Povinné pole'),
-  address: z.string().min(1, 'Povinné pole'),
-  insurance: z.string().min(1, 'Vyberte pojišťovnu'),
-  birthNumber: z.string().min(1, 'Povinné pole'),
-  phone: z.string().min(1, 'Povinné pole'),
-  email: z.string().email('Neplatný email').optional().or(z.literal(''))
+  firstName: z.string().min(1, 'Required field'),
+  lastName: z.string().min(1, 'Required field'),
+  address: z.string().min(1, 'Required field'),
+  insurance: z.string().min(1, 'Select an insurance company'),
+  birthNumber: z.string().min(1, 'Required field'),
+  phone: z.string().min(1, 'Required field'),
+  email: z.string().email('Invalid email').optional().or(z.literal(''))
 })
 
 const toast = useToast()
@@ -203,8 +203,8 @@ const nextStep = () => {
   // Step 3: Check if at least one imaging is selected
   if (currentStep.value === 3 && formData.value.selectedImaging.length === 0) {
     toast.add({
-      title: 'Upozornění',
-      description: 'Musíte vybrat alespoň jeden typ zobrazovacího vyšetření.'
+      title: 'Warning',
+      description: 'You must select at least one type of imaging examination.'
     })
     return
   }
@@ -261,8 +261,8 @@ const saveAsDraft = () => {
   console.log('Saving draft:', formData.value)
 
   toast.add({
-    title: 'Uloženo',
-    description: 'Formulář byl uložen jako koncept'
+    title: 'Saved',
+    description: 'The form has been saved as a draft'
   })
 
   // TODO: Save draft to backend/localStorage
@@ -317,7 +317,7 @@ const submitForm = async () => {
 
     // Step 5: Prepare additional imaging note
     const additionalImagingNote = formData.value.furtherExaminations
-      .map((exam: { date: string; description: string }, idx: number) => `Vyšetření ${idx + 1} (${exam.date}): ${exam.description}`)
+      .map((exam: { date: string; description: string }, idx: number) => `Examination ${idx + 1} (${exam.date}): ${exam.description}`)
       .join('\n\n')
 
     // Step 6: Prepare report payload
@@ -350,8 +350,8 @@ const submitForm = async () => {
     const report = await api.createReport(reportPayload)
 
     toast.add({
-      title: 'Úspěch',
-      description: 'Formulář byl úspěšně odeslán.'
+      title: 'Success',
+      description: 'The form was submitted successfully.'
     })
 
     // Step 8: Reset form completely and navigate
@@ -362,9 +362,9 @@ const submitForm = async () => {
     navigateTo('/reports')
   } catch (error) {
     console.error('Error submitting form:', error)
-    const errorMessage = error instanceof Error ? error.message : 'Nepodařilo se odeslat formulář.'
+    const errorMessage = error instanceof Error ? error.message : 'Failed to submit the form.'
     toast.add({
-      title: 'Chyba',
+      title: 'Error',
       description: errorMessage
     })
   } finally {
@@ -379,12 +379,12 @@ const submitForm = async () => {
         <!-- Page Header -->
         <div class="text-center mb-8">
           <h1 class="text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-300 mb-3">
-            Pacient s podezřením na sarkom
+            Patient with suspected sarcoma
           </h1>
           <p class="text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-            Formulář pro rychlé předání pacienta do specializovaného centra sarkomů
+            Form for rapid referral of a patient to a specialized sarcoma center
           </p>
-        
+
         </div>
 
         <div class="rounded-2xl shadow-xl border-2 border-gray-200 dark:border-gray-700">
@@ -392,7 +392,7 @@ const submitForm = async () => {
           <div class="px-4 md:px-6 pt-4 md:pt-6 pb-3 md:pb-4 border-b border-gray-200 dark:border-gray-700">
             <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
               <div class="flex items-center gap-2">
-                <span class="text-sm font-medium text-gray-700 dark:text-gray-400">Průběh vyplňování</span>
+                <span class="text-sm font-medium text-gray-700 dark:text-gray-400">Progress</span>
                 <span class="inline-flex items-center px-2 py-0.5 rounded-full bg-primary-100 dark:bg-gray-800 text-primary-700 text-xs font-semibold">
                   {{ currentStep + 1 }}/{{ steps.length }}
                 </span>
@@ -404,7 +404,7 @@ const submitForm = async () => {
                 @click="saveAsDraft"
                 class="w-full sm:w-auto"
               >
-                Uložit koncept
+                Save draft
               </UButton>
             </div>
           </div>
@@ -422,8 +422,8 @@ const submitForm = async () => {
             <!-- Step 0: Care Center Selection -->
             <div v-show="currentStep === 0" class="space-y-8">
               <div class="mb-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">Výběr centra péče</h3>
-                <p class="text-gray-600 dark:text-gray-400">Vyberte specializované centrum, kam chcete pacienta předat</p>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Care center selection</h3>
+                <p class="text-gray-600 dark:text-gray-400">Select the specialized center where you want to refer the patient</p>
               </div>
 
               <UFormField
@@ -433,7 +433,7 @@ const submitForm = async () => {
                   v-model="formData.careCenter"
                   :items="careCenters"
                   value-key="value"
-                  placeholder="Vyberte centrum..."
+                  placeholder="Select a center..."
                   size="lg"
                   class="max-w-md"
                 />
@@ -445,8 +445,8 @@ const submitForm = async () => {
             <!-- Step 1: Patient Type -->
             <div v-show="currentStep === 1" class="space-y-8">
               <div class="mb-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">Typ pacienta</h3>
-                <p class="text-gray-600">Vyberte, zda se jedná o nového nebo existujícího pacienta</p>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Patient type</h3>
+                <p class="text-gray-600">Select whether this is a new or an existing patient</p>
               </div>
 
               <UFormField
@@ -477,7 +477,7 @@ const submitForm = async () => {
                           {{ option.label }}
                         </div>
                         <div class="mt-1 text-sm text-gray-500 dark:text-gray-300">
-                          {{ option.value === 'new' ? 'První vyšetření, podezření na sarkom' : 'Pacient s existující diagnózou, kontrola nebo konzultace' }}
+                          {{ option.value === 'new' ? 'First examination, suspected sarcoma' : 'Patient with existing diagnosis, follow-up or consultation' }}
                         </div>
                       </div>
                     </div>
@@ -489,8 +489,8 @@ const submitForm = async () => {
             <!-- Step 2: Contact Information -->
             <div v-show="currentStep === 2" class="space-y-8">
               <div class="mb-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">Kontaktní údaje pacienta</h3>
-                <p class="text-gray-600">Základní identifikační informace pro registraci pacienta</p>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Patient contact details</h3>
+                <p class="text-gray-600">Basic identification information for patient registration</p>
               </div>
 
               <div class="border-l-4 border-primary-500 rounded-r-xl p-5 mb-8">
@@ -501,8 +501,8 @@ const submitForm = async () => {
                     </svg>
                   </div>
                   <div>
-                    <p class="text-sm font-semibold text-primary-900 mb-1">Ochrana osobních údajů</p>
-                    <p class="text-sm text-primary-800">Všechny údaje jsou šifrovány a zpracovávány v souladu s GDPR.</p>
+                    <p class="text-sm font-semibold text-primary-900 mb-1">Personal data protection</p>
+                    <p class="text-sm text-primary-800">All data is encrypted and processed in compliance with GDPR.</p>
                   </div>
                 </div>
               </div>
@@ -517,35 +517,35 @@ const submitForm = async () => {
                       </svg>
                     </div>
                     <div>
-                      <h4 class="text-lg font-bold text-gray-900 dark:text-gray-300">Osobní údaje</h4>
-                      <p class="text-sm text-gray-600 dark:text-gray-300">Identifikační údaje dle občanského průkazu</p>
+                      <h4 class="text-lg font-bold text-gray-900 dark:text-gray-300">Personal information</h4>
+                      <p class="text-sm text-gray-600 dark:text-gray-300">Identification details from ID card</p>
                     </div>
                   </div>
                 </div>
-                
+
                 <div class="p-6 space-y-6">
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <UFormField label="Jméno" required>
+                    <UFormField label="First name" required>
                       <UInput
                         v-model="formData.firstName"
-                        placeholder="např. Jan"
+                        placeholder="e.g. John"
                         size="lg"
                       />
                     </UFormField>
 
-                    <UFormField label="Příjmení" required>
+                    <UFormField label="Last name" required>
                       <UInput
                         v-model="formData.lastName"
-                        placeholder="např. Novák"
+                        placeholder="e.g. Smith"
                         size="lg"
                       />
                     </UFormField>
                   </div>
 
-                  <UFormField label="Adresa trvalého bydliště" required>
+                  <UFormField label="Permanent address" required>
                     <UInput
                       v-model="formData.address"
-                      placeholder="např. Karlova 123, 110 00 Praha 1"
+                      placeholder="e.g. 123 Karlova St., 110 00 Prague 1"
                       size="lg"
                     />
                   </UFormField>
@@ -563,24 +563,24 @@ const submitForm = async () => {
                       </svg>
                     </div>
                     <div>
-                      <h4 class="text-lg font-bold text-gray-900 dark:text-gray-300">Zdravotní pojištění</h4>
-                      <p class="text-sm text-gray-600 dark:text-gray-300">Údaje pro identifikaci v systému pojišťovny</p>
+                      <h4 class="text-lg font-bold text-gray-900 dark:text-gray-300">Health insurance</h4>
+                      <p class="text-sm text-gray-600 dark:text-gray-300">Information for identification in the insurance system</p>
                     </div>
                   </div>
                 </div>
-                
+
                 <div class="p-6 space-y-6">
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <UFormField label="Zdravotní pojišťovna" required>
+                    <UFormField label="Health insurance company" required>
                       <USelect
                         v-model="formData.insurance"
                         :items="insuranceCompanies"
-                        placeholder="Vyberte pojišťovnu"
+                        placeholder="Select an insurance company"
                         size="lg"
                       />
                     </UFormField>
 
-                    <UFormField label="Rodné číslo" required>
+                    <UFormField label="Personal ID number" required>
                       <UInput
                         v-model="formData.birthNumber"
                         placeholder="123456/7890"
@@ -601,15 +601,15 @@ const submitForm = async () => {
                       </svg>
                     </div>
                     <div>
-                      <h4 class="text-lg font-bold text-gray-900 dark:text-gray-300">Kontaktní informace</h4>
-                      <p class="text-sm text-gray-600 dark:text-gray-300">Pro komunikaci se specializovaným centrem</p>
+                      <h4 class="text-lg font-bold text-gray-900 dark:text-gray-300">Contact information</h4>
+                      <p class="text-sm text-gray-600 dark:text-gray-300">For communication with the specialized center</p>
                     </div>
                   </div>
                 </div>
-                
+
                 <div class="p-6 space-y-6">
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <UFormField label="Telefonní číslo" required>
+                    <UFormField label="Phone number" required>
                       <UInput
                         v-model="formData.phone"
                         placeholder="+420 123 456 789"
@@ -618,10 +618,10 @@ const submitForm = async () => {
                       />
                     </UFormField>
 
-                    <UFormField label="E-mailová adresa">
+                    <UFormField label="Email address">
                       <UInput
                         v-model="formData.email"
-                        placeholder="jmeno@example.com"
+                        placeholder="name@example.com"
                         type="email"
                         size="lg"
                       />
@@ -634,8 +634,8 @@ const submitForm = async () => {
             <!-- Step 3: Imaging Examination -->
             <div v-show="currentStep === 3" class="space-y-8">
               <div class="mb-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">Zobrazovací vyšetření</h3>
-                <p class="text-gray-600">Informace o provedených diagnostických vyšetřeních</p>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Imaging examination</h3>
+                <p class="text-gray-600">Information about performed diagnostic examinations</p>
               </div>
 
               <!-- Warning for new patients without imaging -->
@@ -647,22 +647,22 @@ const submitForm = async () => {
                     </svg>
                   </div>
                   <div>
-                    <p class="text-sm font-semibold text-yellow-900 mb-1">Důležité upozornění</p>
-                    <p class="text-sm text-yellow-800">Pokud nebylo provedeno žádné zobrazovací vyšetření, tak odešlete pacienta na vyšetření některou zobrazovací metodou.</p>
+                    <p class="text-sm font-semibold text-yellow-900 mb-1">Important notice</p>
+                    <p class="text-sm text-yellow-800">If no imaging examination has been performed, refer the patient for an examination using one of the imaging methods.</p>
                   </div>
                 </div>
               </div>
 
               <div class="space-y-6">
                 <div class="border-l-4 border-primary-500 pl-4">
-                  <h4 class="text-lg font-semibold text-gray-900 mb-2">Provedená vyšetření</h4>
-                  <p class="text-sm text-gray-600">Vyberte všechna zobrazovací vyšetření, která byla u pacienta provedena</p>
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">Performed examinations</h4>
+                  <p class="text-sm text-gray-600">Select all imaging examinations that have been performed for the patient</p>
                 </div>
 
                 <UFormField
-                  label="Typy zobrazovacích vyšetření"
+                  label="Types of imaging examinations"
                   required
-                  description="Musí být vybráno alespoň jedno vyšetření"
+                  description="At least one examination must be selected"
                 >
                   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 mt-4">
                     <label
@@ -701,8 +701,8 @@ const submitForm = async () => {
               <!-- Details for each selected imaging -->
               <div v-if="formData.selectedImaging.length > 0" class="mt-10">
                 <div class="border-l-4 border-primary-500 pl-6 mb-8">
-                  <h4 class="text-xl font-bold text-gray-900 mb-2">Detaily vyšetření</h4>
-                  <p class="text-sm text-gray-600">Doplňte datum a popis výsledků pro každé vyšetření</p>
+                  <h4 class="text-xl font-bold text-gray-900 mb-2">Examination details</h4>
+                  <p class="text-sm text-gray-600">Provide the date and description of the results for each examination</p>
                 </div>
 
                 <div class="space-y-8">
@@ -739,7 +739,7 @@ const submitForm = async () => {
                     <div v-show="formData.openImagingDetails[imaging]" class="space-y-6">
                       <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">
-                          Datum vyšetření
+                          Examination date
                           <span class="text-red-500">*</span>
                         </label>
                         <UInput
@@ -748,23 +748,23 @@ const submitForm = async () => {
                           size="xl"
                           class="max-w-xs"
                         />
-                        <p class="text-xs text-gray-500 mt-2">Kdy bylo vyšetření provedeno</p>
+                        <p class="text-xs text-gray-500 mt-2">When the examination was performed</p>
                       </div>
 
                       <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-2">
-                          Popis a výsledky vyšetření
+                          Description and results of the examination
                           <span class="text-red-500">*</span>
                         </label>
                         <UTextarea
                           v-model="formData.imagingDetails[imaging]!.description"
-                          placeholder="Popište nálezy, velikost, lokalizaci, charakteristiku léze..."
+                          placeholder="Describe findings, size, localization, characteristics of the lesion..."
                           :rows="5"
                           size="xl"
                           class="w-full font-mono text-sm"
                         />
                         <p class="text-xs text-gray-500 mt-2">
-                          Uveďte: lokalizaci, velikost léze, charakteristiku, případné metastázy
+                          Include: localization, lesion size, characteristics, any metastases
                         </p>
                       </div>
                     </div>
@@ -775,8 +775,8 @@ const submitForm = async () => {
               <!-- Further Examinations -->
               <div class="space-y-6 mt-8">
                 <div class="border-l-4 border-primary-500 pl-4">
-                  <h4 class="text-lg font-semibold text-gray-900 mb-2">Plánovaná vyšetření</h4>
-                  <p class="text-sm text-gray-600">Informace o objednaných dalších vyšetřeních</p>
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">Planned examinations</h4>
+                  <p class="text-sm text-gray-600">Information about other scheduled examinations</p>
                 </div>
 
                 <div class="bg-white rounded-xl border-2 border-gray-200 dark:border-gray-800 shadow-sm p-6">
@@ -796,7 +796,7 @@ const submitForm = async () => {
                     />
                     <div>
                       <span class="text-base font-semibold text-gray-900 dark:text-gray-300 group-hover:text-primary-600 transition-colors">
-                        Je pacient objednán na nějaké další vyšetření?
+                        Is the patient scheduled for any further examinations?
                       </span>
                     </div>
                   </label>
@@ -808,7 +808,7 @@ const submitForm = async () => {
                       class="pt-6 border-t-2 border-gray-200 dark:border-gray-700 space-y-6"
                     >
                       <div class="flex items-center justify-between mb-4">
-                        <h5 class="text-lg font-bold text-gray-900 dark:text-gray-300">Vyšetření {{ index + 1 }}</h5>
+                        <h5 class="text-lg font-bold text-gray-900 dark:text-gray-300">Examination {{ index + 1 }}</h5>
                         <UButton
                           v-if="formData.furtherExaminations.length > 1"
                           color="neutral"
@@ -816,7 +816,7 @@ const submitForm = async () => {
                           size="sm"
                           @click="formData.furtherExaminations.splice(index, 1)"
                         >
-                          Odebrat
+                          Remove
                         </UButton>
                       </div>
 
@@ -826,7 +826,7 @@ const submitForm = async () => {
                             <svg class="w-4 h-4 text-primary-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            Datum plánovaného vyšetření
+                            Scheduled examination date
                           </span>
                           <UInput
                             v-model="exam.date"
@@ -834,7 +834,7 @@ const submitForm = async () => {
                             size="lg"
                             class="shadow-sm max-w-xs"
                           />
-                          <p class="text-xs text-gray-500 dark:text-gray-300 mt-2">Termín objednaného vyšetření</p>
+                          <p class="text-xs text-gray-500 dark:text-gray-300 mt-2">Date of the scheduled examination</p>
                         </label>
                       </div>
 
@@ -844,16 +844,16 @@ const submitForm = async () => {
                             <svg class="w-4 h-4 text-primary-600 dark:text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                             </svg>
-                            Specifikace vyšetření
+                            Examination details
                           </span>
                           <UTextarea
                             v-model="exam.description"
-                            placeholder="např. MRI břicha s kontrastem pro upřesnění nálezu..."
+                            placeholder="e.g. abdominal MRI with contrast to refine the finding..."
                             :rows="4"
                             size="lg"
                             class="shadow-sm w-full"
                           />
-                          <p class="text-xs text-gray-500 dark:text-gray-300 mt-2">Typ vyšetření a účel objednání</p>
+                          <p class="text-xs text-gray-500 dark:text-gray-300 mt-2">Type of examination and purpose of the request</p>
                         </label>
                       </div>
                     </div>
@@ -868,7 +868,7 @@ const submitForm = async () => {
                       <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                       </svg>
-                      Přidat další vyšetření
+                      Add another examination
                     </UButton>
                   </div>
                 </div>
@@ -877,8 +877,8 @@ const submitForm = async () => {
               <!-- ePacs Upload Section -->
               <div class="space-y-6 mt-8">
                 <div class="border-l-4 border-primary-500 pl-4">
-                  <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-300 mb-2">ePACS nahrání</h4>
-                  <p class="text-sm text-gray-600 dark:text-gray-300">Nahrajte výsledky zobrazovacích vyšetření</p>
+                  <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-300 mb-2">ePACS upload</h4>
+                  <p class="text-sm text-gray-600 dark:text-gray-300">Upload the results of imaging examinations</p>
                 </div>
 
                 <div class="bg-white rounded-xl border-2 border-gray-200 shadow-sm p-6">
@@ -891,10 +891,10 @@ const submitForm = async () => {
                     />
                     <div>
                       <span class="text-base font-semibold text-gray-900 dark:text-gray-300 group-hover:text-primary-600 transition-colors">
-                        Nahrát výsledky přes ePACS
+                        Upload results via ePACS
                       </span>
                       <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">
-                        Nahrajte DICOM soubory nebo snímky ze zobrazovacích vyšetření
+                        Upload DICOM files or images from imaging examinations
                       </p>
                     </div>
                   </label>
@@ -906,10 +906,10 @@ const submitForm = async () => {
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
                         </svg>
                         <p class="mb-2 text-base text-gray-700 dark:text-gray-300">
-                          <span class="font-semibold">Klikněte pro výběr souborů</span> nebo přetáhněte
+                          <span class="font-semibold">Click to select files</span> or drag and drop
                         </p>
                         <p class="text-sm text-gray-500 dark:text-gray-300">
-                          DICOM soubor
+                          DICOM file
                         </p>
                       </div>
                       <input
@@ -922,7 +922,7 @@ const submitForm = async () => {
                     </label>
 
                     <div v-if="formData.ePacsFiles.length > 0" class="mt-4 space-y-2">
-                      <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Nahrané soubory ({{ formData.ePacsFiles.length }}):</p>
+                      <p class="text-sm font-medium text-gray-700 dark:text-gray-300">Uploaded files ({{ formData.ePacsFiles.length }}):</p>
                       <div class="bg-white rounded-lg border border-gray-200 divide-y max-h-60 overflow-y-auto">
                         <div
                           v-for="(file, index) in formData.ePacsFiles"
@@ -943,7 +943,7 @@ const submitForm = async () => {
                             @click="formData.ePacsFiles.splice(index, 1)"
                             class="text-red-600 hover:text-red-800 font-medium text-sm ml-4 shrink-0"
                           >
-                            Odebrat
+                            Remove
                           </button>
                         </div>
                       </div>
@@ -955,46 +955,46 @@ const submitForm = async () => {
               <UAlert
                 color="primary"
                 variant="soft"
-                title="Sdílení výsledků"
-                description="PROSÍM ZAŠLETE VÝSLEDKY ZOBRAZOVACÍCH METOD PŘES ePACS systém co nejdříve."
+                title="Sharing results"
+                description="PLEASE SEND THE IMAGING RESULTS VIA THE ePACS SYSTEM AS SOON AS POSSIBLE."
                 class="mt-6"
               />
             </div>
 
-            <!-- Step 4: Anamneza -->
+            <!-- Step 4: Medical history -->
             <div v-show="currentStep === 4" class="space-y-8">
               <div class="mb-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">Anamnéza pacienta</h3>
-                <p class="text-gray-600">Lékařská historie a rodinné predispozice</p>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Patient medical history</h3>
+                <p class="text-gray-600">Medical history and family predispositions</p>
               </div>
 
               <div class="space-y-6">
                 <div class="border-l-4 border-primary-500 pl-4">
-                  <h4 class="text-lg font-semibold text-gray-900 mb-2">Osobní anamnéza</h4>
-                  <p class="text-sm text-gray-600">Uveďte relevantní informace o zdravotním stavu pacienta</p>
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">Personal medical history</h4>
+                  <p class="text-sm text-gray-600">Provide relevant information about the patient's health</p>
                 </div>
 
                 <UFormField
-                  label="Anamnéza"
+                  label="Medical history"
                   required
-                  description="Důležité informace: předchozí onemocnění, chirurgické zákroky, aktuální léčba, chronická onemocnění"
+                  description="Important information: previous conditions, surgical procedures, current treatment, chronic diseases"
                 >
                   <UTextarea
                     v-model="formData.anamneza"
-                    placeholder="Např.: Diabetes mellitus 2. typu na PAD, hypertenze, stav po operaci cholecystektomie 2018..."
+                    placeholder="E.g.: Type 2 diabetes mellitus on oral antidiabetics, hypertension, status post cholecystectomy 2018..."
                     :rows="8"
                     size="lg"
                     class="w-full"
                   />
                   <template #help>
                     <div class="text-sm text-gray-500 mt-2 space-y-1">
-                      <p><strong>Zahrňte prosím:</strong></p>
+                      <p><strong>Please include:</strong></p>
                       <ul class="list-disc list-inside ml-4 space-y-1">
-                        <li>Předchozí onkologická onemocnění</li>
-                        <li>Chronická onemocnění</li>
-                        <li>Operace a hospitalizace</li>
-                        <li>Aktuální medikace</li>
-                        <li>Alergie</li>
+                        <li>Previous oncological conditions</li>
+                        <li>Chronic diseases</li>
+                        <li>Surgeries and hospitalizations</li>
+                        <li>Current medication</li>
+                        <li>Allergies</li>
                       </ul>
                     </div>
                   </template>
@@ -1003,24 +1003,24 @@ const submitForm = async () => {
 
               <div class="space-y-6 mt-8">
                 <div class="border-l-4 border-primary-500 pl-4">
-                  <h4 class="text-lg font-semibold text-gray-900 mb-2">Rodinná anamnéza</h4>
-                  <p class="text-sm text-gray-600">Informace o výskytu onkologických onemocnění v rodině</p>
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">Family medical history</h4>
+                  <p class="text-sm text-gray-600">Information about the occurrence of oncological diseases in the family</p>
                 </div>
 
                 <UFormField
-                  label="Rodinné predispozice"
-                  description="Výskyt sarkomů nebo jiných nádorových onemocnění u příbuzných"
+                  label="Family predispositions"
+                  description="Occurrence of sarcomas or other tumor diseases in relatives"
                 >
                   <UTextarea
                     v-model="formData.familyPredispositions"
-                    placeholder="Např.: Matka - karcinom prsu (60 let), otec - karcinom tlustého střeva (65 let)..."
+                    placeholder="E.g.: Mother - breast cancer (age 60), father - colon cancer (age 65)..."
                     :rows="5"
                     size="lg"
                     class="w-full"
                   />
                   <template #help>
                     <div class="text-sm text-gray-500 mt-2">
-                      Uveďte stupeň příbuzenství, typ onemocnění a věk vzniku
+                      Indicate the degree of kinship, type of disease and age of onset
                     </div>
                   </template>
                 </UFormField>
@@ -1031,10 +1031,10 @@ const submitForm = async () => {
             <div v-show="currentStep === 5" class="space-y-8">
               <div class="mb-8">
                 <h3 class="text-2xl font-bold text-gray-900 mb-2">
-                  {{ formData.patientType === 'existing' ? 'Diagnostický souhrn' : 'Histologická verifikace' }}
+                  {{ formData.patientType === 'existing' ? 'Diagnostic summary' : 'Histological verification' }}
                 </h3>
                 <p class="text-gray-600">
-                  {{ formData.patientType === 'existing' ? 'Souhrnné informace o diagnóze' : 'Informace o biopsii a antikoagulační léčbě' }}
+                  {{ formData.patientType === 'existing' ? 'Summary information about the diagnosis' : 'Information about biopsy and anticoagulation therapy' }}
                 </p>
               </div>
 
@@ -1050,24 +1050,24 @@ const submitForm = async () => {
                         </svg>
                       </div>
                       <div>
-                        <h4 class="text-lg font-bold text-gray-900">Diagnóza a souhrn</h4>
-                        <p class="text-sm text-gray-600">Vyberte diagnózu dle MKN-10 a doplňte souhrn</p>
+                        <h4 class="text-lg font-bold text-gray-900">Diagnosis and summary</h4>
+                        <p class="text-sm text-gray-600">Select the diagnosis according to ICD-10 and complete the summary</p>
                       </div>
                     </div>
                   </div>
 
                   <div class="p-6 space-y-10">
                     <UFormField
-                      label="Diagnóza (MKN-10)"
+                      label="Diagnosis (ICD-10)"
                       required
-                      description="Vyberte odpovídající kód diagnózy ze seznamu"
+                      description="Select the corresponding diagnosis code from the list"
                       class="mb-12"
                     >
                       <UInputMenu
                         v-model="formData.mkn10"
                         :items="mkn10Options"
                         value-key="value"
-                        placeholder="Vyberte diagnózu..."
+                        placeholder="Select a diagnosis..."
                         size="lg"
                         class="w-full"
                         trailing-icon="i-heroicons-chevron-down-20-solid"
@@ -1075,14 +1075,14 @@ const submitForm = async () => {
                     </UFormField>
 
                     <UFormField
-                      label="Diagnostický souhrn"
+                      label="Diagnostic summary"
                       required
-                      description="Detailní popis diagnózy a stavu pacienta"
+                      description="Detailed description of the diagnosis and the patient's condition"
                       class="mt-12"
                     >
                       <UTextarea
                         v-model="formData.diagnosticSummary"
-                        placeholder="Doplňte diagnostický souhrn..."
+                        placeholder="Complete the diagnostic summary..."
                         :rows="8"
                         size="lg"
                         class="w-full shadow-sm"
@@ -1095,13 +1095,13 @@ const submitForm = async () => {
               <!-- New Patient: Histological Verification -->
               <div v-else class="space-y-6 mt-8">
                 <div class="border-l-4 border-primary-500 pl-4">
-                  <h4 class="text-lg font-semibold text-gray-900 mb-2">Histologické vyšetření</h4>
-                  <p class="text-sm text-gray-600">Informace o provedené biopsii a výsledcích</p>
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">Histological examination</h4>
+                  <p class="text-sm text-gray-600">Information about the performed biopsy and its results</p>
                 </div>
 
                 <UFormField
-                  label="Byla provedena histologická verifikace (biopsie)?"
-                  description="Core-cut biopsie, incizní biopsie, excizní biopsie"
+                  label="Has histological verification (biopsy) been performed?"
+                  description="Core-cut biopsy, incisional biopsy, excisional biopsy"
                 >
                   <div class="flex gap-4 mt-3">
                     <label class="flex items-center cursor-pointer">
@@ -1111,7 +1111,7 @@ const submitForm = async () => {
                         value="yes"
                         class="h-5 w-5 text-primary-600 border-gray-300 focus:ring-primary-500"
                       />
-                      <span class="ml-2 text-base font-medium text-gray-900">Ano</span>
+                      <span class="ml-2 text-base font-medium text-gray-900">Yes</span>
                     </label>
                     <label class="flex items-center cursor-pointer">
                       <input
@@ -1120,7 +1120,7 @@ const submitForm = async () => {
                         value="no"
                         class="h-5 w-5 text-primary-600 border-gray-300 focus:ring-primary-500"
                       />
-                      <span class="ml-2 text-base font-medium text-gray-900">Ne</span>
+                      <span class="ml-2 text-base font-medium text-gray-900">No</span>
                     </label>
                   </div>
                 </UFormField>
@@ -1134,8 +1134,8 @@ const submitForm = async () => {
                         </svg>
                       </div>
                       <div>
-                        <h5 class="text-lg font-bold text-primary-900">Výsledky histologického vyšetření</h5>
-                        <p class="text-sm text-primary-800">Informace o provedené biopsii a výsledcích</p>
+                        <h5 class="text-lg font-bold text-primary-900">Histological examination results</h5>
+                        <p class="text-sm text-primary-800">Information about the performed biopsy and results</p>
                       </div>
                     </div>
                   </div>
@@ -1147,7 +1147,7 @@ const submitForm = async () => {
                           <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                           </svg>
-                          Datum histologického vyšetření
+                          Date of the histological examination
                           <span class="text-red-500">*</span>
                         </span>
                         <UInput
@@ -1156,7 +1156,7 @@ const submitForm = async () => {
                           size="lg"
                           class="shadow-sm max-w-xs"
                         />
-                        <p class="text-xs text-gray-500 mt-2">Kdy byla biopsie provedena</p>
+                        <p class="text-xs text-gray-500 mt-2">When the biopsy was performed</p>
                       </label>
                     </div>
 
@@ -1166,18 +1166,18 @@ const submitForm = async () => {
                           <svg class="w-4 h-4 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                           </svg>
-                          Výsledek histologie a bližší popis
+                          Histology result and further description
                           <span class="text-red-500">*</span>
                         </span>
                         <UTextarea
                           v-model="formData.histologicalResults"
-                          placeholder="např. Core-cut biopsie, histologicky vřetenobuněčný tumor, pozitivní na SMA, Ki-67 20%..."
+                          placeholder="e.g. Core-cut biopsy, histologically spindle cell tumor, SMA positive, Ki-67 20%..."
                           :rows="6"
                           size="lg"
                           class="shadow-sm w-full font-mono text-sm"
                         />
                         <p class="text-xs text-gray-500 mt-2">
-                          Zahrňte typ biopsie, morfologický popis, imunohistochemické markery a jejich výsledky
+                          Include the type of biopsy, morphological description, immunohistochemical markers and their results
                         </p>
                       </label>
                     </div>
@@ -1188,12 +1188,12 @@ const submitForm = async () => {
                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         <div class="text-sm text-primary-800">
-                          <p class="font-semibold mb-1">Klíčové informace k uvedení:</p>
+                          <p class="font-semibold mb-1">Key information to include:</p>
                           <ul class="list-disc list-inside space-y-1 ml-2">
-                            <li>Typ biopsie (Core-cut, incizní, excizní)</li>
-                            <li>Morfologický popis tumoru</li>
-                            <li>Imunohistochemické markery (SMA, S100, CD34, Ki-67, atd.)</li>
-                            <li>Stupeň malignity (grade)</li>
+                            <li>Type of biopsy (Core-cut, incisional, excisional)</li>
+                            <li>Morphological description of the tumor</li>
+                            <li>Immunohistochemical markers (SMA, S100, CD34, Ki-67, etc.)</li>
+                            <li>Grade of malignancy</li>
                           </ul>
                         </div>
                       </div>
@@ -1203,52 +1203,52 @@ const submitForm = async () => {
 
                 <div v-if="formData.histologicalVerification === 'no'" class="bg-yellow-50 border-2 border-yellow-200 rounded-xl p-4">
                   <div class="text-sm text-yellow-800">
-                    <strong>Doporučení:</strong> Histologická verifikace je klíčová pro správnou diagnózu a plánování léčby sarkomu. Pokud ještě nebyla provedena, bude pravděpodobně indikována specializovaným centrem.
+                    <strong>Recommendation:</strong> Histological verification is key to the correct diagnosis and treatment planning for sarcoma. If not yet performed, it will likely be indicated by the specialized center.
                   </div>
                 </div>
               </div>
             </div>
 
-            <!-- Step 6: Finalizace -->
+            <!-- Step 6: Finalization -->
             <div v-show="currentStep === 6" class="space-y-8">
               <div class="mb-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">Finalizace</h3>
-                <p class="text-gray-600">Závěrečné poznámky a nahrání dokumentace</p>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Finalization</h3>
+                <p class="text-gray-600">Final notes and document upload</p>
               </div>
 
               <div class="bg-primary-50 dark:bg-gray-800 border-2 border-primary-200 rounded-xl p-6">
-                <h4 class="text-lg font-bold text-gray-900 mb-1">Téměř hotovo!</h4>
+                <h4 class="text-lg font-bold text-gray-900 mb-1">Almost done!</h4>
                 <p class="text-sm text-gray-700">
-                  Prosím doplňte shrnutí případu a případně nahrajte související dokumentaci.
+                  Please provide a summary of the case and optionally upload related documentation.
                 </p>
               </div>
 
               <div class="space-y-6">
                 <div class="border-l-4 border-primary-500 pl-4">
-                  <h4 class="text-lg font-semibold text-gray-900 mb-2">Klinické shrnutí</h4>
-                  <p class="text-sm text-gray-600">Stručné shrnutí případu pro specializované centrum</p>
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">Clinical summary</h4>
+                  <p class="text-sm text-gray-600">A brief summary of the case for the specialized center</p>
                 </div>
 
                 <UFormField
-                  label="Shrnutí důvodu podezření na sarkom"
-                  description="Klíčové informace, které by mělo specializované centrum vědět"
+                  label="Summary of the reasons for suspecting sarcoma"
+                  description="Key information the specialized center should know"
                 >
                   <UTextarea
                     v-model="formData.summaryNotes"
-                    placeholder="např. 65letý pacient s rychle rostoucí hmotou na stehně, sonograficky 8x6cm suspektní nádorová masa s neostře ohraničenými okraji, doporučuji rychlé konzultaci..."
+                    placeholder="e.g. 65-year-old patient with a rapidly growing mass on the thigh, ultrasonographically an 8x6 cm suspicious tumor mass with ill-defined margins, recommend rapid consultation..."
                     :rows="8"
                     size="lg"
                     class="w-full"
                   />
                   <template #help>
                     <div class="text-sm text-gray-500 mt-2 space-y-1">
-                      <p><strong>Důležité body k zahrnutí:</strong></p>
+                      <p><strong>Important points to include:</strong></p>
                       <ul class="list-disc list-inside ml-4 space-y-1">
-                        <li>Hlavní důvod podezření na sarkom</li>
-                        <li>Rychlost růstu léze</li>
-                        <li>Klinické symptomy (bolest, funkční omezení)</li>
-                        <li>Naléhavost případu</li>
-                        <li>Specifické otázky pro specializované centrum</li>
+                        <li>Main reason for suspecting sarcoma</li>
+                        <li>Rate of lesion growth</li>
+                        <li>Clinical symptoms (pain, functional limitations)</li>
+                        <li>Urgency of the case</li>
+                        <li>Specific questions for the specialized center</li>
                       </ul>
                     </div>
                   </template>
@@ -1257,19 +1257,19 @@ const submitForm = async () => {
 
               <div class="space-y-6 mt-8">
                 <div class="border-l-4 border-primary-500 pl-4">
-                  <h4 class="text-lg font-semibold text-gray-900 mb-2">Přílohy</h4>
-                  <p class="text-sm text-gray-600">Nahrání lékařských zpráv, snímků a další dokumentace</p>
+                  <h4 class="text-lg font-semibold text-gray-900 mb-2">Attachments</h4>
+                  <p class="text-sm text-gray-600">Upload medical reports, images and other documentation</p>
                 </div>
 
                 <UFormField
-                  label="Nahrání souborů"
-                  description="Můžete nahrát více souborů najednou"
+                  label="File upload"
+                  description="You can upload multiple files at once"
                 >
                   <div class="mt-3">
                     <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-xl cursor-pointer bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 transition-colors">
                       <div class="flex flex-col items-center justify-center">
                         <p class="mb-2 text-base text-gray-700">
-                          <span class="font-semibold">Klikněte pro výběr souborů</span> nebo přetáhněte
+                          <span class="font-semibold">Click to select files</span> or drag and drop
                         </p>
                         <p class="text-sm text-gray-500">
                           PDF, JPG, PNG
@@ -1285,7 +1285,7 @@ const submitForm = async () => {
                     </label>
 
                     <div v-if="formData.attachments.length > 0" class="mt-4 space-y-2">
-                      <p class="text-sm font-medium text-gray-700">Vybrané soubory:</p>
+                      <p class="text-sm font-medium text-gray-700">Selected files:</p>
                       <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 divide-y">
                         <div
                           v-for="(file, index) in formData.attachments"
@@ -1301,7 +1301,7 @@ const submitForm = async () => {
                             @click="formData.attachments.splice(index, 1)"
                             class="text-red-600 hover:text-red-800 font-medium text-sm"
                           >
-                            Odebrat
+                            Remove
                           </button>
                         </div>
                       </div>
@@ -1318,34 +1318,34 @@ const submitForm = async () => {
                     </svg>
                   </div>
                   <div>
-                    <p class="text-sm font-semibold text-yellow-900 mb-1">Důležité upozornění</p>
-                    <p class="text-sm text-yellow-800">Ujistěte se, že všechny poskytnuté údaje jsou správné a kompletní. Po odeslání bude formulář zaslán specializovanému centru.</p>
+                    <p class="text-sm font-semibold text-yellow-900 mb-1">Important notice</p>
+                    <p class="text-sm text-yellow-800">Make sure that all provided information is correct and complete. After submission, the form will be sent to the specialized center.</p>
                   </div>
                 </div>
               </div>
 
               <div class="bg-green-50 border-2 border-green-200 rounded-xl p-6 mt-6">
                 <div class="text-sm text-green-800">
-                  <strong>Bezpečnost a soukromí:</strong> Všechna data jsou přenášena šifrovaným připojením a ukládána v souladu s GDPR a zákonem o zdravotních službách. Přístup k datům mají pouze oprávnění zdravotničtí pracovníci specializovaného centra.
+                  <strong>Security and privacy:</strong> All data is transmitted over an encrypted connection and stored in compliance with GDPR and the Act on Healthcare Services. Only authorized healthcare professionals of the specialized center have access to the data.
                 </div>
               </div>
             </div>
 
-            <!-- Step 7: Shrnutí -->
+            <!-- Step 7: Summary -->
             <div v-show="currentStep === 7" class="space-y-8">
               <div class="mb-8">
-                <h3 class="text-2xl font-bold text-gray-900 mb-2">Shrnutí</h3>
-                <p class="text-gray-600">Zkontrolujte všechny zadané informace před odesláním</p>
+                <h3 class="text-2xl font-bold text-gray-900 mb-2">Summary</h3>
+                <p class="text-gray-600">Review all entered information before submitting</p>
               </div>
 
               <!-- Care Center -->
               <UCard>
                 <template #header>
-                  <h4 class="text-lg font-semibold text-gray-900">Centrum péče</h4>
+                  <h4 class="text-lg font-semibold text-gray-900">Care center</h4>
                 </template>
                 <dl class="grid grid-cols-1 gap-4">
                   <div>
-                    <dt class="text-sm font-medium text-gray-500">Specializované centrum</dt>
+                    <dt class="text-sm font-medium text-gray-500">Specialized center</dt>
                     <dd class="mt-1 text-sm text-gray-900">{{ careCenters.find(c => c.value === formData.careCenter)?.label || '-' }}</dd>
                   </div>
                 </dl>
@@ -1354,35 +1354,35 @@ const submitForm = async () => {
               <!-- Patient Type & Contact -->
               <UCard>
                 <template #header>
-                  <h4 class="text-lg font-semibold text-gray-900">Informace o pacientovi</h4>
+                  <h4 class="text-lg font-semibold text-gray-900">Patient information</h4>
                 </template>
                 <dl class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <dt class="text-sm font-medium text-gray-500">Typ pacienta</dt>
+                    <dt class="text-sm font-medium text-gray-500">Patient type</dt>
                     <dd class="mt-1 text-sm text-gray-900">{{ patientTypes.find(p => p.value === formData.patientType)?.label || '-' }}</dd>
                   </div>
                   <div>
-                    <dt class="text-sm font-medium text-gray-500">Jméno a příjmení</dt>
+                    <dt class="text-sm font-medium text-gray-500">Full name</dt>
                     <dd class="mt-1 text-sm text-gray-900">{{ formData.firstName }} {{ formData.lastName }}</dd>
                   </div>
                   <div>
-                    <dt class="text-sm font-medium text-gray-500">Rodné číslo</dt>
+                    <dt class="text-sm font-medium text-gray-500">Personal ID number</dt>
                     <dd class="mt-1 text-sm text-gray-900">{{ formData.birthNumber }}</dd>
                   </div>
                   <div>
-                    <dt class="text-sm font-medium text-gray-500">Zdravotní pojišťovna</dt>
+                    <dt class="text-sm font-medium text-gray-500">Health insurance company</dt>
                     <dd class="mt-1 text-sm text-gray-900">{{ insuranceCompanies.find(i => i.value === formData.insurance)?.label || '-' }}</dd>
                   </div>
                   <div>
-                    <dt class="text-sm font-medium text-gray-500">Adresa</dt>
+                    <dt class="text-sm font-medium text-gray-500">Address</dt>
                     <dd class="mt-1 text-sm text-gray-900">{{ formData.address }}</dd>
                   </div>
                   <div>
-                    <dt class="text-sm font-medium text-gray-500">Telefon</dt>
+                    <dt class="text-sm font-medium text-gray-500">Phone</dt>
                     <dd class="mt-1 text-sm text-gray-900">{{ formData.phone }}</dd>
                   </div>
                   <div v-if="formData.email">
-                    <dt class="text-sm font-medium text-gray-500">E-mail</dt>
+                    <dt class="text-sm font-medium text-gray-500">Email</dt>
                     <dd class="mt-1 text-sm text-gray-900">{{ formData.email }}</dd>
                   </div>
                 </dl>
@@ -1391,18 +1391,18 @@ const submitForm = async () => {
               <!-- Imaging -->
               <UCard v-if="formData.selectedImaging.length > 0">
                 <template #header>
-                  <h4 class="text-lg font-semibold text-gray-900">Zobrazovací vyšetření</h4>
+                  <h4 class="text-lg font-semibold text-gray-900">Imaging examination</h4>
                 </template>
                 <div class="space-y-4">
                   <div v-for="imaging in formData.selectedImaging" :key="imaging" class="border-l-4 border-primary-500 pl-4">
                     <h5 class="font-medium text-gray-900">{{ imagingOptions.find(i => i.value === imaging)?.label }}</h5>
                     <dl class="mt-2 space-y-1">
                       <div>
-                        <dt class="text-sm text-gray-500 inline">Datum:</dt>
+                        <dt class="text-sm text-gray-500 inline">Date:</dt>
                         <dd class="text-sm text-gray-900 inline ml-2">{{ formData.imagingDetails[imaging]?.date || '-' }}</dd>
                       </div>
                       <div>
-                        <dt class="text-sm text-gray-500">Popis:</dt>
+                        <dt class="text-sm text-gray-500">Description:</dt>
                         <dd class="text-sm text-gray-900 mt-1">{{ formData.imagingDetails[imaging]?.description || '-' }}</dd>
                       </div>
                     </dl>
@@ -1410,18 +1410,18 @@ const submitForm = async () => {
                 </div>
               </UCard>
 
-              <!-- Anamneza -->
+              <!-- Medical history -->
               <UCard v-if="formData.anamneza || formData.familyPredispositions">
                 <template #header>
-                  <h4 class="text-lg font-semibold text-gray-900">Anamnéza</h4>
+                  <h4 class="text-lg font-semibold text-gray-900">Medical history</h4>
                 </template>
                 <dl class="space-y-4">
                   <div v-if="formData.anamneza">
-                    <dt class="text-sm font-medium text-gray-500">Osobní anamnéza</dt>
+                    <dt class="text-sm font-medium text-gray-500">Personal medical history</dt>
                     <dd class="mt-1 text-sm text-gray-900 whitespace-pre-wrap">{{ formData.anamneza }}</dd>
                   </div>
                   <div v-if="formData.familyPredispositions">
-                    <dt class="text-sm font-medium text-gray-500">Rodinná anamnéza</dt>
+                    <dt class="text-sm font-medium text-gray-500">Family medical history</dt>
                     <dd class="mt-1 text-sm text-gray-900 whitespace-pre-wrap">{{ formData.familyPredispositions }}</dd>
                   </div>
                 </dl>
@@ -1431,32 +1431,32 @@ const submitForm = async () => {
               <UCard v-if="formData.patientType === 'existing' || formData.histologicalVerification">
                 <template #header>
                   <h4 class="text-lg font-semibold text-gray-900">
-                    {{ formData.patientType === 'existing' ? 'Diagnostický souhrn' : 'Histologická verifikace' }}
+                    {{ formData.patientType === 'existing' ? 'Diagnostic summary' : 'Histological verification' }}
                   </h4>
                 </template>
                 <dl class="space-y-4">
                   <template v-if="formData.patientType === 'existing'">
                     <div v-if="formData.mkn10">
-                      <dt class="text-sm font-medium text-gray-500">Diagnóza (MKN-10)</dt>
+                      <dt class="text-sm font-medium text-gray-500">Diagnosis (ICD-10)</dt>
                       <dd class="mt-1 text-sm text-gray-900">{{ mkn10Options.find(m => m.value === formData.mkn10)?.label || formData.mkn10 }}</dd>
                     </div>
                     <div v-if="formData.diagnosticSummary">
-                      <dt class="text-sm font-medium text-gray-500">Diagnostický souhrn</dt>
+                      <dt class="text-sm font-medium text-gray-500">Diagnostic summary</dt>
                       <dd class="mt-1 text-sm text-gray-900 whitespace-pre-wrap">{{ formData.diagnosticSummary }}</dd>
                     </div>
                   </template>
                   <template v-else>
                     <div>
-                      <dt class="text-sm font-medium text-gray-500">Histologická verifikace provedena</dt>
-                      <dd class="mt-1 text-sm text-gray-900">{{ formData.histologicalVerification === 'yes' ? 'Ano' : 'Ne' }}</dd>
+                      <dt class="text-sm font-medium text-gray-500">Histological verification performed</dt>
+                      <dd class="mt-1 text-sm text-gray-900">{{ formData.histologicalVerification === 'yes' ? 'Yes' : 'No' }}</dd>
                     </div>
                     <template v-if="formData.histologicalVerification === 'yes'">
                       <div v-if="formData.histologicalDate">
-                        <dt class="text-sm font-medium text-gray-500">Datum vyšetření</dt>
+                        <dt class="text-sm font-medium text-gray-500">Examination date</dt>
                         <dd class="mt-1 text-sm text-gray-900">{{ formData.histologicalDate }}</dd>
                       </div>
                       <div v-if="formData.histologicalResults">
-                        <dt class="text-sm font-medium text-gray-500">Výsledky</dt>
+                        <dt class="text-sm font-medium text-gray-500">Results</dt>
                         <dd class="mt-1 text-sm text-gray-900 whitespace-pre-wrap">{{ formData.histologicalResults }}</dd>
                       </div>
                     </template>
@@ -1476,13 +1476,13 @@ const submitForm = async () => {
                 size="lg"
                 @click="prevStep"
               >
-                Zpět
+                Back
               </UButton>
               <div v-else />
 
               <div class="flex items-center gap-4">
                 <div v-if="currentStep < steps.length - 1" class="text-sm text-gray-600 hidden md:block">
-                  Krok {{ currentStep + 1 }} z {{ steps.length }}
+                  Step {{ currentStep + 1 }} of {{ steps.length }}
                 </div>
 
                 <UButton
@@ -1492,7 +1492,7 @@ const submitForm = async () => {
                   :disabled="!canProceed"
                   @click="nextStep"
                 >
-                  Pokračovat
+                  Continue
                 </UButton>
                 <UButton
                   v-else
@@ -1502,7 +1502,7 @@ const submitForm = async () => {
                   :disabled="isSubmitting"
                   @click="submitForm"
                 >
-                  Odeslat formulář
+                  Submit form
                 </UButton>
               </div>
             </div>

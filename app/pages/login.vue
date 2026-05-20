@@ -16,24 +16,24 @@ const fields: AuthFormField[] = [{
   type: 'email',
   modelValue: 'admin@admin.com',
   label: 'Email',
-  placeholder: 'Zadejte váš email',
+  placeholder: 'Enter your email',
   required: false
   // required: true
 }, {
   name: 'password',
-  label: 'Heslo',
+  label: 'Password',
   modelValue: 'admin',
   type: 'password',
-  placeholder: 'Zadejte vaše heslo'
+  placeholder: 'Enter your password'
   // required: true
 }, {
   name: 'remember',
-  label: 'Zapamatovat si mě',
+  label: 'Remember me',
   type: 'checkbox'
 }]
 
 const providers = [{
-  label: 'Identita občana',
+  label: 'Citizen identity',
   avatar: {
     src: '/obcan-id.png',
     size: '2xl'
@@ -42,7 +42,7 @@ const providers = [{
   variant: 'outline' as const,
   class: 'h-14 bg-white dark:bg-gray-900',
   onClick: () => {
-    toast.add({ title: 'Identita občana', description: 'Přihlášení pomocí identity občana' })
+    toast.add({ title: 'Citizen identity', description: 'Login using citizen identity' })
   }
 }]
 
@@ -50,7 +50,7 @@ const providers = [{
 
 const schema = z.object({
   email: z.string().optional(),
-  password: z.string('Heslo je povinné').min(5, 'Heslo musí mít alespoň 5 znaků').optional(),
+  password: z.string('Password is required').min(5, 'Password must be at least 5 characters').optional(),
   remember: z.boolean().optional()
 })
 
@@ -71,7 +71,7 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
     auth.setToken(res.access_token)
     auth.setRole(userRole)
     api.setToken(res.access_token)
-    toast.add({ title: 'Přihlášeno', description: 'Token uložen' })
+    toast.add({ title: 'Logged in', description: 'Token saved' })
     
     // Redirect based on role
     if (userRole === 'doctor') {
@@ -84,9 +84,9 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
       router.push('/dashboard')
     }
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Přihlášení selhalo'
+    const message = error instanceof Error ? error.message : 'Login failed'
     errorMessage.value = message
-    toast.add({ title: 'Chyba', description: message, color: 'red' })
+    toast.add({ title: 'Error', description: message, color: 'red' })
   } finally {
     isSubmitting.value = false
   }
@@ -98,22 +98,22 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
     <UPageCard class="w-full max-w-md">
       <UAuthForm
         :schema="schema"
-        title="Přihlášení"
-        description="Využijte přihlášení přes identitu nebo zadejte své přihlašovací údaje."
+        title="Login"
+        description="Use login via identity or enter your credentials."
         icon="i-lucide-user"
         :fields="fields"
         :providers="providers"
         :loading="isSubmitting"
         :error="errorMessage"
-        :submit="{ label: 'Přihlásit', block: true }"
-        separator="nebo"
+        :submit="{ label: 'Log in', block: true }"
+        separator="or"
         @submit="onSubmit"
       />
 
       <!-- Disclaimer -->
       <div class="mt-6 px-4">
         <p class="text-xs text-center text-gray-600 dark:text-gray-400">
-          Aplikace je určena pro profesionální pracovníky ve zdravotnictví.
+          The application is intended for healthcare professionals.
         </p>
       </div>
     </UPageCard>

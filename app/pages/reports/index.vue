@@ -27,42 +27,42 @@ const userMap = computed(() => new Map(users.value.map((u) => [u.id, u])))
 
 const statusLabels: Record<string, { label: string; color: 'neutral' | 'primary' | 'green'; bgColor: string; borderColor: string; textColor: string }> = {
   DRAFT: {
-    label: 'Koncept',
+    label: 'Draft',
     color: 'neutral',
     bgColor: 'bg-gray-100 dark:bg-gray-800',
     borderColor: 'border-gray-300 dark:border-gray-600',
     textColor: 'text-gray-700 dark:text-gray-300'
   },
   ACTIVE: {
-    label: 'Aktivní',
+    label: 'Active',
     color: 'primary',
     bgColor: 'bg-yellow-100 dark:bg-yellow-900/30',
     borderColor: 'border-yellow-400 dark:border-yellow-600',
     textColor: 'text-yellow-800 dark:text-yellow-300'
   },
   SUBMITTED: {
-    label: 'Odesláno',
+    label: 'Submitted',
     color: 'primary',
     bgColor: 'bg-blue-100 dark:bg-blue-900/30',
     borderColor: 'border-blue-400 dark:border-blue-600',
     textColor: 'text-blue-800 dark:text-blue-300'
   },
   SENT: {
-    label: 'Odesláno',
+    label: 'Sent',
     color: 'primary',
     bgColor: 'bg-green-100 dark:bg-green-900/30',
     borderColor: 'border-green-400 dark:border-green-600',
     textColor: 'text-green-800 dark:text-green-300'
   },
   DONE: {
-    label: 'Hotovo',
+    label: 'Done',
     color: 'green',
     bgColor: 'bg-green-100 dark:bg-green-900/30',
     borderColor: 'border-green-400 dark:border-green-600',
     textColor: 'text-green-800 dark:text-green-300'
   },
   ERROR: {
-    label: 'Chyba',
+    label: 'Error',
     color: 'neutral',
     bgColor: 'bg-red-100 dark:bg-red-900/30',
     borderColor: 'border-red-400 dark:border-red-600',
@@ -71,12 +71,12 @@ const statusLabels: Record<string, { label: string; color: 'neutral' | 'primary'
 }
 
 const availableStatuses = [
-  { value: 'DRAFT', label: 'Koncept' },
-  { value: 'ACTIVE', label: 'Aktivní' },
-  { value: 'SUBMITTED', label: 'Odesláno' },
-  { value: 'SENT', label: 'Odesláno' },
-  { value: 'DONE', label: 'Hotovo' },
-  { value: 'ERROR', label: 'Chyba' }
+  { value: 'DRAFT', label: 'Draft' },
+  { value: 'ACTIVE', label: 'Active' },
+  { value: 'SUBMITTED', label: 'Submitted' },
+  { value: 'SENT', label: 'Sent' },
+  { value: 'DONE', label: 'Done' },
+  { value: 'ERROR', label: 'Error' }
 ]
 
 const updatingStatus = ref<Set<number>>(new Set())
@@ -86,7 +86,7 @@ const columns: ColumnDef<ReportRead>[] = [
   { accessorKey: 'id', header: '#', cell: ({ row }) => `#${row.original.id}` },
   {
     accessorKey: 'patient_id',
-    header: 'Pacient',
+    header: 'Patient',
     cell: ({ row }) => {
       const id = row.original.patient_id
       return patientNameCache.value.get(id) || `#${id}`
@@ -94,19 +94,19 @@ const columns: ColumnDef<ReportRead>[] = [
   },
   {
     accessorKey: 'practitioner_id',
-    header: 'Lékař',
+    header: 'Doctor',
     cell: ({ row }) => practitionerName(row.original.doctor_id)
   },
   {
     accessorKey: 'target_organization_id',
-    header: 'Organizace',
+    header: 'Organization',
     cell: ({ row }) => {
       const id = row.original.target_organization_id
       return organizationNameCache.value.get(id) || `#${id}`
     }
   },
-  { id: 'severity', accessorKey: 'severity', header: 'Závažnost' },
-  { id: 'status', accessorKey: 'status', header: 'Stav' }
+  { id: 'severity', accessorKey: 'severity', header: 'Severity' },
+  { id: 'status', accessorKey: 'status', header: 'Status' }
 ]
 
 const fetchPatientName = async (id: number): Promise<string> => {
@@ -218,13 +218,13 @@ const updateStatus = async (reportId: number, newStatus: string) => {
     if (index !== -1) {
       data.value[index] = updated
     }
-    toast.add({ 
-      title: 'Status změněn', 
-      description: `Status byl změněn na "${statusLabels[newStatus]?.label || newStatus}"` 
+    toast.add({
+      title: 'Status changed',
+      description: `Status was changed to "${statusLabels[newStatus]?.label || newStatus}"`
     })
   } catch (e) {
-    const message = e instanceof Error ? e.message : 'Změna stavu selhala'
-    toast.add({ title: 'Chyba', description: message })
+    const message = e instanceof Error ? e.message : 'Status change failed'
+    toast.add({ title: 'Error', description: message })
   } finally {
     updatingStatus.value.delete(reportId)
   }
@@ -236,10 +236,10 @@ const updateStatus = async (reportId: number, newStatus: string) => {
     <div class="max-w-7xl mx-auto">
       <div class="mb-8">
         <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-300 mb-3">
-          Přehled zpráv
+          Reports overview
         </h1>
         <p class="text-lg text-gray-600 dark:text-gray-400">
-          Seznam všech odeslaných formulářů s informacemi o pacientech
+          List of all submitted forms with patient information
         </p>
       </div>
 
@@ -250,7 +250,7 @@ const updateStatus = async (reportId: number, newStatus: string) => {
               <UIcon name="i-lucide-alert-triangle" class="w-6 h-6 text-red-600" />
             </div>
             <div>
-              <p class="text-sm text-gray-600 dark:text-gray-400">Kritické (Severity 1)</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Critical (Severity 1)</p>
               <p class="text-2xl font-bold text-red-700">{{ data.filter(r => (r as any).severity === 1).length }}</p>
             </div>
           </div>
@@ -264,7 +264,7 @@ const updateStatus = async (reportId: number, newStatus: string) => {
               </svg>
             </div>
             <div>
-              <p class="text-sm text-gray-600 dark:text-gray-400">Čekající</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Pending</p>
               <p class="text-2xl font-bold text-gray-900">{{ data.filter(r => r.status === 'PENDING').length }}</p>
             </div>
           </div>
@@ -278,7 +278,7 @@ const updateStatus = async (reportId: number, newStatus: string) => {
               </svg>
             </div>
             <div>
-              <p class="text-sm text-gray-600 dark:text-gray-400">Odeslané</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Sent</p>
               <p class="text-2xl font-bold text-gray-900">{{ data.filter(r => r.status === 'SENT').length }}</p>
             </div>
           </div>
@@ -292,7 +292,7 @@ const updateStatus = async (reportId: number, newStatus: string) => {
               </svg>
             </div>
             <div>
-              <p class="text-sm text-gray-600 dark:text-gray-400">Koncepty</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Drafts</p>
               <p class="text-2xl font-bold text-gray-900">{{ data.filter(r => r.status === 'DRAFT').length }}</p>
             </div>
           </div>
@@ -302,13 +302,13 @@ const updateStatus = async (reportId: number, newStatus: string) => {
       <UCard>
         <template #header>
           <div class="flex items-center justify-between">
-            <h3 class="text-lg font-semibold text-gray-900">Všechny zprávy</h3>
+            <h3 class="text-lg font-semibold text-gray-900">All reports</h3>
             <UButton
               color="primary"
               icon="i-lucide-plus"
               @click="router.push('/sarcoma-form')"
             >
-              Nový záznam
+              New record
             </UButton>
           </div>
         </template>
@@ -332,7 +332,7 @@ const updateStatus = async (reportId: number, newStatus: string) => {
                     : 'bg-yellow-100 dark:bg-yellow-900/30 border-yellow-400 dark:border-yellow-600 text-yellow-800 dark:text-yellow-300'
                 ]"
               >
-                <span>{{ row.original.severity === '1' ? 'Vysoká' : row.original.severity === '2' ? 'Střední' : 'Nízká' }}</span>
+                <span>{{ row.original.severity === '1' ? 'High' : row.original.severity === '2' ? 'Medium' : 'Low' }}</span>
               </div>
             </div>
             <span v-else class="text-gray-400">—</span>
@@ -362,14 +362,14 @@ const updateStatus = async (reportId: number, newStatus: string) => {
         <template #footer v-if="data.length === 0">
           <UEmpty
             icon="i-lucide-file-x"
-            title="Žádné zprávy"
-            description="Zatím nebyly vytvořeny žádné formuláře."
+            title="No reports"
+            description="No forms have been created yet."
           >
             <UButton
               color="primary"
               @click="router.push('/sarcoma-form')"
             >
-              Vytvořit první formulář
+              Create first form
             </UButton>
           </UEmpty>
         </template>
