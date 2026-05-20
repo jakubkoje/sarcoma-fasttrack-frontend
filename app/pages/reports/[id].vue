@@ -26,43 +26,43 @@ const isDoctor = computed(() => role.value === 'doctor' || role.value === 'admin
 const isSpecialist = computed(() => role.value === 'specialist' || role.value === 'admin')
 
 const statusLabels: Record<string, { label: string; color: 'neutral' | 'primary' | 'green'; bgColor: string; borderColor: string; textColor: string }> = {
-  DRAFT: { 
-    label: 'Koncept', 
+  DRAFT: {
+    label: 'Draft',
     color: 'neutral',
     bgColor: 'bg-gray-100 dark:bg-gray-800',
     borderColor: 'border-gray-300 dark:border-gray-600',
     textColor: 'text-gray-700 dark:text-gray-300'
   },
-  ACTIVE: { 
-    label: 'Aktivní', 
+  ACTIVE: {
+    label: 'Active',
     color: 'primary',
     bgColor: 'bg-yellow-100 dark:bg-yellow-900/30',
     borderColor: 'border-yellow-400 dark:border-yellow-600',
     textColor: 'text-yellow-800 dark:text-yellow-300'
   },
-  SUBMITTED: { 
-    label: 'Odesláno', 
+  SUBMITTED: {
+    label: 'Submitted',
     color: 'primary',
     bgColor: 'bg-blue-100 dark:bg-blue-900/30',
     borderColor: 'border-blue-400 dark:border-blue-600',
     textColor: 'text-blue-800 dark:text-blue-300'
   },
-  SENT: { 
-    label: 'Odesláno', 
+  SENT: {
+    label: 'Sent',
     color: 'primary',
     bgColor: 'bg-green-100 dark:bg-green-900/30',
     borderColor: 'border-green-400 dark:border-green-600',
     textColor: 'text-green-800 dark:text-green-300'
   },
-  DONE: { 
-    label: 'Hotovo', 
+  DONE: {
+    label: 'Done',
     color: 'green',
     bgColor: 'bg-green-100 dark:bg-green-900/30',
     borderColor: 'border-green-400 dark:border-green-600',
     textColor: 'text-green-800 dark:text-green-300'
   },
-  ERROR: { 
-    label: 'Chyba', 
+  ERROR: {
+    label: 'Error',
     color: 'neutral',
     bgColor: 'bg-red-100 dark:bg-red-900/30',
     borderColor: 'border-red-400 dark:border-red-600',
@@ -71,12 +71,12 @@ const statusLabels: Record<string, { label: string; color: 'neutral' | 'primary'
 }
 
 const availableStatuses = [
-  { value: 'DRAFT', label: 'Koncept' },
-  { value: 'ACTIVE', label: 'Aktivní' },
-  { value: 'SUBMITTED', label: 'Odesláno' },
-  { value: 'SENT', label: 'Odesláno' },
-  { value: 'DONE', label: 'Hotovo' },
-  { value: 'ERROR', label: 'Chyba' }
+  { value: 'DRAFT', label: 'Draft' },
+  { value: 'ACTIVE', label: 'Active' },
+  { value: 'SUBMITTED', label: 'Submitted' },
+  { value: 'SENT', label: 'Sent' },
+  { value: 'DONE', label: 'Done' },
+  { value: 'ERROR', label: 'Error' }
 ]
 
 const reportId = computed(() => Number(route.params.id))
@@ -95,11 +95,11 @@ const loadData = async () => {
     // Generate specialist recommendation result (single variable)
     const recommendationResult = (seed % 4) === 0 ? null : {
       specialist: `Dr. ${['Novák', 'Svoboda', 'Dvořák', 'Němec'][seed % 4]}`,
-      type: ['Chirurg', 'Onkolog', 'Radioterapeut', 'Patolog'][seed % 4],
+      type: ['Surgeon', 'Oncologist', 'Radiation oncologist', 'Pathologist'][seed % 4],
       confidence: Math.floor((seed * 3) % 30) + 70, // 70-99%
-      reason: seed % 2 === 0 
-        ? 'Doporučeno na základě typu sarkomu a lokalizace'
-        : 'Doporučeno na základě komplexní analýzy klinických dat'
+      reason: seed % 2 === 0
+        ? 'Recommended based on sarcoma type and localization'
+        : 'Recommended based on a comprehensive analysis of clinical data'
     }
     
     report.value = {
@@ -113,7 +113,7 @@ const loadData = async () => {
       patient.value = await api.getPatient(data.patient_id)
     }
   } catch (e) {
-    error.value = e instanceof Error ? e.message : 'Nepodařilo se načíst detail.'
+    error.value = e instanceof Error ? e.message : 'Failed to load details.'
   } finally {
     isLoading.value = false
   }
@@ -127,7 +127,7 @@ const printReport = () => typeof window !== 'undefined' && window.print()
 
 const formatDate = (value?: string | null) => {
   if (!value) return ''
-  return new Date(value).toLocaleDateString('cs-CZ', {
+  return new Date(value).toLocaleDateString('en-US', {
     day: '2-digit',
     month: '2-digit',
     year: 'numeric',
@@ -144,10 +144,10 @@ async function saveFeedback() {
   try {
     const updated = await api.updateReportFeedback(report.value.id, specialistFeedback.value)
     report.value = updated
-    toast.add({ title: 'Uloženo', description: 'Feedback uložen.' })
+    toast.add({ title: 'Saved', description: 'Feedback saved.' })
   } catch (e) {
-    const message = e instanceof Error ? e.message : 'Uložení selhalo.'
-    toast.add({ title: 'Chyba', description: message })
+    const message = e instanceof Error ? e.message : 'Save failed.'
+    toast.add({ title: 'Error', description: message })
   } finally {
     saveLoading.value = false
   }
@@ -159,10 +159,10 @@ async function sendToSpecialist() {
   try {
     const updated = await api.updateReportStatus(report.value.id, 'ACTIVE')
     report.value = updated
-    toast.add({ title: 'Odesláno', description: 'Report byl odeslán do specializovaného centra.' })
+    toast.add({ title: 'Sent', description: 'Report was sent to the specialized center.' })
   } catch (e) {
-    const message = e instanceof Error ? e.message : 'Změna stavu selhala.'
-    toast.add({ title: 'Chyba', description: message })
+    const message = e instanceof Error ? e.message : 'Status change failed.'
+    toast.add({ title: 'Error', description: message })
   } finally {
     statusLoading.value = false
   }
@@ -175,10 +175,10 @@ async function submitSpecialist() {
     await saveFeedback()
     const updated = await api.updateReportStatus(report.value.id, 'SUBMITTED')
     report.value = updated
-    toast.add({ title: 'Odesláno', description: 'Report byl uzavřen a odeslán.' })
+    toast.add({ title: 'Sent', description: 'Report was closed and sent.' })
   } catch (e) {
-    const message = e instanceof Error ? e.message : 'Odeslání selhalo.'
-    toast.add({ title: 'Chyba', description: message })
+    const message = e instanceof Error ? e.message : 'Submission failed.'
+    toast.add({ title: 'Error', description: message })
   } finally {
     statusLoading.value = false
   }
@@ -190,13 +190,13 @@ async function updateStatus(newStatus: string) {
   try {
     const updated = await api.updateReportStatus(report.value.id, newStatus)
     report.value = updated
-    toast.add({ 
-      title: 'Status změněn', 
-      description: `Status byl změněn na "${statusLabels[newStatus]?.label || newStatus}"` 
+    toast.add({
+      title: 'Status changed',
+      description: `Status was changed to "${statusLabels[newStatus]?.label || newStatus}"`
     })
   } catch (e) {
-    const message = e instanceof Error ? e.message : 'Změna stavu selhala'
-    toast.add({ title: 'Chyba', description: message })
+    const message = e instanceof Error ? e.message : 'Status change failed'
+    toast.add({ title: 'Error', description: message })
   } finally {
     statusLoading.value = false
   }
@@ -214,8 +214,8 @@ async function updateStatus(newStatus: string) {
         class="mb-4 sm:mb-6 -ml-2"
         size="sm"
       >
-        <span class="hidden sm:inline">Zpět na přehled</span>
-        <span class="sm:hidden">Zpět</span>
+        <span class="hidden sm:inline">Back to overview</span>
+        <span class="sm:hidden">Back</span>
       </UButton>
 
       <div v-if="isLoading" class="py-12 flex justify-center">
@@ -224,10 +224,10 @@ async function updateStatus(newStatus: string) {
 
       <UCard v-else-if="error || !report">
         <div class="text-center py-8 px-12">
-          <p class="text-lg font-semibold text-gray-900 mb-2">Zpráva nenalezena</p>
-          <p class="text-gray-600 mb-4">{{ error || 'Požadovaná zpráva neexistuje.' }}</p>
+          <p class="text-lg font-semibold text-gray-900 mb-2">Report not found</p>
+          <p class="text-gray-600 mb-4">{{ error || 'The requested report does not exist.' }}</p>
           <UButton color="primary" @click="goBack">
-            Zpět na přehled
+            Back to overview
           </UButton>
         </div>
       </UCard>
@@ -238,7 +238,7 @@ async function updateStatus(newStatus: string) {
           <!-- Title and Status Row -->
           <div class="flex flex-col sm:flex-row sm:items-center gap-3">
             <h1 class="text-2xl sm:text-3xl font-bold text-gray-800 dark:text-gray-100">
-              Zpráva #{{ report.id }}
+              Report #{{ report.id }}
             </h1>
             <!-- Editable status for specialists and admins -->
             <UPopover v-if="isSpecialist" :popper="{ placement: 'bottom-start' }">
@@ -288,7 +288,7 @@ async function updateStatus(newStatus: string) {
                     class="px-3 py-2 text-xs text-gray-500 flex items-center gap-2"
                   >
                     <UIcon name="i-lucide-loader-2" class="w-3 h-3 animate-spin" />
-                    <span>Ukládání...</span>
+                    <span>Saving...</span>
                   </div>
                 </div>
               </template>
@@ -333,7 +333,7 @@ async function updateStatus(newStatus: string) {
               block
               class="sm:w-auto"
             >
-              Upravit
+              Edit
             </UButton>
             <UButton
               color="neutral"
@@ -343,23 +343,23 @@ async function updateStatus(newStatus: string) {
               block
               class="sm:w-auto"
             >
-              Tisknout
+              Print
             </UButton>
           </div>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <UCard>
-            <template #header>Pacient</template>
+            <template #header>Patient</template>
             <div class="space-y-3 text-gray-800 dark:text-gray-100">
               <div class="flex justify-between">
-                <span class="text-gray-600 dark:text-gray-400">Jméno</span>
+                <span class="text-gray-600 dark:text-gray-400">Name</span>
                 <span class="font-semibold">
                   {{ patient ? [patient.first_name || patient.given_name, patient.last_name || patient.family_name].filter(Boolean).join(' ') : `#${report.patient_id}` }}
                 </span>
               </div>
               <div class="flex justify-between">
-                <span class="text-gray-600 dark:text-gray-400">Telefon</span>
+                <span class="text-gray-600 dark:text-gray-400">Phone</span>
                 <span class="font-semibold">{{ patient?.phone || '—' }}</span>
               </div>
               <div class="flex justify-between">
@@ -367,7 +367,7 @@ async function updateStatus(newStatus: string) {
                 <span class="font-semibold">{{ patient?.email || '—' }}</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-gray-600 dark:text-gray-400">Město</span>
+                <span class="text-gray-600 dark:text-gray-400">City</span>
                 <span class="font-semibold">{{ patient?.address_text || '—' }}</span>
               </div>
             </div>
@@ -381,7 +381,7 @@ async function updateStatus(newStatus: string) {
                 <span class="font-semibold">{{ report.status_cz || report.status }}</span>
               </div>
               <div v-if="isSpecialist && (report as any).severity" class="flex justify-between items-center">
-                <span class="text-gray-600 dark:text-gray-400">Závažnost</span>
+                <span class="text-gray-600 dark:text-gray-400">Severity</span>
                 <div
                   :class="[
                     'inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-medium',
@@ -403,15 +403,15 @@ async function updateStatus(newStatus: string) {
                 </div>
               </div>
               <div v-if="(report as any).recommended_specialist" class="flex justify-between">
-                <span class="text-gray-600 dark:text-gray-400">Odporúčaný odborník</span>
+                <span class="text-gray-600 dark:text-gray-400">Recommended specialist</span>
                 <span class="font-semibold">{{ (report as any).recommended_specialist }}</span>
               </div>
               <div v-if="report.mkn10_code && report.is_new_patient === false" class="flex justify-between">
-                <span class="text-gray-600 dark:text-gray-400">MKN10</span>
+                <span class="text-gray-600 dark:text-gray-400">ICD-10</span>
                 <span class="font-semibold">{{ report.mkn10_code }}</span>
               </div>
               <div class="flex justify-between">
-                <span class="text-gray-600 dark:text-gray-400">Odesláno</span>
+                <span class="text-gray-600 dark:text-gray-400">Sent</span>
                 <span class="font-semibold">{{ formatDate(report.created_at) || '—' }}</span>
               </div>
             </div>
@@ -420,24 +420,24 @@ async function updateStatus(newStatus: string) {
 
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
           <UCard>
-            <template #header>Klinické informace</template>
+            <template #header>Clinical information</template>
             <div class="space-y-3 text-gray-800 dark:text-gray-100">
-              <p><span class="text-gray-600 dark:text-gray-400">Anamnéza: </span>{{ report.anamnesis || '—' }}</p>
-              <p><span class="text-gray-600 dark:text-gray-400">Rodinná anamnéza: </span>{{ report.family_history || '—' }}</p>
-              <p><span class="text-gray-600 dark:text-gray-400">Antikoagulace: </span>{{ report.anticoagulant_medication ? 'Ano' : 'Ne' }} <span v-if="report.anticoagulant_detail">({{ report.anticoagulant_detail }})</span></p>
-              <p><span class="text-gray-600 dark:text-gray-400">Shrnutí: </span>{{ report.summary || '—' }}</p>
+              <p><span class="text-gray-600 dark:text-gray-400">Medical history: </span>{{ report.anamnesis || '—' }}</p>
+              <p><span class="text-gray-600 dark:text-gray-400">Family history: </span>{{ report.family_history || '—' }}</p>
+              <p><span class="text-gray-600 dark:text-gray-400">Anticoagulation: </span>{{ report.anticoagulant_medication ? 'Yes' : 'No' }} <span v-if="report.anticoagulant_detail">({{ report.anticoagulant_detail }})</span></p>
+              <p><span class="text-gray-600 dark:text-gray-400">Summary: </span>{{ report.summary || '—' }}</p>
             </div>
           </UCard>
 
           <UCard>
-            <template #header>Histologie a zobrazení</template>
+            <template #header>Histology and imaging</template>
             <div class="space-y-3 text-gray-800 dark:text-gray-100">
-              <p><span class="text-gray-600 dark:text-gray-400">Zobrazovací vyšetření: </span>{{ report.any_imaging_performed ? 'Ano' : 'Ne' }}</p>
-              <p><span class="text-gray-600 dark:text-gray-400">Další plánované: </span>{{ report.additional_imaging_planned ? 'Ano' : 'Ne' }}</p>
-              <p><span class="text-gray-600 dark:text-gray-400">Poznámka: </span>{{ report.additional_imaging_note || '—' }}</p>
-              <p><span class="text-gray-600 dark:text-gray-400">Histologie provedena: </span>{{ report.histology_performed ? 'Ano' : 'Ne' }}</p>
-              <p><span class="text-gray-600 dark:text-gray-400">Datum: </span>{{ formatDate(report.histology_date) || '—' }}</p>
-              <p><span class="text-gray-600 dark:text-gray-400">Výsledek: </span>{{ report.histology_result || '—' }}</p>
+              <p><span class="text-gray-600 dark:text-gray-400">Imaging performed: </span>{{ report.any_imaging_performed ? 'Yes' : 'No' }}</p>
+              <p><span class="text-gray-600 dark:text-gray-400">Further planned: </span>{{ report.additional_imaging_planned ? 'Yes' : 'No' }}</p>
+              <p><span class="text-gray-600 dark:text-gray-400">Note: </span>{{ report.additional_imaging_note || '—' }}</p>
+              <p><span class="text-gray-600 dark:text-gray-400">Histology performed: </span>{{ report.histology_performed ? 'Yes' : 'No' }}</p>
+              <p><span class="text-gray-600 dark:text-gray-400">Date: </span>{{ formatDate(report.histology_date) || '—' }}</p>
+              <p><span class="text-gray-600 dark:text-gray-400">Result: </span>{{ report.histology_result || '—' }}</p>
             </div>
           </UCard>
         </div>
@@ -451,7 +451,7 @@ async function updateStatus(newStatus: string) {
             block
             class="sm:w-auto"
           >
-            Odeslat do specializovaného centra
+            Send to specialized center
           </UButton>
 
           <UCard
@@ -463,14 +463,14 @@ async function updateStatus(newStatus: string) {
                 <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center shrink-0">
                   <UIcon name="i-lucide-file-check" class="w-5 h-5 text-primary-600 dark:text-primary-400" />
                 </div>
-                <h3 class="font-semibold text-sm sm:text-base text-gray-900 dark:text-gray-100">Hodnocení specialisty</h3>
+                <h3 class="font-semibold text-sm sm:text-base text-gray-900 dark:text-gray-100">Specialist assessment</h3>
               </div>
             </template>
             <div class="space-y-4">
-              <UFormGroup label="Feedback specialisty">
+              <UFormGroup label="Specialist feedback">
                 <UTextarea
                   v-model="specialistFeedback"
-                  placeholder="Poznámky, závěr, doporučení..."
+                  placeholder="Notes, conclusion, recommendation..."
                   :rows="5"
                   class="w-full border-primary-200 dark:border-primary-800 focus:border-primary-400 dark:focus:border-primary-600"
                 />
@@ -484,7 +484,7 @@ async function updateStatus(newStatus: string) {
                   block
                   class="sm:w-auto"
                 >
-                  Odeslat
+                  Submit
                 </UButton>
               </div>
             </div>
@@ -501,7 +501,7 @@ async function updateStatus(newStatus: string) {
               <div class="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center shrink-0">
                 <UIcon name="i-lucide-file-check" class="w-5 h-5 text-primary-600 dark:text-primary-400" />
               </div>
-              <h3 class="font-semibold text-sm sm:text-base text-gray-900 dark:text-gray-100">Hodnocení specialisty</h3>
+              <h3 class="font-semibold text-sm sm:text-base text-gray-900 dark:text-gray-100">Specialist assessment</h3>
             </div>
           </template>
           <div class="text-sm sm:text-base text-gray-800 dark:text-gray-100">
@@ -520,8 +520,8 @@ async function updateStatus(newStatus: string) {
                 <UIcon name="i-lucide-sparkles" class="w-4 h-4 sm:w-5 sm:h-5 text-blue-600 dark:text-blue-400" />
               </div>
               <div>
-                <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">Doporučení specialisty</h3>
-                <p class="text-xs text-gray-600 dark:text-gray-400 mt-0.5">Automatické doporučení na základě analýzy</p>
+                <h3 class="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">Specialist recommendation</h3>
+                <p class="text-xs text-gray-600 dark:text-gray-400 mt-0.5">Automatic recommendation based on analysis</p>
               </div>
             </div>
           </template>
@@ -529,9 +529,9 @@ async function updateStatus(newStatus: string) {
             <div class="flex items-start sm:items-center gap-3 sm:gap-4 flex-1">
               <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-linear-to-br from-blue-100 to-blue-200 dark:from-blue-900/40 dark:to-blue-800/40 flex items-center justify-center shrink-0">
                 <UIcon
-                  :name="(report as any).specialist_recommendation.type === 'Chirurg' ? 'i-lucide-scissors' :
-                         (report as any).specialist_recommendation.type === 'Onkolog' ? 'i-lucide-heart-pulse' :
-                         (report as any).specialist_recommendation.type === 'Radioterapeut' ? 'i-lucide-zap' :
+                  :name="(report as any).specialist_recommendation.type === 'Surgeon' ? 'i-lucide-scissors' :
+                         (report as any).specialist_recommendation.type === 'Oncologist' ? 'i-lucide-heart-pulse' :
+                         (report as any).specialist_recommendation.type === 'Radiation oncologist' ? 'i-lucide-zap' :
                          'i-lucide-microscope'"
                   class="w-5 h-5 sm:w-6 sm:h-6 text-blue-600 dark:text-blue-400"
                 />
@@ -551,7 +551,7 @@ async function updateStatus(newStatus: string) {
                         : 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-300'
                     ]"
                   >
-                    {{ (report as any).specialist_recommendation.confidence }}% shoda
+                    {{ (report as any).specialist_recommendation.confidence }}% match
                   </div>
                 </div>
                 <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-1 break-words">

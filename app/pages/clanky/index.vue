@@ -27,11 +27,11 @@ interface Article {
 const articles = ref<Article[]>([
   {
     id: '0',
-    title: 'Nové možnosti léčby vzácných sarkomů v roce 2024',
-    description: 'Přehled nejnovějších terapeutických přístupů a klinických studií zaměřených na léčbu vzácných typů sarkomů měkkých tkání a kostí.',
+    title: 'New treatment options for rare sarcomas in 2024',
+    description: 'Overview of the latest therapeutic approaches and clinical trials targeting the treatment of rare types of soft tissue and bone sarcomas.',
     date: '2024-11-15',
     badge: {
-      label: 'Léčba',
+      label: 'Treatment',
       color: 'primary'
     },
     image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80',
@@ -47,11 +47,11 @@ const articles = ref<Article[]>([
   },
   {
     id: '1',
-    title: 'Diagnostika sarkomů: Role moderního zobrazení',
-    description: 'Význam MRI, CT a PET/CT vyšetření v diagnostice a stagingu sarkomů. Praktické tipy pro primární lékaře při indikaci zobrazovacích metod.',
+    title: 'Sarcoma diagnostics: The role of modern imaging',
+    description: 'The importance of MRI, CT and PET/CT scans in the diagnosis and staging of sarcomas. Practical tips for primary care physicians when ordering imaging methods.',
     date: '2024-10-28',
     badge: {
-      label: 'Diagnostika',
+      label: 'Diagnostics',
       color: 'primary'
     },
     image: 'https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80',
@@ -67,11 +67,11 @@ const articles = ref<Article[]>([
   },
   {
     id: '2',
-    title: 'Multidisciplinární přístup v léčbě sarkomů',
-    description: 'Jak probíhá spolupráce onkologů, chirurgů, radiologů a patologů v péči o pacienty se sarkomy. Zkušenosti z českých center excelence.',
+    title: 'Multidisciplinary approach in sarcoma treatment',
+    description: 'How oncologists, surgeons, radiologists and pathologists collaborate in the care of sarcoma patients. Experience from Czech centers of excellence.',
     date: '2024-10-10',
     badge: {
-      label: 'Péče',
+      label: 'Care',
       color: 'primary'
     },
     image: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80',
@@ -87,11 +87,11 @@ const articles = ref<Article[]>([
   },
   {
     id: '3',
-    title: 'Raritní případy: Angiosarkom a jeho variabilita',
-    description: 'Přehled klinických projevů, diagnostických nástrah a terapeutických možností u angiosarkomu - jednoho z nejvzácnějších typů sarkomů.',
+    title: 'Rare cases: Angiosarcoma and its variability',
+    description: 'Overview of clinical manifestations, diagnostic pitfalls and therapeutic options for angiosarcoma - one of the rarest types of sarcomas.',
     date: '2024-09-22',
     badge: {
-      label: 'Kazuistika',
+      label: 'Case study',
       color: 'neutral'
     },
     image: 'https://images.unsplash.com/photo-1582719471137-c3967ffb1c42?w=800&q=80',
@@ -107,11 +107,11 @@ const articles = ref<Article[]>([
   },
   {
     id: '4',
-    title: 'Genetické vyšetření u sarkomů: Co nám říká?',
-    description: 'Molekulárně genetická diagnostika sarkomů a její význam pro volbu terapie. Přehled nejčastějších mutací a translokací.',
+    title: 'Genetic testing in sarcomas: What does it tell us?',
+    description: 'Molecular genetic diagnostics of sarcomas and its importance for therapy selection. Overview of the most common mutations and translocations.',
     date: '2024-09-05',
     badge: {
-      label: 'Genetika',
+      label: 'Genetics',
       color: 'primary'
     },
     image: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80',
@@ -127,11 +127,11 @@ const articles = ref<Article[]>([
   },
   {
     id: '5',
-    title: 'Pediatrické sarkomy: Specifika v diagnostice a léčbě',
-    description: 'Jak se liší přístup k sarkomům u dětských pacientů. Nejčastější typy, prognostické faktory a sledování po léčbě.',
+    title: 'Pediatric sarcomas: Specifics in diagnostics and treatment',
+    description: 'How the approach to sarcomas differs in pediatric patients. The most common types, prognostic factors and post-treatment follow-up.',
     date: '2024-08-18',
     badge: {
-      label: 'Pediatrie',
+      label: 'Pediatrics',
       color: 'primary'
     },
     image: 'https://images.unsplash.com/photo-1579684385127-1ef15d508118?w=800&q=80',
@@ -147,11 +147,11 @@ const articles = ref<Article[]>([
   },
   {
     id: '6',
-    title: 'Imunoterapie u sarkomů: Realita a perspektivy',
-    description: 'Současný stav poznatků o využití imunoterapie v léčbě sarkomů. Které pacienty lze léčit a jaké jsou výsledky klinických studií.',
+    title: 'Immunotherapy in sarcomas: Reality and outlook',
+    description: 'Current state of knowledge on the use of immunotherapy in sarcoma treatment. Which patients can be treated and what are the results of clinical trials.',
     date: '2024-08-01',
     badge: {
-      label: 'Imunoterapie',
+      label: 'Immunotherapy',
       color: 'primary'
     },
     image: 'https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=800&q=80',
@@ -167,8 +167,8 @@ const articles = ref<Article[]>([
   },
   {
     id: '7',
-    title: 'Následná péče po léčbě sarkomu',
-    description: 'Doporučené schéma kontrol po ukončení primární léčby sarkomu. Jak včas rozpoznat recidivu a na co se zaměřit při kontrolách.',
+    title: 'Follow-up care after sarcoma treatment',
+    description: 'Recommended follow-up schedule after primary sarcoma treatment. How to detect recurrence early and what to focus on during follow-up.',
     date: '2024-07-15',
     badge: {
       label: 'Follow-up',
@@ -187,8 +187,8 @@ const articles = ref<Article[]>([
   },
   {
     id: '8',
-    title: 'GIST: Gastrointestinální stromální tumory',
-    description: 'Aktuální informace o diagnostice a léčbě GIST včetně role cílené terapie imatinibem a dalšími tyrosinkinázovými inhibitory.',
+    title: 'GIST: Gastrointestinal stromal tumors',
+    description: 'Up-to-date information on the diagnosis and treatment of GIST, including the role of targeted therapy with imatinib and other tyrosine kinase inhibitors.',
     date: '2024-06-28',
     badge: {
       label: 'GIST',
@@ -256,10 +256,10 @@ const stats = computed(() => ({
         <div class="flex items-start justify-between mb-4">
           <div>
             <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-300 mb-2">
-              Edukační materiály
+              Educational materials
             </h1>
             <p class="text-lg text-gray-600 dark:text-gray-300">
-              Klíčové informace a postupy pro diagnostiku a léčbu sarkomů v České republice
+              Key information and guidelines for the diagnosis and treatment of sarcomas in the Czech Republic
             </p>
           </div>
         </div>
@@ -270,15 +270,15 @@ const stats = computed(() => ({
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="text-center">
               <div class="text-3xl font-bold text-primary-700 mb-1">600</div>
-              <div class="text-sm text-gray-700 dark:text-gray-300">Nových případů ročně v ČR</div>
+              <div class="text-sm text-gray-700 dark:text-gray-300">New cases per year in the Czech Republic</div>
             </div>
             <div class="text-center">
               <div class="text-3xl font-bold text-primary-700 mb-1">4-5</div>
-              <div class="text-sm text-gray-700 dark:text-gray-300">Případů na 100 000 obyvatel</div>
+              <div class="text-sm text-gray-700 dark:text-gray-300">Cases per 100,000 inhabitants</div>
             </div>
             <div class="text-center">
               <div class="text-3xl font-bold text-primary-700 mb-1">70+</div>
-              <div class="text-sm text-gray-700 dark:text-gray-300">Různých subtypů sarkomů</div>
+              <div class="text-sm text-gray-700 dark:text-gray-300">Different sarcoma subtypes</div>
             </div>
           </div>
         </UCard>
@@ -295,17 +295,17 @@ const stats = computed(() => ({
                   </svg>
                 </div>
                 <div>
-                  <h3 class="text-lg font-bold text-gray-900 dark:text-gray-300">České klinické doporučené postupy</h3>
-                  <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Aktualizováno 17. 12. 2024</p>
+                  <h3 class="text-lg font-bold text-gray-900 dark:text-gray-300">Czech clinical practice guidelines</h3>
+                  <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Updated December 17, 2024</p>
                 </div>
               </div>
             </template>
 
             <div class="space-y-4">
               <div>
-                <h4 class="font-semibold text-gray-900 dark:text-gray-300 mb-2">Sarkomy měkkých tkání – diagnostika a léčba</h4>
+                <h4 class="font-semibold text-gray-900 dark:text-gray-300 mb-2">Soft tissue sarcomas – diagnostics and treatment</h4>
                 <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">
-                  Oficiální klinický doporučený postup vydaný NIKEZ (Národní institut kvality a excelence zdravotnictví)
+                  Official clinical practice guideline issued by NIKEZ (Czech National Institute for Healthcare Quality and Excellence)
                 </p>
                 <a
                   href="https://kdp.uzis.cz/index.php?pg=kdp&id=22"
@@ -313,7 +313,7 @@ const stats = computed(() => ({
                   rel="noopener noreferrer"
                   class="inline-flex items-center gap-2 text-sm font-medium text-primary-600 hover:text-primary-700"
                 >
-                  <span>Zobrazit kompletní postupy</span>
+                  <span>View full guidelines</span>
                   <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
@@ -321,25 +321,25 @@ const stats = computed(() => ({
               </div>
 
               <div class="pt-4 border-t border-gray-200 dark:border-gray-800">
-                <h4 class="font-semibold text-gray-900 dark:text-gray-300 mb-2">Klíčové body postupu:</h4>
+                <h4 class="font-semibold text-gray-900 dark:text-gray-300 mb-2">Key points of the guideline:</h4>
                 <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
                   <li class="flex items-start gap-2">
                     <svg class="w-5 h-5 text-primary-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span>Multidisciplinární přístup je povinný</span>
+                    <span>A multidisciplinary approach is mandatory</span>
                   </li>
                   <li class="flex items-start gap-2">
                     <svg class="w-5 h-5 text-primary-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span>Léčba musí probíhat ve specializovaných centrech</span>
+                    <span>Treatment must take place in specialized centers</span>
                   </li>
                   <li class="flex items-start gap-2">
                     <svg class="w-5 h-5 text-primary-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span>U rizikových tumorů preferovat neoadjuvantní léčbu</span>
+                    <span>Prefer neoadjuvant therapy for high-risk tumors</span>
                   </li>
                 </ul>
               </div>
@@ -357,7 +357,7 @@ const stats = computed(() => ({
                 </div>
                 <div>
                   <h3 class="text-lg font-bold text-gray-900 dark:text-gray-300">ESMO Clinical Practice Guidelines</h3>
-                  <p class="text-sm text-gray-600 mt-1 dark:text-gray-300">S účastí českých center</p>
+                  <p class="text-sm text-gray-600 mt-1 dark:text-gray-300">With participation of Czech centers</p>
                 </div>
               </div>
             </template>
@@ -366,7 +366,7 @@ const stats = computed(() => ({
               <div>
                 <h4 class="font-semibold text-gray-900 dark:text-gray-300 mb-2">ESMO–EURACAN–GENTURIS Guidelines 2024</h4>
                 <p class="text-sm text-gray-600 dark:text-gray-300 mb-3">
-                  Evropské doporučené postupy pro diagnostiku, léčbu a follow-up sarkomů s účastí FN Motol Praha a MOÚ Brno
+                  European clinical practice guidelines for the diagnosis, treatment and follow-up of sarcomas with participation of Motol University Hospital Prague and Masaryk Memorial Cancer Institute Brno
                 </p>
                 <a
                   href="https://www.esmo.org/guidelines/guidelines-by-topic/sarcoma-and-gist"
@@ -382,25 +382,25 @@ const stats = computed(() => ({
               </div>
 
               <div class="pt-4 border-t border-gray-200 dark:border-gray-800">
-                <h4 class="font-semibold text-gray-900 dark:text-gray-300 mb-2">Pokryté oblasti:</h4>
+                <h4 class="font-semibold text-gray-900 dark:text-gray-300 mb-2">Topics covered:</h4>
                 <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
                   <li class="flex items-start gap-2">
                     <svg class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span>Sarkomy měkkých tkání a viscerální sarkomy</span>
+                    <span>Soft tissue and visceral sarcomas</span>
                   </li>
                   <li class="flex items-start gap-2">
                     <svg class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span>Kostní sarkomy (včetně pediatrických)</span>
+                    <span>Bone sarcomas (including pediatric)</span>
                   </li>
                   <li class="flex items-start gap-2">
                     <svg class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
-                    <span>Gastrointestinální stromální tumory (GIST)</span>
+                    <span>Gastrointestinal stromal tumors (GIST)</span>
                   </li>
                 </ul>
               </div>
@@ -418,8 +418,8 @@ const stats = computed(() => ({
                 </svg>
               </div>
               <div>
-                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-300">Specializovaná centra v ČR</h3>
-                <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Referenční pracoviště pro léčbu sarkomů</p>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-gray-300">Specialized centers in the Czech Republic</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-300 mt-1">Reference centers for sarcoma treatment</p>
               </div>
             </div>
           </template>
@@ -436,18 +436,18 @@ const stats = computed(() => ({
                   <div class="w-16 h-16 rounded-lg bg-white flex items-center justify-center shrink-0 p-2 border border-gray-100">
                     <img
                       src="/mou-logo.jpg"
-                      alt="Masarykův onkologický ústav logo"
+                      alt="Masaryk Memorial Cancer Institute logo"
                       class="w-full h-full object-contain"
                     />
                   </div>
                   <div class="flex-1">
                     <div class="flex items-start justify-between mb-2">
-                      <h4 class="font-semibold text-gray-900 dark:text-gray-300 group-hover:text-primary-700">Masarykův onkologický ústav</h4>
+                      <h4 class="font-semibold text-gray-900 dark:text-gray-300 group-hover:text-primary-700">Masaryk Memorial Cancer Institute</h4>
                       <svg class="w-4 h-4 text-gray-400 dark:text-gray-300 group-hover:text-primary-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
                     </div>
-                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">Centrum pro sarkomy, Brno</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">Sarcoma Center, Brno</p>
                     <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-300">
                       <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -470,18 +470,18 @@ const stats = computed(() => ({
                   <div class="w-16 h-16 rounded-lg bg-white flex items-center justify-center shrink-0 p-2 border border-gray-100">
                     <img
                       src="/fn-motol.jpg"
-                      alt="Fakultní nemocnice Motol logo"
+                      alt="Motol University Hospital logo"
                       class="w-full h-full object-contain"
                     />
                   </div>
                   <div class="flex-1">
                     <div class="flex items-start justify-between mb-2">
-                      <h4 class="font-semibold text-gray-900 dark:text-gray-300 group-hover:text-primary-700">Fakultní nemocnice Motol</h4>
+                      <h4 class="font-semibold text-gray-900 dark:text-gray-300 group-hover:text-primary-700">Motol University Hospital</h4>
                       <svg class="w-4 h-4 text-gray-400 dark:text-gray-300 group-hover:text-primary-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
                     </div>
-                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">Onkologická klinika, Praha</p>
+                    <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">Department of Oncology, Prague</p>
                     <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-300">
                       <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
@@ -507,12 +507,12 @@ const stats = computed(() => ({
             </div>
             <div class="flex-1">
               <h3 class="font-semibold text-gray-900 dark:text-gray-300 mb-1">
-                Centrum pro léčbu sarkomů
+                Sarcoma treatment center
               </h3>
               <p class="text-sm text-gray-700 dark:text-gray-300">
-                Tyto články jsou určeny primárně lékařům a zdravotnickým pracovníkům.
-                Pro nejlepší péči o pacienty se sarkomy doporučujeme konzultaci se
-                specializovaným centrem.
+                These articles are intended primarily for physicians and healthcare professionals.
+                For the best care of sarcoma patients, we recommend consultation with
+                a specialized center.
               </p>
             </div>
           </div>
@@ -524,14 +524,14 @@ const stats = computed(() => ({
         <div class="flex items-start justify-between mb-4">
           <div>
             <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-300 mb-2">
-              Odborné články o sarkomech
+              Expert articles on sarcomas
             </h1>
             <p class="text-lg text-gray-600 dark:text-gray-300">
-              Aktuální informace a poznatky o diagnostice a léčbě vzácných sarkomů
+              Current information and findings on the diagnosis and treatment of rare sarcomas
             </p>
           </div>
           <UBadge color="primary" variant="subtle" size="lg">
-            {{ stats.total }} článků
+            {{ stats.total }} articles
           </UBadge>
         </div>
       </div>
@@ -544,7 +544,7 @@ const stats = computed(() => ({
             v-model="searchQuery"
             icon="i-lucide-search"
             size="lg"
-            placeholder="Hledat články..."
+            placeholder="Search articles..."
           >
             <template #trailing>
               <UButton
@@ -569,7 +569,7 @@ const stats = computed(() => ({
             size="sm"
             @click="selectedCategory = category"
           >
-            {{ category === 'all' ? 'Všechny kategorie' : category }}
+            {{ category === 'all' ? 'All categories' : category }}
           </UButton>
         </div>
       </div>
@@ -582,8 +582,8 @@ const stats = computed(() => ({
       <!-- Empty State -->
       <UEmpty
         v-else
-        title="Nenalezeny žádné články"
-        description="Zkuste změnit vyhledávací kritéria nebo filtr kategorie."
+        title="No articles found"
+        description="Try changing your search criteria or category filter."
         icon="i-lucide-search"
       >
         <template #actions>
@@ -591,7 +591,7 @@ const stats = computed(() => ({
             color="primary"
             @click="() => { searchQuery = ''; selectedCategory = 'all' }"
           >
-            Resetovat filtry
+            Reset filters
           </UButton>
         </template>
       </UEmpty>
@@ -599,7 +599,7 @@ const stats = computed(() => ({
       <!-- Resources Section -->
       <div class="mt-16">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-300 mb-6">
-          Další zdroje informací
+          Other information sources
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <a 
@@ -611,20 +611,20 @@ const stats = computed(() => ({
             <UCard class="hover:shadow-lg transition-shadow cursor-pointer h-full">
               <div class="flex items-start gap-4">
                 <div class="w-16 h-16 rounded-lg bg-white flex items-center justify-center shrink-0 p-1 group-hover:scale-105 transition-transform">
-                  <img 
-                    src="/hop-logo.png" 
-                    alt="Hlas onkologických pacientů logo" 
+                  <img
+                    src="/hop-logo.png"
+                    alt="Voice of Oncology Patients logo"
                     class="w-full h-full object-contain"
                   />
                 </div>
                 <div class="flex-1">
                   <div class="flex items-center gap-2 mb-1">
-                    <h3 class="font-semibold text-gray-900 dark:text-gray-300 group-hover:text-primary-700 transition-colors">Hlas onkologických pacientů</h3>
+                    <h3 class="font-semibold text-gray-900 dark:text-gray-300 group-hover:text-primary-700 transition-colors">Voice of Oncology Patients</h3>
                     <svg class="w-4 h-4 text-gray-400 dark:text-gray-300 group-hover:text-primary-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
                   </div>
-                  <p class="text-sm text-gray-600 dark:text-gray-300">Podpora a informace pro pacienty a jejich rodiny</p>
+                  <p class="text-sm text-gray-600 dark:text-gray-300">Support and information for patients and their families</p>
                 </div>
               </div>
             </UCard>
@@ -655,7 +655,7 @@ const stats = computed(() => ({
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    <span>24-26 listopadu 2025, Olomouc</span>
+                    <span>November 24-26, 2025, Olomouc</span>
                   </div>
                 </div>
               </div>
@@ -688,7 +688,7 @@ const stats = computed(() => ({
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
-                    <span>Každoročně (březen), Lugano, Švýcarsko</span>
+                    <span>Annually (March), Lugano, Switzerland</span>
                   </div>
                 </div>
               </div>

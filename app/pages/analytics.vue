@@ -7,47 +7,47 @@ definePageMeta({
 
 // Chart data
 const monthlyTrend = ref([
-  { month: 'Leden', cases: 42, consultations: 18, processed: 35 },
-  { month: 'Únor', cases: 58, consultations: 24, processed: 48 },
-  { month: 'Březen', cases: 67, consultations: 31, processed: 59 },
-  { month: 'Duben', cases: 80, consultations: 45, processed: 72 },
-  { month: 'Květen', cases: 92, consultations: 52, processed: 85 },
-  { month: 'Červen', cases: 105, consultations: 68, processed: 98 }
+  { month: 'January', cases: 42, consultations: 18, processed: 35 },
+  { month: 'February', cases: 58, consultations: 24, processed: 48 },
+  { month: 'March', cases: 67, consultations: 31, processed: 59 },
+  { month: 'April', cases: 80, consultations: 45, processed: 72 },
+  { month: 'May', cases: 92, consultations: 52, processed: 85 },
+  { month: 'June', cases: 105, consultations: 68, processed: 98 }
 ])
 
 const weeklyData = ref([
-  { day: 'Po', cases: 12, consultations: 8 },
-  { day: 'Út', cases: 15, consultations: 10 },
-  { day: 'St', cases: 18, consultations: 12 },
-  { day: 'Čt', cases: 14, consultations: 9 },
-  { day: 'Pá', cases: 11, consultations: 7 },
-  { day: 'So', cases: 6, consultations: 3 },
-  { day: 'Ne', cases: 4, consultations: 2 }
+  { day: 'Mon', cases: 12, consultations: 8 },
+  { day: 'Tue', cases: 15, consultations: 10 },
+  { day: 'Wed', cases: 18, consultations: 12 },
+  { day: 'Thu', cases: 14, consultations: 9 },
+  { day: 'Fri', cases: 11, consultations: 7 },
+  { day: 'Sat', cases: 6, consultations: 3 },
+  { day: 'Sun', cases: 4, consultations: 2 }
 ])
 
 const statusDistribution = ref([
-  { label: 'Zpracováno', value: 89, color: '#10b981' },
-  { label: 'Čeká na zpracování', value: 45, color: '#f59e0b' },
-  { label: 'Koncept', value: 23, color: '#6b7280' }
+  { label: 'Processed', value: 89, color: '#10b981' },
+  { label: 'Pending', value: 45, color: '#f59e0b' },
+  { label: 'Draft', value: 23, color: '#6b7280' }
 ])
 
 const patientTypeDistribution = ref([
-  { label: 'Nový pacient', value: 142, color: '#D89FC4' },
-  { label: 'Existující pacient', value: 105, color: '#c67aa8' }
+  { label: 'New patient', value: 142, color: '#D89FC4' },
+  { label: 'Existing patient', value: 105, color: '#c67aa8' }
 ])
 
 const timeComparison = ref([
-  { metric: 'Konzultace s expertem', before: 28, after: 4 },
-  { metric: 'Zpracování žádosti', before: 14, after: 2 },
-  { metric: 'První konzultace', before: 21, after: 3 },
-  { metric: 'Celková doba', before: 35, after: 5 }
+  { metric: 'Expert consultation', before: 28, after: 4 },
+  { metric: 'Request processing', before: 14, after: 2 },
+  { metric: 'First consultation', before: 21, after: 3 },
+  { metric: 'Total time', before: 35, after: 5 }
 ])
 
 const hospitalPerformance = ref([
-  { hospital: 'FN Motol', cases: 178, avgTime: 2.8, satisfaction: 100 },
-  { hospital: 'FN Brno', cases: 89, avgTime: 3.2, satisfaction: 96 },
-  { hospital: 'FN Olomouc', cases: 45, avgTime: 4.1, satisfaction: 92 },
-  { hospital: 'Ostatní', cases: 35, avgTime: 4.5, satisfaction: 88 }
+  { hospital: 'Motol University Hospital', cases: 178, avgTime: 2.8, satisfaction: 100 },
+  { hospital: 'University Hospital Brno', cases: 89, avgTime: 3.2, satisfaction: 96 },
+  { hospital: 'University Hospital Olomouc', cases: 45, avgTime: 4.1, satisfaction: 92 },
+  { hospital: 'Other', cases: 35, avgTime: 4.5, satisfaction: 88 }
 ])
 
 const ageDistribution = ref([
@@ -59,10 +59,10 @@ const ageDistribution = ref([
 ])
 
 const detectionStage = ref([
-  { stage: 'Velmi brzy (I)', count: 34, color: '#10b981' },
-  { stage: 'Brzy (II)', count: 58, color: '#84cc16' },
-  { stage: 'Středně (III)', count: 45, color: '#f59e0b' },
-  { stage: 'Pozdně (IV)', count: 23, color: '#ef4444' }
+  { stage: 'Very early (I)', count: 34, color: '#10b981' },
+  { stage: 'Early (II)', count: 58, color: '#84cc16' },
+  { stage: 'Intermediate (III)', count: 45, color: '#f59e0b' },
+  { stage: 'Late (IV)', count: 23, color: '#ef4444' }
 ])
 
 const responseTimeData = ref([
@@ -148,28 +148,28 @@ const getBarHeight = (value: number, max: number, height: number) => {
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
           </svg>
-          Analýza dopadu systému
+          System impact analysis
         </div>
         <h1 class="text-5xl md:text-6xl font-bold text-gray-900 dark:text-gray-300 mb-4">
-          Vizuální analýza efektivity
+          Visual effectiveness analysis
         </h1>
         <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8">
-          Komplexní přehled dat a trendů v systému pro rychlé odesílání pacientů se sarkomy
+          Comprehensive overview of data and trends in the system for the rapid referral of sarcoma patients
         </p>
-        
+
         <!-- Main Impact Card -->
         <div class="max-w-4xl mx-auto">
           <div class="bg-gradient-to-br from-primary-500 to-primary-700 text-white border-0 shadow-2xl rounded-lg overflow-hidden">
             <div class="p-8 md:p-12">
               <div class="flex flex-col md:flex-row items-center justify-between gap-8">
                 <div class="flex-1 text-center md:text-left">
-                  <p class="text-primary-100 text-lg mb-2">Průměrné zkrácení času</p>
+                  <p class="text-primary-100 text-lg mb-2">Average time reduction</p>
                   <div class="flex items-baseline gap-2 justify-center md:justify-start">
                     <span class="text-7xl md:text-8xl font-bold">{{ Math.round(animatedValue) }}%</span>
-                    <span class="text-3xl text-primary-200">rychleji</span>
+                    <span class="text-3xl text-primary-200">faster</span>
                   </div>
                   <p class="text-primary-100 mt-4 text-lg">
-                    Od <span class="font-bold text-white">28 dní</span> na <span class="font-bold text-white">4 dny</span> do konzultace s expertem
+                    From <span class="font-bold text-white">28 days</span> to <span class="font-bold text-white">4 days</span> for an expert consultation
                   </p>
                 </div>
                 <div class="w-32 h-32 md:w-40 md:h-40 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm shrink-0">
@@ -188,8 +188,8 @@ const getBarHeight = (value: number, max: number, height: number) => {
         <UCard class="border-0 shadow-lg">
           <div class="p-6 md:p-8">
             <div class="mb-8">
-              <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-300 mb-2">Měsíční trendy</h2>
-              <p class="text-gray-600 dark:text-gray-300">Vývoj počtu případů, konzultací a zpracovaných žádostí</p>
+              <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-300 mb-2">Monthly trends</h2>
+              <p class="text-gray-600 dark:text-gray-300">Trend of case counts, consultations and processed requests</p>
             </div>
             
             <div class="overflow-x-auto -mx-4 px-4">
@@ -322,9 +322,9 @@ const getBarHeight = (value: number, max: number, height: number) => {
                 <g transform="translate(0, 40)">
                   <rect x="0" y="0" width="160" height="60" fill="white" stroke="#e5e7eb" rx="4" stroke-width="1" />
                   <line x1="10" y1="20" x2="40" y2="20" stroke="#D89FC4" stroke-width="3" />
-                  <text x="50" y="24" class="text-sm fill-gray-700">Případy</text>
+                  <text x="50" y="24" class="text-sm fill-gray-700">Cases</text>
                   <line x1="10" y1="45" x2="40" y2="45" stroke="#3b82f6" stroke-width="3" stroke-dasharray="5,5" />
-                  <text x="50" y="49" class="text-sm fill-gray-700">Konzultace</text>
+                  <text x="50" y="49" class="text-sm fill-gray-700">Consultations</text>
                 </g>
                 </svg>
               </div>
@@ -338,8 +338,8 @@ const getBarHeight = (value: number, max: number, height: number) => {
         <UCard class="border-0 shadow-lg">
           <div class="p-6 md:p-8">
             <div class="mb-8">
-              <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-300 mb-2">Porovnání časů</h2>
-              <p class="text-gray-600 dark:text-gray-300">Před a po zavedení systému (ve dnech)</p>
+              <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-300 mb-2">Time comparison</h2>
+              <p class="text-gray-600 dark:text-gray-300">Before and after system implementation (in days)</p>
             </div>
             
             <div class="overflow-x-auto">
@@ -428,9 +428,9 @@ const getBarHeight = (value: number, max: number, height: number) => {
                 <g transform="translate(750, 0)">
                   <rect x="0" y="0" width="120" height="60" fill="white" stroke="#e5e7eb" rx="4" stroke-width="1" />
                   <rect x="10" y="15" width="24" height="12" fill="#9ca3af" rx="2" />
-                  <text x="40" y="24" class="text-sm fill-gray-700">Před</text>
+                  <text x="40" y="24" class="text-sm fill-gray-700">Before</text>
                   <rect x="10" y="35" width="24" height="12" fill="#D89FC4" rx="2" />
-                  <text x="40" y="44" class="text-sm fill-gray-700">Po</text>
+                  <text x="40" y="44" class="text-sm fill-gray-700">After</text>
                 </g>
               </svg>
             </div>
@@ -444,8 +444,8 @@ const getBarHeight = (value: number, max: number, height: number) => {
         <UCard class="border-0 shadow-lg">
           <div class="p-6 md:p-8">
             <div class="mb-8">
-              <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-300 mb-2">Rozložení stavů</h2>
-              <p class="text-gray-600 dark:text-gray-300 text-sm">Distribuce případů podle stavu</p>
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-300 mb-2">Status distribution</h2>
+              <p class="text-gray-600 dark:text-gray-300 text-sm">Case distribution by status</p>
             </div>
             
             <div class="flex items-center justify-center">
@@ -489,7 +489,7 @@ const getBarHeight = (value: number, max: number, height: number) => {
                   <!-- Center circle -->
                   <circle cx="0" cy="0" r="60" fill="white" />
                   <text x="0" y="-5" text-anchor="middle" class="text-2xl font-bold fill-gray-900">{{ totalStatus }}</text>
-                  <text x="0" y="15" text-anchor="middle" class="text-xs fill-gray-600">Celkem</text>
+                  <text x="0" y="15" text-anchor="middle" class="text-xs fill-gray-600">Total</text>
                 </g>
               </svg>
             </div>
@@ -510,8 +510,8 @@ const getBarHeight = (value: number, max: number, height: number) => {
         <UCard class="border-0 shadow-lg">
           <div class="p-6 md:p-8">
             <div class="mb-8">
-              <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-300 mb-2">Typ pacienta</h2>
-              <p class="text-gray-600 dark:text-gray-300 text-sm">Rozložení nových a existujících pacientů</p>
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-300 mb-2">Patient type</h2>
+              <p class="text-gray-600 dark:text-gray-300 text-sm">Distribution of new and existing patients</p>
             </div>
             
             <div class="flex items-center justify-center">
@@ -555,7 +555,7 @@ const getBarHeight = (value: number, max: number, height: number) => {
                   <!-- Center circle -->
                   <circle cx="0" cy="0" r="60" fill="white" />
                   <text x="0" y="-5" text-anchor="middle" class="text-2xl font-bold fill-gray-900">{{ totalPatients }}</text>
-                  <text x="0" y="15" text-anchor="middle" class="text-xs fill-gray-600">Pacientů</text>
+                  <text x="0" y="15" text-anchor="middle" class="text-xs fill-gray-600">Patients</text>
                 </g>
               </svg>
             </div>
@@ -578,8 +578,8 @@ const getBarHeight = (value: number, max: number, height: number) => {
         <UCard class="border-0 shadow-lg">
           <div class="p-6 md:p-8">
             <div class="mb-8">
-              <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-300 mb-2">Týdenní aktivita</h2>
-              <p class="text-gray-600 dark:text-gray-300">Průměrný počet případů a konzultací podle dne v týdnu</p>
+              <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-300 mb-2">Weekly activity</h2>
+              <p class="text-gray-600 dark:text-gray-300">Average number of cases and consultations by day of the week</p>
             </div>
             
             <div class="overflow-x-auto">
@@ -668,9 +668,9 @@ const getBarHeight = (value: number, max: number, height: number) => {
                 <g transform="translate(750, 40)">
                   <rect x="0" y="0" width="140" height="60" fill="white" stroke="#e5e7eb" rx="4" stroke-width="1" />
                   <rect x="10" y="15" width="24" height="12" fill="#D89FC4" rx="2" />
-                  <text x="40" y="24" class="text-sm fill-gray-700">Případy</text>
+                  <text x="40" y="24" class="text-sm fill-gray-700">Cases</text>
                   <rect x="10" y="35" width="24" height="12" fill="#3b82f6" rx="2" />
-                  <text x="40" y="44" class="text-sm fill-gray-700">Konzultace</text>
+                  <text x="40" y="44" class="text-sm fill-gray-700">Consultations</text>
                 </g>
               </svg>
             </div>
@@ -684,15 +684,15 @@ const getBarHeight = (value: number, max: number, height: number) => {
         <UCard class="border-0 shadow-lg">
           <div class="p-6 md:p-8">
             <div class="mb-8">
-              <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-300 mb-2">Výkonnost nemocnic</h2>
-              <p class="text-gray-600 dark:text-gray-300 text-sm">Porovnání podle počtu případů a průměrné doby</p>
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-300 mb-2">Hospital performance</h2>
+              <p class="text-gray-600 dark:text-gray-300 text-sm">Comparison by case count and average time</p>
             </div>
             
             <div class="space-y-4">
               <div v-for="(hospital, index) in hospitalPerformance" :key="index" class="space-y-2">
                 <div class="flex items-center justify-between">
                   <span class="text-sm font-medium text-gray-700 dark:text-gray-300">{{ hospital.hospital }}</span>
-                  <span class="text-xs text-gray-500 dark:text-gray-300">{{ hospital.cases }} případů</span>
+                  <span class="text-xs text-gray-500 dark:text-gray-300">{{ hospital.cases }} cases</span>
                 </div>
                 <div class="flex gap-2">
                   <div class="flex-1 h-4 bg-gray-200 rounded-full overflow-hidden">
@@ -702,13 +702,13 @@ const getBarHeight = (value: number, max: number, height: number) => {
                       :class="{ 'opacity-0': !chartsVisible }"
                     ></div>
                   </div>
-                  <span class="text-xs font-semibold text-gray-600 dark:text-gray-300 w-16 text-right">{{ hospital.avgTime }} dní</span>
+                  <span class="text-xs font-semibold text-gray-600 dark:text-gray-300 w-16 text-right">{{ hospital.avgTime }} days</span>
                 </div>
                 <div class="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-300">
                   <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  Spokojenost: {{ hospital.satisfaction }}%
+                  Satisfaction: {{ hospital.satisfaction }}%
                 </div>
               </div>
             </div>
@@ -719,8 +719,8 @@ const getBarHeight = (value: number, max: number, height: number) => {
         <UCard class="border-0 shadow-lg">
           <div class="p-6 md:p-8">
             <div class="mb-8">
-              <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-300 mb-2">Věkové rozložení</h2>
-              <p class="text-gray-600 dark:text-gray-300 text-sm">Počet případů podle věkových skupin</p>
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-300 mb-2">Age distribution</h2>
+              <p class="text-gray-600 dark:text-gray-300 text-sm">Number of cases by age group</p>
             </div>
             
             <div class="space-y-3">
@@ -747,8 +747,8 @@ const getBarHeight = (value: number, max: number, height: number) => {
         <UCard class="border-0 shadow-lg">
           <div class="p-6 md:p-8">
             <div class="mb-8">
-              <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-300 mb-2">Stádium detekce</h2>
-              <p class="text-gray-600 dark:text-gray-300 text-sm">Rozložení případů podle stádia při detekci</p>
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-300 mb-2">Detection stage</h2>
+              <p class="text-gray-600 dark:text-gray-300 text-sm">Distribution of cases by stage at detection</p>
             </div>
             
             <div class="space-y-4">
@@ -776,8 +776,8 @@ const getBarHeight = (value: number, max: number, height: number) => {
         <UCard class="border-0 shadow-lg">
           <div class="p-6 md:p-8">
             <div class="mb-8">
-              <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-300 mb-2">Aktivita podle hodin</h2>
-              <p class="text-gray-600 dark:text-gray-300 text-sm">Počet odpovědí a konzultací během dne</p>
+              <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-300 mb-2">Hourly activity</h2>
+              <p class="text-gray-600 dark:text-gray-300 text-sm">Number of responses and consultations during the day</p>
             </div>
             
             <div class="overflow-x-auto">
@@ -816,9 +816,9 @@ const getBarHeight = (value: number, max: number, height: number) => {
       <div class="text-center">
         <UCard class="bg-gradient-to-r from-primary-600 to-primary-700 text-white border-0 shadow-2xl">
           <div class="p-8 md:p-12">
-            <h2 class="text-3xl md:text-4xl font-bold mb-4">Data hovoří jasně</h2>
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">The data speaks for itself</h2>
             <p class="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
-              Systém výrazně zkracuje dobu do konzultace s experty a zlepšuje výsledky léčby pacientů se sarkomy
+              The system significantly shortens the time to expert consultation and improves treatment outcomes for sarcoma patients
             </p>
             <div class="flex flex-wrap justify-center gap-4">
               <UButton
@@ -828,7 +828,7 @@ const getBarHeight = (value: number, max: number, height: number) => {
                 class="bg-white text-primary-700 hover:bg-gray-50"
                 @click="navigateTo('/sarcoma-form')"
               >
-                Odeslat nový případ
+                Submit a new case
               </UButton>
               <UButton
                 size="lg"
@@ -837,7 +837,7 @@ const getBarHeight = (value: number, max: number, height: number) => {
                 class="border-white text-white bg-transparent hover:bg-white/10"
                 @click="navigateTo('/reports')"
               >
-                Zobrazit přehled
+                View overview
               </UButton>
             </div>
           </div>

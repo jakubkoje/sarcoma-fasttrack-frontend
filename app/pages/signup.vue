@@ -3,17 +3,17 @@ import * as z from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
 
 const roleOptions = [
-  { label: 'Doktor', value: 'doktor' },
-  { label: 'Koordinátor', value: 'koordinator' }
+  { label: 'Doctor', value: 'doktor' },
+  { label: 'Coordinator', value: 'koordinator' }
 ]
 
 const schema = z.object({
-  email: z.string().email('Neplatný email'),
-  role: z.string().min(1, 'Vyberte roli'),
-  password: z.string().min(8, 'Heslo musí mít alespoň 8 znaků'),
-  confirmPassword: z.string().min(8, 'Heslo musí mít alespoň 8 znaků')
+  email: z.string().email('Invalid email'),
+  role: z.string().min(1, 'Select a role'),
+  password: z.string().min(8, 'Password must be at least 8 characters'),
+  confirmPassword: z.string().min(8, 'Password must be at least 8 characters')
 }).refine((data) => data.password === data.confirmPassword, {
-  message: "Hesla se neshodují",
+  message: "Passwords do not match",
   path: ['confirmPassword']
 })
 
@@ -43,8 +43,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
           </svg>
         </div>
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-300 mb-2">Vytvořit účet</h1>
-        <p class="text-base text-gray-600 dark:text-gray-300">Začněte používat Sarkom FastTrack</p>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-300 mb-2">Create account</h1>
+        <p class="text-base text-gray-600 dark:text-gray-300">Start using Sarkom FastTrack</p>
       </div>
 
       <!-- Form Card -->
@@ -61,7 +61,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                 <UInput
                   v-model="state.email"
                   type="email"
-                  placeholder="vas-email@example.com"
+                  placeholder="your-email@example.com"
                   size="xl"
                   class="shadow-sm w-full"
                 />
@@ -80,47 +80,47 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                 <UInputMenu
                   v-model="state.role"
                   :items="roleOptions"
-                  placeholder="Vyberte vaši roli..."
+                  placeholder="Select your role..."
                   size="xl"
                   class="shadow-sm w-full"
                 />
               </UFormGroup>
             </label>
-            <p class="text-xs text-gray-500 dark:text-gray-300 mt-1">Vyberte, zda jste lékař nebo koordinátor</p>
+            <p class="text-xs text-gray-500 dark:text-gray-300 mt-1">Select whether you are a doctor or a coordinator</p>
           </div>
 
           <!-- Password Field -->
           <div class="space-y-2">
             <label class="block">
               <span class="flex items-center gap-2 text-sm font-semibold text-gray-800 dark:text-gray-300 mb-2">
-                Heslo
+                Password
                 <span class="text-red-500">*</span>
               </span>
               <UFormGroup name="password">
                 <UInput
                   v-model="state.password"
                   type="password"
-                  placeholder="Alespoň 8 znaků"
+                  placeholder="At least 8 characters"
                   size="xl"
                   class="shadow-sm w-full"
                 />
               </UFormGroup>
             </label>
-            <p class="text-xs text-gray-500 mt-1">Použijte alespoň 8 znaků pro silné heslo</p>
+            <p class="text-xs text-gray-500 mt-1">Use at least 8 characters for a strong password</p>
           </div>
 
           <!-- Confirm Password Field -->
           <div class="space-y-2">
             <label class="block">
               <span class="flex items-center gap-2 text-sm font-semibold text-gray-800 dark:text-gray-300 mb-2">
-                Potvrdit heslo
+                Confirm password
                 <span class="text-red-500">*</span>
               </span>
               <UFormGroup name="confirmPassword">
                 <UInput
                   v-model="state.confirmPassword"
                   type="password"
-                  placeholder="Zadejte heslo znovu"
+                  placeholder="Re-enter password"
                   size="xl"
                   class="shadow-sm w-full"
                 />
@@ -136,7 +136,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
             color="primary"
             class="mt-8 shadow-md hover:shadow-lg transition-shadow"
           >
-            Registrovat se
+            Sign up
           </UButton>
         </UForm>
       </UCard>
@@ -144,12 +144,12 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       <!-- Login Link -->
       <div class="mt-6 text-center">
         <p class="text-sm text-gray-600 dark:text-gray-300">
-          Již máte účet?
+          Already have an account?
           <NuxtLink
             to="/login"
             class="text-primary-600 hover:text-primary-700 font-semibold ml-1 hover:underline transition-colors"
           >
-            Přihlásit se
+            Log in
           </NuxtLink>
         </p>
       </div>
@@ -157,7 +157,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
       <!-- Footer Info -->
       <div class="mt-8 text-center">
         <p class="text-xs text-gray-500 dark:text-gray-300">
-          Registrací souhlasíte s našimi podmínkami používání a zásadami ochrany osobních údajů
+          By signing up you agree to our terms of use and privacy policy
         </p>
       </div>
     </div>

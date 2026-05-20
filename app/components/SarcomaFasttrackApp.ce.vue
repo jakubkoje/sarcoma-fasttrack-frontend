@@ -8,17 +8,17 @@
       <nav class="sft-actions">
         <template v-if="token">
           <UButton size="sm" variant="ghost" icon="i-lucide-layout-dashboard" @click="go('dashboard')">Dashboard</UButton>
-          <UButton size="sm" variant="ghost" icon="i-lucide-list" @click="go('reports')">Přehled</UButton>
-          <UButton v-if="isDoctor" size="sm" variant="ghost" icon="i-lucide-plus" @click="go('new')">Nový záznam</UButton>
-          <UButton v-if="isSpecialist" size="sm" variant="ghost" icon="i-lucide-chart-column" @click="go('analytics')">Analytika</UButton>
-          <UButton size="sm" variant="ghost" icon="i-lucide-book-open" @click="go('articles')">Články</UButton>
+          <UButton size="sm" variant="ghost" icon="i-lucide-list" @click="go('reports')">Overview</UButton>
+          <UButton v-if="isDoctor" size="sm" variant="ghost" icon="i-lucide-plus" @click="go('new')">New record</UButton>
+          <UButton v-if="isSpecialist" size="sm" variant="ghost" icon="i-lucide-chart-column" @click="go('analytics')">Analytics</UButton>
+          <UButton size="sm" variant="ghost" icon="i-lucide-book-open" @click="go('articles')">Articles</UButton>
           <UButton size="sm" variant="ghost" icon="i-lucide-flask-conical" @click="go('api-tester')">API</UButton>
-          <UButton size="sm" color="neutral" variant="outline" icon="i-lucide-log-out" @click="logout">Odhlásit</UButton>
+          <UButton size="sm" color="neutral" variant="outline" icon="i-lucide-log-out" @click="logout">Log out</UButton>
         </template>
         <template v-else>
-          <UButton size="sm" variant="ghost" icon="i-lucide-log-in" @click="go('login')">Přihlásit</UButton>
-          <UButton size="sm" variant="ghost" icon="i-lucide-user-plus" @click="go('signup')">Registrace</UButton>
-          <UButton size="sm" variant="ghost" icon="i-lucide-book-open" @click="go('articles')">Články</UButton>
+          <UButton size="sm" variant="ghost" icon="i-lucide-log-in" @click="go('login')">Log in</UButton>
+          <UButton size="sm" variant="ghost" icon="i-lucide-user-plus" @click="go('signup')">Sign up</UButton>
+          <UButton size="sm" variant="ghost" icon="i-lucide-book-open" @click="go('articles')">Articles</UButton>
         </template>
       </nav>
     </header>
@@ -28,9 +28,9 @@
 
       <section v-if="visibleView === 'login'" class="sft-panel sft-auth">
         <div>
-          <p class="sft-kicker">Přístup</p>
-          <h2>Přihlášení do systému</h2>
-          <p class="sft-muted">Použijte lokální seed účet nebo nově registrovaného uživatele.</p>
+          <p class="sft-kicker">Access</p>
+          <h2>Log in to the system</h2>
+          <p class="sft-muted">Use a local seed account or a newly registered user.</p>
         </div>
         <form class="sft-form" @submit.prevent="login">
           <label class="sft-field">
@@ -38,21 +38,21 @@
             <input v-model="loginForm.email" class="sft-input" autocomplete="username" type="email" required />
           </label>
           <label class="sft-field">
-            <span>Heslo</span>
+            <span>Password</span>
             <input v-model="loginForm.password" class="sft-input" autocomplete="current-password" type="password" required />
           </label>
           <div class="sft-submit">
-            <UButton type="submit" icon="i-lucide-log-in" :loading="loading">Přihlásit</UButton>
-            <UButton color="neutral" variant="outline" icon="i-lucide-user-plus" @click="go('signup')">Vytvořit účet</UButton>
+            <UButton type="submit" icon="i-lucide-log-in" :loading="loading">Log in</UButton>
+            <UButton color="neutral" variant="outline" icon="i-lucide-user-plus" @click="go('signup')">Create account</UButton>
           </div>
         </form>
       </section>
 
       <section v-else-if="visibleView === 'signup'" class="sft-panel sft-auth">
         <div>
-          <p class="sft-kicker">Registrace</p>
-          <h2>Nový uživatel</h2>
-          <p class="sft-muted">Lokální registrace vytvoří uživatele v Go API store.</p>
+          <p class="sft-kicker">Sign up</p>
+          <h2>New user</h2>
+          <p class="sft-muted">Local sign-up creates a user in the Go API store.</p>
         </div>
         <form class="sft-form" @submit.prevent="signup">
           <label class="sft-field">
@@ -62,26 +62,26 @@
           <label class="sft-field">
             <span>Role</span>
             <select v-model="signupForm.role" class="sft-input">
-              <option value="doctor">Doktor</option>
-              <option value="specialist">Specialista</option>
-              <option value="coordinator">Koordinátor</option>
+              <option value="doctor">Doctor</option>
+              <option value="specialist">Specialist</option>
+              <option value="coordinator">Coordinator</option>
             </select>
           </label>
           <label class="sft-field">
-            <span>ID organizace pro doktora</span>
+            <span>Organization ID for doctor</span>
             <input v-model="signupForm.organization_id" class="sft-input" inputmode="numeric" placeholder="14" />
           </label>
           <label class="sft-field">
-            <span>Heslo</span>
+            <span>Password</span>
             <input v-model="signupForm.password" class="sft-input" type="password" autocomplete="new-password" required />
           </label>
           <label class="sft-field">
-            <span>Potvrdit heslo</span>
+            <span>Confirm password</span>
             <input v-model="signupForm.confirm_password" class="sft-input" type="password" autocomplete="new-password" required />
           </label>
           <div class="sft-submit">
-            <UButton type="submit" icon="i-lucide-user-plus" :loading="loading">Registrovat</UButton>
-            <UButton color="neutral" variant="outline" icon="i-lucide-log-in" @click="go('login')">Přihlášení</UButton>
+            <UButton type="submit" icon="i-lucide-user-plus" :loading="loading">Sign up</UButton>
+            <UButton color="neutral" variant="outline" icon="i-lucide-log-in" @click="go('login')">Log in</UButton>
           </div>
         </form>
       </section>
@@ -90,51 +90,51 @@
         <div class="sft-hero">
           <div>
             <p class="sft-kicker">Dashboard</p>
-            <h2>Rychlý přehled všech případů sarkomu</h2>
-            <p class="sft-muted">Data se načítají z Go API. Role uživatele řídí dostupné akce stejně jako v původní Nuxt aplikaci.</p>
+            <h2>Quick overview of all sarcoma cases</h2>
+            <p class="sft-muted">Data is loaded from the Go API. The user role controls available actions in the same way as in the original Nuxt application.</p>
           </div>
           <div class="sft-submit">
-            <UButton v-if="isDoctor" icon="i-lucide-plus" @click="go('new')">Nový případ</UButton>
-            <UButton v-if="isSpecialist" color="neutral" variant="outline" icon="i-lucide-chart-column" @click="go('analytics')">Analytika</UButton>
+            <UButton v-if="isDoctor" icon="i-lucide-plus" @click="go('new')">New case</UButton>
+            <UButton v-if="isSpecialist" color="neutral" variant="outline" icon="i-lucide-chart-column" @click="go('analytics')">Analytics</UButton>
           </div>
         </div>
 
         <div class="sft-stat-grid">
           <button class="sft-stat danger" type="button" @click="go('reports')">
-            <span>Čekající případy</span>
+            <span>Pending cases</span>
             <strong>{{ dashboardStats.pending }}</strong>
-            <small>Vyžadují posouzení</small>
+            <small>Require assessment</small>
           </button>
           <button class="sft-stat" type="button" @click="go('reports')">
-            <span>Celkem případů</span>
+            <span>Total cases</span>
             <strong>{{ dashboardStats.total }}</strong>
-            <small>Viditelné pro aktuální roli</small>
+            <small>Visible for current role</small>
           </button>
           <button class="sft-stat success" type="button" @click="go('reports')">
-            <span>Zpracované</span>
+            <span>Processed</span>
             <strong>{{ dashboardStats.completed }}</strong>
-            <small>DONE nebo SENT</small>
+            <small>DONE or SENT</small>
           </button>
           <button class="sft-stat" type="button" @click="go('articles')">
-            <span>Odborné články</span>
+            <span>Expert articles</span>
             <strong>{{ articles.length }}</strong>
-            <small>Edukační materiály</small>
+            <small>Educational materials</small>
           </button>
         </div>
 
         <div class="sft-grid">
           <article class="sft-panel">
-            <h3>Poslední zprávy</h3>
+            <h3>Latest reports</h3>
             <div class="sft-mini-list">
               <button v-for="report in recentReports" :key="report.id" type="button" @click="openReport(report.id)">
-                <span>#{{ report.id }} {{ patientNames[report.patient_id] || `Pacient #${report.patient_id}` }}</span>
+                <span>#{{ report.id }} {{ patientNames[report.patient_id] || `Patient #${report.patient_id}` }}</span>
                 <small>{{ statusLabels[report.status] || report.status }}</small>
               </button>
-              <p v-if="!recentReports.length" class="sft-muted">Žádné načtené zprávy.</p>
+              <p v-if="!recentReports.length" class="sft-muted">No reports loaded.</p>
             </div>
           </article>
           <article class="sft-panel">
-            <h3>Doporučené materiály</h3>
+            <h3>Recommended materials</h3>
             <div class="sft-mini-list">
               <button v-for="article in featuredArticles" :key="article.id" type="button" @click="openArticle(article.id)">
                 <span>{{ article.title }}</span>
@@ -148,37 +148,37 @@
       <section v-else-if="visibleView === 'new'" class="sft-panel">
         <form class="sft-form" @submit.prevent="createCase">
           <div>
-            <p class="sft-kicker">Formulář</p>
-            <h2>Pacient s podezřením na sarkom</h2>
-            <p class="sft-muted">Kompaktní webcomponent verze původního vícekrokového formuláře.</p>
+            <p class="sft-kicker">Form</p>
+            <h2>Patient with suspected sarcoma</h2>
+            <p class="sft-muted">Compact web component version of the original multi-step form.</p>
           </div>
 
           <fieldset class="sft-fieldset">
-            <legend>Centrum péče a typ pacienta</legend>
+            <legend>Care center and patient type</legend>
             <div class="sft-grid">
               <label class="sft-field">
-                <span>Centrum péče</span>
+                <span>Care center</span>
                 <select v-model="caseForm.care_center" class="sft-input">
-                  <option value="14">Masarykův onkologický ústav</option>
-                  <option value="15">FN Motol</option>
+                  <option value="14">Masaryk Memorial Cancer Institute</option>
+                  <option value="15">Motol University Hospital</option>
                 </select>
               </label>
               <label class="sft-field">
-                <span>Typ pacienta</span>
+                <span>Patient type</span>
                 <select v-model="caseForm.patient_type" class="sft-input">
-                  <option value="new">Nový pacient</option>
-                  <option value="existing">Existující pacient</option>
+                  <option value="new">New patient</option>
+                  <option value="existing">Existing patient</option>
                 </select>
               </label>
               <label class="sft-field">
-                <span>MKN10</span>
+                <span>ICD-10</span>
                 <select v-model="caseForm.mkn10_code" class="sft-input">
-                  <option value="">Nevyplněno</option>
-                  <option value="C49.0">C49.0 - hlava, obličej a krk</option>
-                  <option value="C49.1">C49.1 - horní končetina</option>
-                  <option value="C49.2">C49.2 - dolní končetina</option>
-                  <option value="C49.3">C49.3 - hrudník</option>
-                  <option value="C49.4">C49.4 - břicho</option>
+                  <option value="">Not specified</option>
+                  <option value="C49.0">C49.0 - head, face and neck</option>
+                  <option value="C49.1">C49.1 - upper limb</option>
+                  <option value="C49.2">C49.2 - lower limb</option>
+                  <option value="C49.3">C49.3 - thorax</option>
+                  <option value="C49.4">C49.4 - abdomen</option>
                 </select>
               </label>
               <label class="sft-field">
@@ -191,24 +191,24 @@
           </fieldset>
 
           <fieldset class="sft-fieldset">
-            <legend>Kontakt na pacienta</legend>
+            <legend>Patient contact</legend>
             <div class="sft-grid">
               <label class="sft-field">
-                <span>Jméno</span>
+                <span>First name</span>
                 <input v-model="caseForm.first_name" class="sft-input" required />
               </label>
               <label class="sft-field">
-                <span>Příjmení</span>
+                <span>Last name</span>
                 <input v-model="caseForm.last_name" class="sft-input" required />
               </label>
               <label class="sft-field">
-                <span>Rodné číslo</span>
+                <span>Personal ID number</span>
                 <input v-model="caseForm.birth_number" class="sft-input" required />
               </label>
               <label class="sft-field">
-                <span>Pojišťovna</span>
+                <span>Insurance company</span>
                 <select v-model="caseForm.insurance" class="sft-input">
-                  <option value="">Nevyplněno</option>
+                  <option value="">Not specified</option>
                   <option value="111">VZP</option>
                   <option value="201">VOZP</option>
                   <option value="205">ČPZP</option>
@@ -218,7 +218,7 @@
                 </select>
               </label>
               <label class="sft-field">
-                <span>Telefon</span>
+                <span>Phone</span>
                 <input v-model="caseForm.phone" class="sft-input" required />
               </label>
               <label class="sft-field">
@@ -226,14 +226,14 @@
                 <input v-model="caseForm.email" class="sft-input" type="email" />
               </label>
               <label class="sft-field sft-span">
-                <span>Adresa</span>
+                <span>Address</span>
                 <input v-model="caseForm.address" class="sft-input" required />
               </label>
             </div>
           </fieldset>
 
           <fieldset class="sft-fieldset">
-            <legend>Zobrazovací vyšetření</legend>
+            <legend>Imaging examination</legend>
             <div class="sft-check-grid">
               <label v-for="option in imagingOptions" :key="option.value" class="sft-check">
                 <input v-model="caseForm.selected_imaging" type="checkbox" :value="option.value" />
@@ -242,70 +242,70 @@
             </div>
             <div class="sft-grid">
               <label class="sft-field">
-                <span>Datum hlavního vyšetření</span>
+                <span>Main examination date</span>
                 <input v-model="caseForm.imaging_date" class="sft-input" type="date" />
               </label>
               <label class="sft-field">
-                <span>Další vyšetření plánováno</span>
+                <span>Further examination planned</span>
                 <select v-model="caseForm.additional_imaging_planned" class="sft-input">
-                  <option :value="false">Ne</option>
-                  <option :value="true">Ano</option>
+                  <option :value="false">No</option>
+                  <option :value="true">Yes</option>
                 </select>
               </label>
               <label class="sft-field sft-span">
-                <span>Popis zobrazení</span>
+                <span>Imaging description</span>
                 <textarea v-model="caseForm.note" class="sft-input" rows="3" />
               </label>
               <label class="sft-field sft-span">
-                <span>Plán dalších vyšetření</span>
+                <span>Plan for further examinations</span>
                 <textarea v-model="caseForm.additional_imaging_note" class="sft-input" rows="2" />
               </label>
             </div>
           </fieldset>
 
           <fieldset class="sft-fieldset">
-            <legend>Anamnéza a histologie</legend>
+            <legend>Medical history and histology</legend>
             <div class="sft-grid">
               <label class="sft-field sft-span">
-                <span>Anamnéza</span>
+                <span>Medical history</span>
                 <textarea v-model="caseForm.anamnesis" class="sft-input" rows="4" />
               </label>
               <label class="sft-field sft-span">
-                <span>Rodinná anamnéza</span>
+                <span>Family history</span>
                 <textarea v-model="caseForm.family_history" class="sft-input" rows="2" />
               </label>
               <label class="sft-field">
-                <span>Antikoagulační léčba</span>
+                <span>Anticoagulation therapy</span>
                 <select v-model="caseForm.anticoagulant_medication" class="sft-input">
-                  <option :value="false">Ne</option>
-                  <option :value="true">Ano</option>
+                  <option :value="false">No</option>
+                  <option :value="true">Yes</option>
                 </select>
               </label>
               <label class="sft-field">
-                <span>Histologická verifikace</span>
+                <span>Histological verification</span>
                 <select v-model="caseForm.histology_performed" class="sft-input">
-                  <option :value="false">Ne</option>
-                  <option :value="true">Ano</option>
+                  <option :value="false">No</option>
+                  <option :value="true">Yes</option>
                 </select>
               </label>
               <label class="sft-field">
-                <span>Datum histologie</span>
+                <span>Histology date</span>
                 <input v-model="caseForm.histology_date" class="sft-input" type="date" />
               </label>
               <label class="sft-field">
-                <span>Výsledek histologie</span>
+                <span>Histology result</span>
                 <input v-model="caseForm.histology_result" class="sft-input" />
               </label>
               <label class="sft-field sft-span">
-                <span>Diagnostický souhrn a finalizace</span>
+                <span>Diagnostic summary and finalization</span>
                 <textarea v-model="caseForm.summary" class="sft-input" rows="3" />
               </label>
             </div>
           </fieldset>
 
           <div class="sft-submit">
-            <UButton type="submit" icon="i-lucide-save" :loading="loading">Vytvořit záznam</UButton>
-            <UButton color="neutral" variant="outline" icon="i-lucide-list" @click="go('reports')">Zrušit</UButton>
+            <UButton type="submit" icon="i-lucide-save" :loading="loading">Create record</UButton>
+            <UButton color="neutral" variant="outline" icon="i-lucide-list" @click="go('reports')">Cancel</UButton>
           </div>
         </form>
       </section>
@@ -315,8 +315,8 @@
           <div class="sft-panel">
             <div class="sft-detail-head">
               <div>
-                <p class="sft-kicker">Zpráva #{{ selectedReport.id }}</p>
-                <h2>{{ patientNames[selectedReport.patient_id] || `Pacient #${selectedReport.patient_id}` }}</h2>
+                <p class="sft-kicker">Report #{{ selectedReport.id }}</p>
+                <h2>{{ patientNames[selectedReport.patient_id] || `Patient #${selectedReport.patient_id}` }}</h2>
                 <p class="sft-muted">FHIR: {{ selectedReport.fhir_id || "—" }}</p>
               </div>
               <div class="sft-status-row">
@@ -333,19 +333,19 @@
             </div>
             <dl class="sft-facts">
               <div>
-                <dt>Organizace</dt>
+                <dt>Organization</dt>
                 <dd>{{ organizationNames[selectedReport.target_organization_id] || `#${selectedReport.target_organization_id}` }}</dd>
               </div>
               <div>
-                <dt>Lékař</dt>
+                <dt>Doctor</dt>
                 <dd>{{ userNames[selectedReport.doctor_id] || `#${selectedReport.doctor_id}` }}</dd>
               </div>
               <div>
-                <dt>Závažnost</dt>
+                <dt>Severity</dt>
                 <dd>{{ selectedReport.severity || "—" }}</dd>
               </div>
               <div>
-                <dt>Vytvořeno</dt>
+                <dt>Created</dt>
                 <dd>{{ formatDate(selectedReport.created_at) }}</dd>
               </div>
             </dl>
@@ -353,55 +353,55 @@
 
           <div class="sft-grid">
             <article class="sft-panel">
-              <h3>Klinické informace</h3>
-              <p><b>Anamnéza:</b> {{ selectedReport.anamnesis || "—" }}</p>
-              <p><b>MKN10:</b> {{ selectedReport.mkn10_code || "—" }}</p>
-              <p><b>Souhrn:</b> {{ selectedReport.summary || "—" }}</p>
-              <p><b>Rodinná anamnéza:</b> {{ selectedReport.family_history || "—" }}</p>
+              <h3>Clinical information</h3>
+              <p><b>Medical history:</b> {{ selectedReport.anamnesis || "—" }}</p>
+              <p><b>ICD-10:</b> {{ selectedReport.mkn10_code || "—" }}</p>
+              <p><b>Summary:</b> {{ selectedReport.summary || "—" }}</p>
+              <p><b>Family history:</b> {{ selectedReport.family_history || "—" }}</p>
             </article>
             <article class="sft-panel">
-              <h3>Histologie a zobrazení</h3>
-              <p><b>Zobrazení:</b> {{ selectedReport.any_imaging_performed ? "Ano" : "Ne" }}</p>
-              <p><b>Další plánované:</b> {{ selectedReport.additional_imaging_planned ? "Ano" : "Ne" }}</p>
-              <p><b>Histologie:</b> {{ selectedReport.histology_performed ? "Ano" : "Ne" }}</p>
-              <p><b>Poznámka:</b> {{ selectedReport.note || selectedReport.additional_imaging_note || "—" }}</p>
+              <h3>Histology and imaging</h3>
+              <p><b>Imaging:</b> {{ selectedReport.any_imaging_performed ? "Yes" : "No" }}</p>
+              <p><b>Further planned:</b> {{ selectedReport.additional_imaging_planned ? "Yes" : "No" }}</p>
+              <p><b>Histology:</b> {{ selectedReport.histology_performed ? "Yes" : "No" }}</p>
+              <p><b>Note:</b> {{ selectedReport.note || selectedReport.additional_imaging_note || "—" }}</p>
             </article>
             <article class="sft-panel">
-              <h3>Klasifikace</h3>
-              <p><b>Specialista:</b> {{ selectedReport.specialist || "—" }}</p>
+              <h3>Classification</h3>
+              <p><b>Specialist:</b> {{ selectedReport.specialist || "—" }}</p>
               <p><b>Confidence:</b> {{ percent(selectedReport.overall_confidence) }}</p>
               <p><b>Severity code:</b> {{ selectedReport.severity_code || "—" }}</p>
-              <UButton size="sm" variant="outline" icon="i-lucide-refresh-cw" :loading="loading" @click="reclassify">Přepočítat</UButton>
+              <UButton size="sm" variant="outline" icon="i-lucide-refresh-cw" :loading="loading" @click="reclassify">Recalculate</UButton>
             </article>
             <article class="sft-panel">
-              <h3>Feedback specialisty</h3>
+              <h3>Specialist feedback</h3>
               <textarea v-model="feedbackText" class="sft-input" rows="4" :disabled="!isSpecialist" />
               <div class="sft-submit">
-                <UButton v-if="isSpecialist" icon="i-lucide-send" :loading="loading" @click="saveFeedback">Uložit feedback</UButton>
-                <UButton color="neutral" variant="outline" icon="i-lucide-arrow-left" @click="go('reports')">Zpět</UButton>
+                <UButton v-if="isSpecialist" icon="i-lucide-send" :loading="loading" @click="saveFeedback">Save feedback</UButton>
+                <UButton color="neutral" variant="outline" icon="i-lucide-arrow-left" @click="go('reports')">Back</UButton>
               </div>
             </article>
           </div>
         </div>
         <div v-else class="sft-panel">
-          <h2>Zpráva nenalezena</h2>
-          <p class="sft-muted">Vyberte záznam z přehledu nebo nastavte atribut report-id.</p>
-          <UButton icon="i-lucide-list" @click="go('reports')">Přehled zpráv</UButton>
+          <h2>Report not found</h2>
+          <p class="sft-muted">Select a record from the overview or set the report-id attribute.</p>
+          <UButton icon="i-lucide-list" @click="go('reports')">Reports overview</UButton>
         </div>
       </section>
 
       <section v-else-if="visibleView === 'analytics'" class="sft-stack">
         <div class="sft-hero">
           <div>
-            <p class="sft-kicker">Analytika</p>
-            <h2>Vizuální analýza efektivity</h2>
-            <p class="sft-muted">Webcomponent verze analytického screenů s aktuálními počty z API a statickými dopadovými metrikami.</p>
+            <p class="sft-kicker">Analytics</p>
+            <h2>Visual effectiveness analysis</h2>
+            <p class="sft-muted">Web component version of the analytics screen with current API counts and static impact metrics.</p>
           </div>
           <strong class="sft-impact">86%</strong>
         </div>
         <div class="sft-grid">
           <article class="sft-panel">
-            <h3>Distribuce stavů</h3>
+            <h3>Status distribution</h3>
             <div class="sft-bars">
               <div v-for="row in statusChartRows" :key="row.label">
                 <span>{{ row.label }}</span>
@@ -411,7 +411,7 @@
             </div>
           </article>
           <article class="sft-panel">
-            <h3>Měsíční trendy</h3>
+            <h3>Monthly trends</h3>
             <div class="sft-bars">
               <div v-for="row in monthlyTrend" :key="row.month">
                 <span>{{ row.month }}</span>
@@ -421,20 +421,20 @@
             </div>
           </article>
           <article class="sft-panel">
-            <h3>Zkrácení času</h3>
+            <h3>Time reduction</h3>
             <dl class="sft-facts two">
               <div v-for="item in timeComparison" :key="item.metric">
                 <dt>{{ item.metric }}</dt>
-                <dd>{{ item.before }} dní → {{ item.after }} dny</dd>
+                <dd>{{ item.before }} days → {{ item.after }} days</dd>
               </div>
             </dl>
           </article>
           <article class="sft-panel">
-            <h3>Výkonnost center</h3>
+            <h3>Center performance</h3>
             <div class="sft-mini-list">
               <button v-for="hospital in hospitalPerformance" :key="hospital.hospital" type="button">
                 <span>{{ hospital.hospital }}</span>
-                <small>{{ hospital.cases }} případů · {{ hospital.avgTime }} dne průměr</small>
+                <small>{{ hospital.cases }} cases · {{ hospital.avgTime }} days average</small>
               </button>
             </div>
           </article>
@@ -444,17 +444,17 @@
       <section v-else-if="visibleView === 'articles'" class="sft-stack">
         <div class="sft-hero">
           <div>
-            <p class="sft-kicker">Edukační materiály</p>
-            <h2>Odborné články o sarkomech</h2>
-            <p class="sft-muted">Aktuální informace a postupy pro diagnostiku a léčbu sarkomů v České republice.</p>
+            <p class="sft-kicker">Educational materials</p>
+            <h2>Expert articles on sarcomas</h2>
+            <p class="sft-muted">Current information and guidelines for the diagnosis and treatment of sarcomas in the Czech Republic.</p>
           </div>
-          <span class="sft-status">{{ filteredArticles.length }} / {{ articles.length }} článků</span>
+          <span class="sft-status">{{ filteredArticles.length }} / {{ articles.length }} articles</span>
         </div>
 
         <div class="sft-toolbar">
-          <input v-model="articleSearch" class="sft-input" placeholder="Hledat články..." />
+          <input v-model="articleSearch" class="sft-input" placeholder="Search articles..." />
           <select v-model="articleCategory" class="sft-input sft-select-small">
-            <option value="all">Všechny kategorie</option>
+            <option value="all">All categories</option>
             <option v-for="category in articleCategories" :key="category" :value="category">{{ category }}</option>
           </select>
         </div>
@@ -467,7 +467,7 @@
               <h3>{{ article.title }}</h3>
               <p>{{ article.description }}</p>
               <small>{{ formatDateOnly(article.date) }} · {{ article.author }}</small>
-              <UButton size="sm" variant="outline" icon="i-lucide-arrow-right" @click="openArticle(article.id)">Otevřít</UButton>
+              <UButton size="sm" variant="outline" icon="i-lucide-arrow-right" @click="openArticle(article.id)">Open</UButton>
             </div>
           </article>
         </div>
@@ -475,7 +475,7 @@
 
       <section v-else-if="visibleView === 'article'" class="sft-stack">
         <article class="sft-panel sft-reader">
-          <UButton color="neutral" variant="ghost" icon="i-lucide-arrow-left" @click="go('articles')">Zpět na články</UButton>
+          <UButton color="neutral" variant="ghost" icon="i-lucide-arrow-left" @click="go('articles')">Back to articles</UButton>
           <img :src="selectedArticle.image" :alt="selectedArticle.title" loading="lazy" />
           <p class="sft-kicker">{{ selectedArticle.category }}</p>
           <h2>{{ selectedArticle.title }}</h2>
@@ -492,8 +492,8 @@
         <div class="sft-hero">
           <div>
             <p class="sft-kicker">API Tester</p>
-            <h2>Funkční smoke klient</h2>
-            <p class="sft-muted">Rychlé volání health, OpenAPI a chráněných endpointů proti aktuálnímu api-base.</p>
+            <h2>Functional smoke client</h2>
+            <p class="sft-muted">Quick calls to health, OpenAPI and protected endpoints against the current api-base.</p>
           </div>
           <span class="sft-status">{{ token ? "Token set" : "No token" }}</span>
         </div>
@@ -502,12 +502,12 @@
             <h3>Login</h3>
             <div class="sft-form">
               <input v-model="apiLoginForm.email" class="sft-input" placeholder="email@example.test" />
-              <input v-model="apiLoginForm.password" class="sft-input" type="password" placeholder="heslo" />
+              <input v-model="apiLoginForm.password" class="sft-input" type="password" placeholder="password" />
               <UButton icon="i-lucide-log-in" :loading="apiTesterLoading" @click="apiLogin">Login & set token</UButton>
             </div>
           </article>
           <article class="sft-panel">
-            <h3>Endpointy</h3>
+            <h3>Endpoints</h3>
             <div class="sft-submit">
               <UButton size="sm" variant="outline" @click="runApiProbe('health', '/health/db')">Health</UButton>
               <UButton size="sm" variant="outline" @click="runApiProbe('openapi', '/openapi')">OpenAPI</UButton>
@@ -523,28 +523,28 @@
 
       <section v-else class="sft-stack">
         <div class="sft-toolbar">
-          <input v-model="query" class="sft-input" placeholder="Hledat pacienta, organizaci nebo stav" />
-          <UButton icon="i-lucide-refresh-cw" color="neutral" variant="outline" :loading="loading" @click="loadReports">Obnovit</UButton>
+          <input v-model="query" class="sft-input" placeholder="Search patient, organization or status" />
+          <UButton icon="i-lucide-refresh-cw" color="neutral" variant="outline" :loading="loading" @click="loadReports">Refresh</UButton>
         </div>
 
         <div class="sft-stat-grid compact">
-          <span class="sft-stat"><span>Celkem</span><strong>{{ reports.length }}</strong></span>
-          <span class="sft-stat danger"><span>Aktivní</span><strong>{{ dashboardStats.pending }}</strong></span>
-          <span class="sft-stat success"><span>Hotovo</span><strong>{{ dashboardStats.completed }}</strong></span>
+          <span class="sft-stat"><span>Total</span><strong>{{ reports.length }}</strong></span>
+          <span class="sft-stat danger"><span>Active</span><strong>{{ dashboardStats.pending }}</strong></span>
+          <span class="sft-stat success"><span>Done</span><strong>{{ dashboardStats.completed }}</strong></span>
         </div>
 
         <div class="sft-list">
           <button v-for="report in filteredReports" :key="report.id" class="sft-row" type="button" @click="openReport(report.id)">
             <span>
-              <strong>#{{ report.id }} {{ patientNames[report.patient_id] || `Pacient #${report.patient_id}` }}</strong>
-              <small>{{ organizationNames[report.target_organization_id] || `Organizace #${report.target_organization_id}` }}</small>
+              <strong>#{{ report.id }} {{ patientNames[report.patient_id] || `Patient #${report.patient_id}` }}</strong>
+              <small>{{ organizationNames[report.target_organization_id] || `Organization #${report.target_organization_id}` }}</small>
             </span>
             <span class="sft-row-meta">
               <span class="sft-severity">S{{ report.severity || "—" }}</span>
               <span class="sft-status">{{ statusLabels[report.status] || report.status }}</span>
             </span>
           </button>
-          <div v-if="!filteredReports.length && !loading" class="sft-empty">Žádné záznamy</div>
+          <div v-if="!filteredReports.length && !loading" class="sft-empty">No records</div>
         </div>
       </section>
     </main>
@@ -640,42 +640,42 @@ const caseForm = reactive({
 });
 
 const statusOptions = [
-  { label: "Koncept", value: "DRAFT" },
-  { label: "Aktivní", value: "ACTIVE" },
-  { label: "Odesláno", value: "SUBMITTED" },
-  { label: "Posláno", value: "SENT" },
-  { label: "Hotovo", value: "DONE" },
-  { label: "Chyba", value: "ERROR" },
+  { label: "Draft", value: "DRAFT" },
+  { label: "Active", value: "ACTIVE" },
+  { label: "Submitted", value: "SUBMITTED" },
+  { label: "Sent", value: "SENT" },
+  { label: "Done", value: "DONE" },
+  { label: "Error", value: "ERROR" },
 ];
 
 const imagingOptions = [
-  { value: "sonografie", label: "Sonografie" },
+  { value: "sonografie", label: "Sonography" },
   { value: "ct", label: "CT" },
   { value: "pet-ct", label: "PET/CT" },
   { value: "mri", label: "MRI" },
 ];
 
 const monthlyTrend = [
-  { month: "Leden", cases: 42 },
-  { month: "Únor", cases: 58 },
-  { month: "Březen", cases: 67 },
-  { month: "Duben", cases: 80 },
-  { month: "Květen", cases: 92 },
-  { month: "Červen", cases: 100 },
+  { month: "January", cases: 42 },
+  { month: "February", cases: 58 },
+  { month: "March", cases: 67 },
+  { month: "April", cases: 80 },
+  { month: "May", cases: 92 },
+  { month: "June", cases: 100 },
 ];
 
 const timeComparison = [
-  { metric: "Konzultace s expertem", before: 28, after: 4 },
-  { metric: "Zpracování žádosti", before: 14, after: 2 },
-  { metric: "První konzultace", before: 21, after: 3 },
-  { metric: "Celková doba", before: 35, after: 5 },
+  { metric: "Expert consultation", before: 28, after: 4 },
+  { metric: "Request processing", before: 14, after: 2 },
+  { metric: "First consultation", before: 21, after: 3 },
+  { metric: "Total time", before: 35, after: 5 },
 ];
 
 const hospitalPerformance = [
-  { hospital: "FN Motol", cases: 178, avgTime: 2.8 },
-  { hospital: "FN Brno", cases: 89, avgTime: 3.2 },
-  { hospital: "FN Olomouc", cases: 45, avgTime: 4.1 },
-  { hospital: "Ostatní", cases: 35, avgTime: 4.5 },
+  { hospital: "Motol University Hospital", cases: 178, avgTime: 2.8 },
+  { hospital: "University Hospital Brno", cases: 89, avgTime: 3.2 },
+  { hospital: "University Hospital Olomouc", cases: 45, avgTime: 4.1 },
+  { hospital: "Other", cases: 35, avgTime: 4.5 },
 ];
 
 const apiRoot = computed(() => normalizeApiBase(props.apiBase));
@@ -684,15 +684,15 @@ const isSpecialist = computed(() => role.value === "specialist" || role.value ==
 const visibleView = computed<View>(() => (!token.value && !publicViews.has(view.value) ? "login" : view.value));
 const title = computed(() => {
   const labels: Record<View, string> = {
-    login: "Přihlášení",
-    signup: "Registrace",
+    login: "Login",
+    signup: "Sign up",
     dashboard: "Dashboard",
-    reports: "Přehled zpráv",
-    new: "Nový záznam",
-    detail: "Detail zprávy",
-    analytics: "Analytika",
-    articles: "Odborné články",
-    article: "Detail článku",
+    reports: "Reports overview",
+    new: "New record",
+    detail: "Report detail",
+    analytics: "Analytics",
+    articles: "Expert articles",
+    article: "Article detail",
     "api-tester": "API Tester",
   };
   return labels[visibleView.value];
@@ -781,7 +781,7 @@ async function login() {
 async function signup() {
   await run(async () => {
     if (signupForm.password !== signupForm.confirm_password) {
-      throw new Error("Hesla se neshodují.");
+      throw new Error("Passwords do not match.");
     }
     await request<UserRead>("/api/v1/auth/register", {
       method: "POST",
@@ -794,7 +794,7 @@ async function signup() {
     });
     loginForm.email = signupForm.email;
     loginForm.password = signupForm.password;
-    show("ok", "Uživatel vytvořen. Probíhá přihlášení.");
+    show("ok", "User created. Logging in.");
     await login();
   }, false);
 }
@@ -857,8 +857,8 @@ async function createCase() {
   await run(async () => {
     const targetOrganizationId = Number(caseForm.care_center);
     const imagingNote = [
-      caseForm.selected_imaging.length ? `Vyšetření: ${caseForm.selected_imaging.join(", ")}` : "",
-      caseForm.imaging_date ? `Datum: ${caseForm.imaging_date}` : "",
+      caseForm.selected_imaging.length ? `Examinations: ${caseForm.selected_imaging.join(", ")}` : "",
+      caseForm.imaging_date ? `Date: ${caseForm.imaging_date}` : "",
       caseForm.note,
     ].filter(Boolean).join("\n");
     const patient = await request<PatientRead>("/api/v1/patients", {
@@ -900,7 +900,7 @@ async function createCase() {
     reports.value = [report, ...reports.value].sort((a, b) => a.id - b.id);
     resetCaseForm();
     openReport(report.id);
-    show("ok", "Záznam byl vytvořen.");
+    show("ok", "Record has been created.");
   });
 }
 
@@ -922,7 +922,7 @@ async function saveFeedback() {
       body: JSON.stringify({ feedback_specialist: feedbackText.value }),
     });
     replaceReport(updated);
-    show("ok", "Feedback uložen.");
+    show("ok", "Feedback saved.");
   });
 }
 
@@ -932,7 +932,7 @@ async function reclassify() {
     await request<Record<string, unknown>>(`/api/v1/reports/${selectedReport.value!.id}/reclassify`, { method: "POST" });
     const updated = await request<ReportRead>(`/api/v1/reports/${selectedReport.value!.id}`);
     replaceReport(updated);
-    show("ok", "Klasifikace přepočítána.");
+    show("ok", "Classification recalculated.");
   });
 }
 
@@ -990,7 +990,7 @@ async function run(action: () => Promise<void>, clearMessage = true) {
   try {
     await action();
   } catch (error) {
-    show("error", error instanceof Error ? error.message : "Operace selhala.");
+    show("error", error instanceof Error ? error.message : "Operation failed.");
   } finally {
     loading.value = false;
   }
@@ -1030,7 +1030,7 @@ function resetCaseForm() {
 
 function formatDate(value?: string | null) {
   if (!value) return "—";
-  return new Date(value).toLocaleDateString("cs-CZ", {
+  return new Date(value).toLocaleDateString("en-US", {
     day: "2-digit",
     month: "2-digit",
     year: "numeric",
@@ -1040,7 +1040,7 @@ function formatDate(value?: string | null) {
 }
 
 function formatDateOnly(value: string) {
-  return new Date(value).toLocaleDateString("cs-CZ", { day: "2-digit", month: "2-digit", year: "numeric" });
+  return new Date(value).toLocaleDateString("en-US", { day: "2-digit", month: "2-digit", year: "numeric" });
 }
 
 function percent(value?: number | null) {
