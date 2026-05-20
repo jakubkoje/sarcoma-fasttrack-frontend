@@ -2,174 +2,90 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-## Project Overview
+## What this project actually is
 
-This is a Nuxt 4 frontend application using Vue 3 and TypeScript. The project follows a minimal starter structure and is configured with Nuxt's auto-import capabilities.
+Sarkom FastTrack is a clinical workflow app that lets primary-care physicians refer suspected sarcoma cases to specialized centers in the Czech Republic. The UI is in English; some legacy strings and routes (e.g. `/clanky` for "articles") remain in Czech.
 
-Please load nuxt documentation from: https://nuxt.com/docs/4.x/getting-started/
+**Important: this repo has two build targets that share most of `app/` but diverge at the entry point.**
 
-Keep Nuxt default architecture in mind when writing code, keep conventions, casing, etc.
+1. **Nuxt 4 SPA** (`npm run dev` / `npm run build`) — file-based routes in `app/pages/`, layout in `app/layouts/default.vue`, normal Nuxt auto-imports. Useful for local page development.
+2. **Web Component bundle** (`npm run build:wc`) — Vite library build that produces `dist/sarcoma-fasttrack.js`, a set of custom elements (`<sarcoma-fasttrack-app>`, `<sarcoma-fasttrack-dashboard>`, `<sarcoma-fasttrack-report-detail report-id="…">`, …) intended to be served from `ghcr.io/polyfea/spa-base` and embedded inside the WAC shell. **This bundle is the deployed artifact.** It does **not** run Nuxt at runtime.
 
-Use as much existing components and code as possible.
+The two targets render the same product but via different code paths. Edits to a Nuxt page in `app/pages/` do **not** automatically appear in the WC bundle, and vice versa. See "Dual-target gotchas" below.
 
-Use tailwindcss for styling, tailwind version: "@nuxtjs/tailwindcss": "^6.14.0".
+## Commands
 
-Dont use emojis in the code.
+Use plain `npm`. The root sibling project also exposes `mise` (`mise exec -- npm …`) — either works.
 
-## Description of the project
-
-### Project Overview
-
-- Presentation by representatives from Motto University Hospital in Prague
-- Goal: Create a simple, safe, user-friendly application to expedite patient transfers to specialized sarcoma centers
-- The application aims to bridge the gap between patient care and healthcare provider workflow
-
-### Problem Statement
-
-- Sarcoma cases (400-600 diagnosed annually in the Czech Republic) require specialized center treatment
-- Effective communication needed between practitioners, surgeons, and specialized centers
-- Current process for patient referrals appears to be inefficient
-
-### Application Features
-
-- Simple interface designed not to distract doctors from patient referral tasks
-- Ability to input basic patient information, image analysis, and laboratory results
-- Clear case status display for tracking progress
-- Consultation functionality between healthcare providers
-- Documentation sharing capabilities
-
-### User Roles
-
-- Primary care physicians: Can conduct initial research, basic sonography, or refer to specialists
-- Surgeons: Can refer patients to specialized centers
-- Coordinators: The critical link receiving requirements from field doctors and connecting with multidisciplinary teams
-- Option for primary care physicians to contact coordinators directly to expedite the process
-
-### Technical Specifications
-
-- Modern but intentionally simple web application
-- Intuitive interface designed specifically for healthcare workers
-- Enhanced security features to protect patient data
-- Prototype already developed for documentation sharing
-
-### Future Development
-
-- Planning for future extensions and automatic data population
-- Designed to be motivating for doctors to use, avoiding unnecessary complexity
-- Potential for integration with existing healthcare information systems
-
-## Development Commands
-
-Install dependencies:
 ```bash
-npm install
+npm install                      # postinstall runs `nuxt prepare`
+npm run dev                      # Nuxt dev server on :3000
+npm run build                    # Nuxt SSR build (used in CI; not the shipping artifact)
+npm run build:wc                 # Vite library build → dist/sarcoma-fasttrack.js + dist/index.html
+npm run preview:wc               # serves dist/ on :4173 for WC manual testing
+npm run test                     # alias for test:unit
+npm run test:unit                # node --test app/components/*.test.js
+npm run test:smoke               # verifies the WC bundle (must be built first)
+npm run test:functional          # api-smoke.mjs against a running Go API (API_BASE=…)
+npm run test:e2e                 # spawns ../WAC-BE Go API and runs api-smoke against it
 ```
 
-Start development server (runs on http://localhost:3000):
-```bash
-npm run dev
-```
+`Makefile` mirrors these with shorter targets (`make dev`, `make test-e2e`, …) and auto-loads `.env`.
 
-Build for production:
-```bash
-npm run build
-```
+API base is read from `NUXT_PUBLIC_API_BASE` (Nuxt runtime) or the `api-base` attribute on the custom element (WC). Default fallbacks point at a remote Render deployment for Nuxt and `http://localhost:8000` for the WC. `.example-env` documents the contract; `.env` is gitignored.
 
-Preview production build:
-```bash
-npm run preview
-```
+To run a single unit test file: `node --test app/components/sarcoma-wc-utils.test.js`.
 
-Generate static site:
-```bash
-npm run generate
-```
+## Architecture
 
-## Project Structure
+### Routing & layouts
 
-- `app/` - Main application code
-  - `app.vue` - Root application component
-  - `pages/` - File-based routing pages
-    - `login.vue` - Login page with UAuthForm
-    - `signup.vue` - Signup page with UAuthForm
-    - `dashboard.vue` - Main dashboard with sarcoma form link
-    - `sarcoma-form.vue` - Multi-step patient form using UStepper
-  - `layouts/` - Application layouts
-    - `default.vue` - Default layout with UHeader and navigation
-  - `assets/css/` - CSS files
-    - `main.css` - Tailwind CSS v4 imports and custom theme
-- `public/` - Static assets served directly (favicon.ico, robots.txt)
-- `.nuxt/` - Auto-generated Nuxt build artifacts (do not edit)
-- `nuxt.config.ts` - Nuxt configuration file
+- Nuxt SPA: file-based routes in `app/pages/` (`login`, `signup`, `dashboard`, `sarcoma-form`, `analytics`, `api-tester`, `reports/[id]`, `clanky/[id]`). `app/layouts/default.vue` renders the `UHeader` chrome and a role-filtered `UNavigationMenu`.
+- WC bundle: **all views live inside one component**, `app/components/SarcomaFasttrackApp.ce.vue`, which renders by `visibleView` and uses an in-memory `vue-router` for internal navigation. `app/components/entry.ts` registers a custom element per view name (see `wcRootTags` in `app/components/sarcoma-wc-utils.js`) and sets `initial-view` based on the tag.
 
-## Architecture Notes
+### Auth & RBAC
 
-### Nuxt 4 Conventions
+- `app/stores/auth.ts` is a composable store backed by `useCookie` (`auth_token`, `auth_role`); not Pinia.
+- `app/middleware/auth.ts` gates routes by token presence; `app/middleware/role.ts` enforces the per-route role map (`doctor`/`specialist`/`coordinator`/`admin`). `admin` bypasses all restrictions.
+- Apply middleware on pages with `definePageMeta({ middleware: ['auth'] })` etc.
 
-This project uses Nuxt 4 which follows these conventions:
-- **Auto-imports**: Components, composables, and utilities are auto-imported. No need for explicit imports from `~/components`, `~/composables`, etc.
-- **File-based routing**: Create `.vue` files in `app/pages/` directory to define routes automatically
-- **Layouts**: Create layouts in `app/layouts/` directory
-- **Composables**: Create composables in `app/composables/` directory
-- **Components**: Create components in `app/components/` directory
-- **Server API**: Create API endpoints in `server/api/` directory
+### API client
 
-### TypeScript Configuration
+`app/services/apiClient.ts` is the canonical HTTP layer:
 
-TypeScript is configured using project references pointing to auto-generated configs in `.nuxt/`:
-- `tsconfig.app.json` - App code configuration
-- `tsconfig.server.json` - Server code configuration
-- `tsconfig.shared.json` - Shared configuration
-- `tsconfig.node.json` - Node environment configuration
+- `ApiClient` wraps `ofetch.$fetch` with bearer-token injection via a `tokenProvider` callback and normalizes errors (extracts FastAPI `detail[].msg`).
+- `apiPrefix` is `/api/v1`. All backend endpoints live under it; `dbHealth()` is the one exception (`/health/db`).
+- `useApiClient()` is the Nuxt-side factory — pulls `runtimeConfig.public.apiBase` and binds the auth cookie as token provider.
+- Types in `app/types/api.ts` and `app/types/auth.ts` mirror the Go backend's OpenAPI schema. Keep them in sync when the backend changes.
+- `app/services/auth.ts` (`AuthService`) is a separate stub for `/api/auth/*` and is **not** wired to the real backend — the real login flow goes through `ApiClient.login()` and `useAuthStore().setToken()`.
 
-Do not modify the root `tsconfig.json` or files in `.nuxt/` as they are auto-generated.
+### Patient form state
 
-### Development Workflow
-
-After installing dependencies, `nuxt prepare` runs automatically (via postinstall script) to generate TypeScript types and auto-import definitions.
-
-When adding new directories like `pages/`, `components/`, or `composables/`, restart the dev server to ensure Nuxt properly detects and configures them.
-
-## Application Features
-
-### Authentication
-- Login page at `/login` with email/password and social auth providers (Google, GitHub)
-- Signup page at `/signup` with password confirmation
-- After successful login, redirects to `/dashboard`
-
-### Sarcoma Patient Form
-- Multi-step form at `/sarcoma-form` using Nuxt UI's UStepper component
-- **Step 1**: Patient type selection (new patient vs. existing patient)
-- **Step 2**: Medical data collection (imaging, medical history, diagnosis)
-  - Conditional fields based on patient type
-  - Support for multiple imaging types with individual date/description
-  - Blood thinners tracking (new patients)
-  - Histological verification (new patients)
-  - Basic diagnosis + summary (existing patients)
-- **Step 3**: Patient contact information
-  - Personal details (name, address, birth number)
-  - Insurance company selection
-  - Phone and email
-  - File attachments support
-- Form validation using Zod schemas
-- Czech language labels and messages
-- Warning if imaging not performed before proceeding
-
-### UI Components
-This project uses Nuxt UI v4 (https://ui.nuxt.com) components:
-- `UAuthForm` - Authentication forms with built-in validation
-- `UStepper` - Multi-step form navigation
-- `UCard` - Card containers
-- `UButton` - Buttons with variants
-- `UInput`, `UTextarea`, `USelect` - Form inputs
-- `URadioGroup`, `UCheckbox` - Selection inputs
-- `UFormGroup` - Form field groups with labels
-- `UHeader` - Page headers
-- `UAlert` - Alert notifications
-- `UToast` - Toast notifications (via `useToast()` composable)
+`app/stores/sarcomaForm.ts` uses `@vueuse/core` `useLocalStorage` to persist the multi-step form (`sarcoma-form-data`, `sarcoma-form-step`). Resetting requires calling `reset()` — clearing the page is not enough.
 
 ### Styling
-- Tailwind CSS v4 with custom theme configuration
-- Czech text throughout the application
-- Responsive design with mobile-first approach
-- Consistent spacing and typography using Tailwind utilities
+
+- Tailwind CSS v4 via `@nuxt/ui`'s Vite plugin. Theme tokens live in `app/assets/css/main.css` (inlined via `?inline` into the WC bundle).
+- `nuxt.config.ts` declares `ui.theme.colors = ['primary']`; `app.config.ts` maps `primary` to the `primary` palette. The Nuxt SPA uses purple via `tailwind.config.js`.
+- **The WC bundle overrides colors**: `app/components/entry.ts` rewrites Nuxt UI's CSS variables so `primary` resolves to green (`uiColors.primary = "green"`). If a color looks wrong inside `<sarcoma-fasttrack-*>` but right in `npm run dev`, this is why.
+
+## Dual-target gotchas
+
+- **No external network in the WC bundle.** `vite.config.ts` aliases `@iconify/vue` to `app/components/local-iconify.js` so Nuxt UI icons resolve from a local SVG map. If you add a new `i-lucide-…` icon and it renders blank in `preview:wc`, add it to `local-iconify.js`.
+- **Shadow DOM CSS.** `entry.ts` strips `@property` rules and rewrites `@layer properties{@supports{…}}` so styles work inside a custom-element shadow root. Avoid CSS features that rely on `@property` registration.
+- **No Nuxt composables in `.ce.vue`.** `SarcomaFasttrackApp.ce.vue` cannot call `useCookie`, `useRuntimeConfig`, `useRoute`, etc. — it owns its own router and reads config from element attributes (`api-base`, `base-path`, `initial-view`).
+- **Routing duplication.** When adding a new screen, update both `app/pages/<new>.vue` *and* the view switch in `SarcomaFasttrackApp.ce.vue`, plus `wcRootTags` / `rootViews` in `entry.ts` and `sarcoma-wc-utils.js` (`pathToView` / `viewToPath`) if it should have its own custom element.
+- **Auth surface differs.** Nuxt uses cookies + middleware; the WC stores the bearer token in component state and renders the login screen when absent.
+
+## Conventions
+
+- Don't introduce emojis in code, UI, or comments.
+- Prefer reusing existing Nuxt UI v4 components (`UAuthForm`, `UStepper`, `UCard`, `UButton`, `UInput`/`UTextarea`/`USelect`, `URadioGroup`, `UCheckbox`, `UFormGroup`, `UHeader`, `UAlert`, `useToast()`) before adding new ones.
+- Form schemas use Zod (already a dependency).
+- TypeScript is configured via project references; do not edit root `tsconfig.json` or anything in `.nuxt/`.
+- When adding `app/pages/`, `app/components/`, or `app/composables/` files for the first time in a fresh checkout, restart `npm run dev` so Nuxt regenerates auto-imports.
+- When pulling in a library or framework you're not sure about, fetch current docs via Context7 (`mcp__context7__resolve-library-id` then `query-docs`) before guessing API shape.
+
+## Deployment context
+
+`build/docker/Dockerfile` packages the WC bundle on top of `ghcr.io/polyfea/spa-base` (port 8080). CI (`.github/workflows/docker-publish.yml`) runs unit + smoke + WC build + Nuxt build on every push and, on `main` / `v1*` tags, publishes `${DOCKERHUB_USERNAME}/sarcoma-fasttrack-wc` with both developer (`main.YYYYMMDD.HHmm`) and semver tags.

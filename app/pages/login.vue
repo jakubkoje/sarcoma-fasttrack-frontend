@@ -32,22 +32,6 @@ const fields: AuthFormField[] = [{
   type: 'checkbox'
 }]
 
-const providers = [{
-  label: 'Citizen identity',
-  avatar: {
-    src: '/obcan-id.png',
-    size: '2xl'
-  },
-  color: 'neutral' as const,
-  variant: 'outline' as const,
-  class: 'h-14 bg-white dark:bg-gray-900',
-  onClick: () => {
-    toast.add({ title: 'Citizen identity', description: 'Login using citizen identity' })
-  }
-}]
-
-
-
 const schema = z.object({
   email: z.string().optional(),
   password: z.string('Password is required').min(5, 'Password must be at least 5 characters').optional(),
@@ -99,14 +83,12 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
       <UAuthForm
         :schema="schema"
         title="Login"
-        description="Use login via identity or enter your credentials."
+        description="Enter your credentials."
         icon="i-lucide-user"
         :fields="fields"
-        :providers="providers"
         :loading="isSubmitting"
         :error="errorMessage"
         :submit="{ label: 'Log in', block: true }"
-        separator="or"
         @submit="onSubmit"
       />
 
