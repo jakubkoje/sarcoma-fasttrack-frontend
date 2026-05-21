@@ -96,6 +96,7 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
         <USelect
           v-model="selectedAccountId"
           :items="testAccounts.map((a) => ({ label: a.label, value: a.id }))"
+          trailing-icon="i-lucide-chevron-down"
           class="w-full"
           @update:model-value="onAccountChange"
         />
