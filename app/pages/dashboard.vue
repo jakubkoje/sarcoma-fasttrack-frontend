@@ -123,106 +123,53 @@
             </NuxtLink>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <!-- Featured Article 1 -->
-            <NuxtLink to="/clanky/0" class="group">
+          <div v-if="articlesLoading" class="py-12 flex justify-center">
+            <ULoadingIcon />
+          </div>
+
+          <div v-else-if="featuredArticles.length > 0" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <NuxtLink
+              v-for="article in featuredArticles"
+              :key="article.id"
+              :to="`/clanky/${article.id}`"
+              class="group"
+            >
               <UCard class="overflow-hidden hover:shadow-xl transition-all h-full">
-                <!-- Image -->
-                <div class="relative h-48 overflow-hidden">
+                <div v-if="article.image_url" class="relative h-48 overflow-hidden">
                   <img
-                    src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=800&q=80"
-                    alt="Sarcoma treatment"
+                    :src="article.image_url"
+                    :alt="article.title"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
-                  <div class="absolute top-3 left-3">
-                    <UBadge color="primary" variant="solid" size="sm">Treatment</UBadge>
+                  <div v-if="article.category" class="absolute top-3 left-3">
+                    <UBadge color="primary" variant="solid" size="sm">{{ article.category }}</UBadge>
                   </div>
                 </div>
+                <div v-else-if="article.category" class="px-4 pt-4">
+                  <UBadge color="primary" variant="solid" size="sm">{{ article.category }}</UBadge>
+                </div>
 
-                <!-- Content -->
                 <div class="p-4">
                   <h3 class="font-semibold text-gray-900 dark:text-gray-300 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2">
-                    New treatment options for rare sarcomas in 2024
+                    {{ article.title }}
                   </h3>
                   <p class="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-2">
-                    Overview of the latest therapeutic approaches and clinical trials
+                    {{ article.summary }}
                   </p>
                   <div class="flex items-center text-xs text-gray-500 dark:text-gray-300">
                     <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    Nov 15, 2024
-                  </div>
-                </div>
-              </UCard>
-            </NuxtLink>
-
-            <!-- Featured Article 2 -->
-            <NuxtLink to="/clanky/1" class="group">
-              <UCard class="overflow-hidden hover:shadow-xl transition-all h-full">
-                <!-- Image -->
-                <div class="relative h-48 overflow-hidden">
-                  <img
-                    src="https://images.unsplash.com/photo-1559757175-5700dde675bc?w=800&q=80"
-                    alt="Sarcoma diagnostics"
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div class="absolute top-3 left-3">
-                    <UBadge color="primary" variant="solid" size="sm">Diagnostics</UBadge>
-                  </div>
-                </div>
-
-                <!-- Content -->
-                <div class="p-4">
-                  <h3 class="font-semibold text-gray-900 dark:text-gray-300 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2">
-                    Sarcoma diagnostics: The role of modern imaging
-                  </h3>
-                  <p class="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-2">
-                    The importance of MRI, CT and PET/CT scans in sarcoma diagnostics
-                  </p>
-                  <div class="flex items-center text-xs text-gray-500 dark:text-gray-300">
-                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    Oct 28, 2024
-                  </div>
-                </div>
-              </UCard>
-            </NuxtLink>
-
-            <!-- Featured Article 3 -->
-            <NuxtLink to="/clanky/2" class="group">
-              <UCard class="overflow-hidden hover:shadow-xl transition-all h-full">
-                <!-- Image -->
-                <div class="relative h-48 overflow-hidden">
-                  <img
-                    src="https://images.unsplash.com/photo-1516549655169-df83a0774514?w=800&q=80"
-                    alt="Multidisciplinary care"
-                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div class="absolute top-3 left-3">
-                    <UBadge color="primary" variant="solid" size="sm">Care</UBadge>
-                  </div>
-                </div>
-
-                <!-- Content -->
-                <div class="p-4">
-                  <h3 class="font-semibold text-gray-900 dark:text-gray-300 mb-2 group-hover:text-primary-600 transition-colors line-clamp-2">
-                    Multidisciplinary approach in sarcoma treatment
-                  </h3>
-                  <p class="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-2">
-                    Collaboration of specialists in care for sarcoma patients
-                  </p>
-                  <div class="flex items-center text-xs text-gray-500 dark:text-gray-300">
-                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                    </svg>
-                    Oct 10, 2024
+                    {{ formatArticleDate(article.published_at || article.created_at) }}
                   </div>
                 </div>
               </UCard>
             </NuxtLink>
           </div>
+
+          <p v-else class="text-sm text-gray-600 dark:text-gray-300 py-6 text-center">
+            No published articles yet.
+          </p>
         </UCard>
       </div>
     </div>
@@ -232,7 +179,7 @@
 <script setup lang="ts">
 import { useAuthStore } from '~/stores/auth'
 import { useApiClient } from '~/services/apiClient'
-import type { ReportRead } from '~/types/api'
+import type { ArticleRead, ReportRead } from '~/types/api'
 
 definePageMeta({
   layout: 'default',
@@ -247,6 +194,8 @@ const PENDING_STATUSES = new Set(['ACTIVE', 'SUBMITTED', 'SENT'])
 const PROCESSED_STATUSES = new Set(['DONE'])
 
 const reports = ref<ReportRead[]>([])
+const articles = ref<ArticleRead[]>([])
+const articlesLoading = ref(false)
 
 const stats = computed(() => ({
   total: reports.value.length,
@@ -255,11 +204,43 @@ const stats = computed(() => ({
   draft: reports.value.filter((r) => r.status === 'DRAFT').length
 }))
 
+const featuredArticles = computed(() => {
+  return articles.value
+    .filter((a) => a.status === 'PUBLISHED')
+    .slice()
+    .sort((a, b) => {
+      const aDate = new Date(a.published_at || a.created_at).getTime()
+      const bDate = new Date(b.published_at || b.created_at).getTime()
+      return bDate - aDate
+    })
+    .slice(0, 3)
+})
+
+const formatArticleDate = (value?: string | null) => {
+  if (!value) return ''
+  return new Date(value).toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  })
+}
+
 onMounted(async () => {
   try {
     reports.value = await api.listReports()
   } catch {
     reports.value = []
+  }
+
+  if (userRole.value === 'doctor' || userRole.value === 'admin') {
+    articlesLoading.value = true
+    try {
+      articles.value = await api.listArticles()
+    } catch {
+      articles.value = []
+    } finally {
+      articlesLoading.value = false
+    }
   }
 })
 </script>
