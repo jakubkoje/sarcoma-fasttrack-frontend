@@ -15,7 +15,9 @@ export default defineNuxtRouteMiddleware((to) => {
   // Define role-based route restrictions (routes that require specific roles)
   const restrictedRoutes: Record<string, string[]> = {
     '/sarcoma-form': ['doctor', 'admin'],
-    '/clanky': ['doctor', 'admin']
+    '/clanky/new': ['coordinator', 'admin'],
+    '/clanky': ['doctor', 'specialist', 'coordinator', 'admin'],
+    '/admin': ['admin']
   }
 
   // Reports and dashboard are accessible to all authenticated users

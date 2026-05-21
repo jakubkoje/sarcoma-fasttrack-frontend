@@ -28,12 +28,26 @@ const items = computed<NavigationMenuItem[]>(() => {
     })
   }
 
-  // Doctor: clanky
-  if (userRole === 'doctor' || userRole === 'admin') {
+  // Doctor/specialist/coordinator/admin: educational materials
+  if (
+    userRole === 'doctor' ||
+    userRole === 'specialist' ||
+    userRole === 'coordinator' ||
+    userRole === 'admin'
+  ) {
     menuItems.push({
       label: 'Educational materials',
       to: '/clanky',
       active: route.path.includes('/clanky')
+    })
+  }
+
+  // Admin: organization management
+  if (userRole === 'admin') {
+    menuItems.push({
+      label: 'Centers',
+      to: '/admin/organizations',
+      active: route.path.startsWith('/admin/organizations')
     })
   }
 

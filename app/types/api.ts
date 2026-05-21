@@ -147,13 +147,35 @@ export type UserListResponse = UserRead[]
 // Organizations
 export interface OrganizationCreate {
   name: string
-  type_code?: string
-  address?: Nullable<string>
-  contact?: Nullable<string>
+  type_code: string
+  address: string
+  contact: string
+  email?: Nullable<string>
+  ico?: Nullable<string>
+  dic?: Nullable<string>
+  address_city?: Nullable<string>
+  address_postal_code?: Nullable<string>
+  address_country?: Nullable<string>
+  capacity?: Nullable<number>
+  region?: Nullable<string>
+  catchment_area?: Nullable<string>
 }
 
 export interface OrganizationUpdate {
   fhir_id?: Nullable<string>
+  name?: Nullable<string>
+  type_code?: Nullable<string>
+  address?: Nullable<string>
+  contact?: Nullable<string>
+  email?: Nullable<string>
+  ico?: Nullable<string>
+  dic?: Nullable<string>
+  address_city?: Nullable<string>
+  address_postal_code?: Nullable<string>
+  address_country?: Nullable<string>
+  capacity?: Nullable<number>
+  region?: Nullable<string>
+  catchment_area?: Nullable<string>
 }
 
 export interface OrganizationRead {
@@ -163,9 +185,57 @@ export interface OrganizationRead {
   type_code?: Nullable<string>
   address?: Nullable<string>
   contact?: Nullable<string>
+  email?: Nullable<string>
+  capacity?: Nullable<number>
+  region?: Nullable<string>
+  catchment_area?: Nullable<string>
 }
 
 export type OrganizationListResponse = OrganizationRead[]
+
+// Articles
+export type ArticleStatus = 'DRAFT' | 'PUBLISHED' | 'ARCHIVED'
+
+export interface ArticleCreate {
+  title: string
+  summary: string
+  body: string
+  category?: Nullable<string>
+  image_url?: Nullable<string>
+  author_name?: Nullable<string>
+  author_avatar_url?: Nullable<string>
+  read_time_minutes?: Nullable<number>
+}
+
+export interface ArticleUpdate {
+  title?: Nullable<string>
+  summary?: Nullable<string>
+  body?: Nullable<string>
+  category?: Nullable<string>
+  image_url?: Nullable<string>
+  author_name?: Nullable<string>
+  author_avatar_url?: Nullable<string>
+  read_time_minutes?: Nullable<number>
+}
+
+export interface ArticleRead {
+  id: number
+  title: string
+  summary: string
+  body: string
+  category?: Nullable<string>
+  image_url?: Nullable<string>
+  author_id: number
+  author_name?: Nullable<string>
+  author_avatar_url?: Nullable<string>
+  read_time_minutes?: Nullable<number>
+  status: ArticleStatus
+  published_at?: Nullable<string>
+  created_at: string
+  updated_at: string
+}
+
+export type ArticleListResponse = ArticleRead[]
 
 // Validation
 export interface ValidationError {

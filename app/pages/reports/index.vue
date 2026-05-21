@@ -67,16 +67,23 @@ const statusLabels: Record<string, { label: string; color: 'neutral' | 'primary'
     bgColor: 'bg-red-100 dark:bg-red-900/30',
     borderColor: 'border-red-400 dark:border-red-600',
     textColor: 'text-red-800 dark:text-red-300'
+  },
+  CANCELLED: {
+    label: 'Cancelled',
+    color: 'neutral',
+    bgColor: 'bg-rose-100 dark:bg-rose-900/30',
+    borderColor: 'border-rose-400 dark:border-rose-600',
+    textColor: 'text-rose-800 dark:text-rose-300'
   }
 }
 
 const availableStatuses = [
-  { value: 'DRAFT', label: 'Draft' },
   { value: 'ACTIVE', label: 'Active' },
   { value: 'SUBMITTED', label: 'Submitted' },
   { value: 'SENT', label: 'Sent' },
   { value: 'DONE', label: 'Done' },
-  { value: 'ERROR', label: 'Error' }
+  { value: 'ERROR', label: 'Error' },
+  { value: 'CANCELLED', label: 'Cancelled' }
 ]
 
 const updatingStatus = ref<Set<number>>(new Set())

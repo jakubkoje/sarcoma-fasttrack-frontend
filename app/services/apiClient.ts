@@ -2,6 +2,11 @@ import { $fetch, type FetchError } from 'ofetch'
 import { useRuntimeConfig } from '#imports'
 import { useAuthStore } from '~/stores/auth'
 import type {
+  ArticleCreate,
+  ArticleListResponse,
+  ArticleRead,
+  ArticleStatus,
+  ArticleUpdate,
   HTTPValidationError,
   LoginRequest,
   OrganizationCreate,
@@ -179,6 +184,42 @@ export class ApiClient {
 
   deleteOrganization(orgId: number): Promise<void> {
     return this.client<void>(`${this.apiPrefix}/organizations/${orgId}`, {
+      method: 'DELETE'
+    })
+  }
+
+  // Articles
+  listArticles(): Promise<ArticleListResponse> {
+    return this.client<ArticleListResponse>(`${this.apiPrefix}/articles`)
+  }
+
+  getArticle(articleId: number): Promise<ArticleRead> {
+    return this.client<ArticleRead>(`${this.apiPrefix}/articles/${articleId}`)
+  }
+
+  createArticle(payload: ArticleCreate): Promise<ArticleRead> {
+    return this.client<ArticleRead>(`${this.apiPrefix}/articles`, {
+      method: 'POST',
+      body: payload
+    })
+  }
+
+  updateArticle(articleId: number, payload: ArticleUpdate): Promise<ArticleRead> {
+    return this.client<ArticleRead>(`${this.apiPrefix}/articles/${articleId}`, {
+      method: 'PUT',
+      body: payload
+    })
+  }
+
+  updateArticleStatus(articleId: number, status: ArticleStatus): Promise<ArticleRead> {
+    return this.client<ArticleRead>(`${this.apiPrefix}/articles/${articleId}/status`, {
+      method: 'PATCH',
+      body: { status }
+    })
+  }
+
+  deleteArticle(articleId: number): Promise<void> {
+    return this.client<void>(`${this.apiPrefix}/articles/${articleId}`, {
       method: 'DELETE'
     })
   }

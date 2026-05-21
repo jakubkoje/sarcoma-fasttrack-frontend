@@ -67,17 +67,46 @@ const statusLabels: Record<string, { label: string; color: 'neutral' | 'primary'
     bgColor: 'bg-red-100 dark:bg-red-900/30',
     borderColor: 'border-red-400 dark:border-red-600',
     textColor: 'text-red-800 dark:text-red-300'
+  },
+  CANCELLED: {
+    label: 'Cancelled',
+    color: 'neutral',
+    bgColor: 'bg-rose-100 dark:bg-rose-900/30',
+    borderColor: 'border-rose-400 dark:border-rose-600',
+    textColor: 'text-rose-800 dark:text-rose-300'
   }
 }
 
 const availableStatuses = [
-  { value: 'DRAFT', label: 'Draft' },
   { value: 'ACTIVE', label: 'Active' },
   { value: 'SUBMITTED', label: 'Submitted' },
   { value: 'SENT', label: 'Sent' },
   { value: 'DONE', label: 'Done' },
-  { value: 'ERROR', label: 'Error' }
+  { value: 'ERROR', label: 'Error' },
+  { value: 'CANCELLED', label: 'Cancelled' }
 ]
+
+const canCancel = computed(() => {
+  if (!report.value) return false
+  if (auth.role.value === 'admin') return true
+  if (auth.role.value !== 'doctor') return false
+  return report.value.status === 'DRAFT' || report.value.status === 'ACTIVE'
+})
+
+async function cancelReferral() {
+  if (!report.value) return
+  if (typeof window !== 'undefined' && !window.confirm('Cancel this referral? The specialized center will be notified.')) return
+  statusLoading.value = true
+  try {
+    const updated = await api.updateReportStatus(report.value.id, 'CANCELLED')
+    report.value = updated
+    toast.add({ title: 'Cancelled', description: 'Referral was withdrawn.' })
+  } catch (e) {
+    toast.add({ title: 'Error', description: e instanceof Error ? e.message : 'Cancel failed.' })
+  } finally {
+    statusLoading.value = false
+  }
+}
 
 const reportId = computed(() => Number(route.params.id))
 
@@ -442,7 +471,7 @@ async function updateStatus(newStatus: string) {
           </UCard>
         </div>
 
-        <div class="mt-6">
+        <div class="mt-6 flex flex-col sm:flex-row gap-3">
           <UButton
             v-if="isDoctor && report.status === 'DRAFT'"
             color="primary"
@@ -453,7 +482,21 @@ async function updateStatus(newStatus: string) {
           >
             Send to specialized center
           </UButton>
+          <UButton
+            v-if="canCancel"
+            color="error"
+            variant="outline"
+            icon="i-lucide-x-circle"
+            :loading="statusLoading"
+            @click="cancelReferral"
+            block
+            class="sm:w-auto"
+          >
+            Cancel referral
+          </UButton>
+        </div>
 
+        <div class="mt-6">
           <UCard
             v-if="isSpecialist && report.status === 'ACTIVE'"
             class="w-full border-2 border-primary-200 dark:border-primary-800 bg-linear-to-br from-primary-50/50 to-white dark:from-primary-900/10 dark:to-gray-800 shadow-lg"
