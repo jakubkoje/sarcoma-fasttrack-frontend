@@ -231,6 +231,8 @@
 
 <script setup lang="ts">
 import { useAuthStore } from '~/stores/auth'
+import { useApiClient } from '~/services/apiClient'
+import type { ReportRead } from '~/types/api'
 
 definePageMeta({
   layout: 'default',
@@ -239,27 +241,25 @@ definePageMeta({
 
 const auth = useAuthStore()
 const userRole = computed(() => auth.role.value)
+const api = useApiClient()
 
+const PENDING_STATUSES = new Set(['ACTIVE', 'SUBMITTED', 'SENT'])
+const PROCESSED_STATUSES = new Set(['DONE'])
 
-// Sample data - in production, fetch from API
-interface Stats {
-  total: number
-  pending: number
-  completed: number
-  draft: number
-}
+const reports = ref<ReportRead[]>([])
 
-const stats = ref<Stats>({
-  total: 4,
-  pending: 2,
-  completed: 1,
-  draft: 1
-})
+const stats = computed(() => ({
+  total: reports.value.length,
+  pending: reports.value.filter((r) => PENDING_STATUSES.has(r.status)).length,
+  completed: reports.value.filter((r) => PROCESSED_STATUSES.has(r.status)).length,
+  draft: reports.value.filter((r) => r.status === 'DRAFT').length
+}))
 
-// In production, fetch real data from API
 onMounted(async () => {
-  // TODO: Replace with actual API call
-  // const response = await $fetch('/api/reports/stats')
-  // stats.value = response
+  try {
+    reports.value = await api.listReports()
+  } catch {
+    reports.value = []
+  }
 })
 </script>
