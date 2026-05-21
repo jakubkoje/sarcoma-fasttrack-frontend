@@ -15,7 +15,7 @@ function configureApp(app: any) {
 }
 
 const uiColors: Record<string, string> = {
-  primary: "green",
+  primary: "teal",
   secondary: "blue",
   success: "green",
   info: "blue",

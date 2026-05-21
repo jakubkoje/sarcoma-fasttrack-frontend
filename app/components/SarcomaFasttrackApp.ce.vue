@@ -1004,9 +1004,43 @@ onUnmounted(() => {
 
 <style scoped>
 .sft-shell {
+  --sft-page-bg: #f8fafc;
+  --sft-surface: #ffffff;
+  --sft-surface-raised: #f1f5f9;
+  --sft-text: #334155;
+  --sft-muted: #64748b;
+  --sft-border: #e2e8f0;
+  --sft-primary: #0f766e;
+  --sft-primary-strong: #115e59;
+  --sft-success: #15803d;
+  --sft-success-bg: #f0fdf4;
+  --sft-error: #b91c1c;
+  --sft-error-bg: #fef2f2;
+  --ui-primary: var(--sft-primary);
+  --ui-success: var(--sft-success);
+  --ui-error: var(--sft-error);
+  --ui-text: var(--sft-text);
+  --ui-text-muted: var(--sft-muted);
+  --ui-bg: var(--sft-surface);
+  --ui-bg-muted: var(--sft-page-bg);
+  --ui-bg-elevated: var(--sft-surface-raised);
+  --ui-border: var(--sft-border);
+  --ui-success-50: var(--sft-success-bg);
+  --ui-success-700: var(--sft-success);
+  --ui-error-50: var(--sft-error-bg);
+  --ui-error-700: var(--sft-error);
+  box-sizing: border-box;
+  width: 100%;
   min-height: 100%;
   color: var(--ui-text);
-  background: var(--ui-bg);
+  background: var(--ui-bg-muted);
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.sft-shell *,
+.sft-shell *::before,
+.sft-shell *::after {
+  box-sizing: border-box;
 }
 
 .sft-topbar {
@@ -1014,6 +1048,8 @@ onUnmounted(() => {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  width: min(100%, 1180px);
+  margin: 0 auto;
   padding: 1rem clamp(1rem, 3vw, 2rem);
   border-bottom: 1px solid var(--ui-border);
   background: var(--ui-bg);
@@ -1070,6 +1106,8 @@ onUnmounted(() => {
 }
 
 .sft-main {
+  width: min(100%, 1180px);
+  margin: 0 auto;
   padding: clamp(1rem, 3vw, 2rem);
 }
 
@@ -1093,6 +1131,7 @@ onUnmounted(() => {
 
 .sft-auth {
   max-width: 460px;
+  margin-inline: auto;
 }
 
 .sft-hero {
@@ -1381,6 +1420,7 @@ button.sft-stat {
 
 .sft-reader {
   max-width: 860px;
+  margin-inline: auto;
 }
 
 .sft-reader > * + * {
