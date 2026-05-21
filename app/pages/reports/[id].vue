@@ -510,14 +510,14 @@ async function updateStatus(newStatus: string) {
               </div>
             </template>
             <div class="space-y-4">
-              <UFormGroup label="Specialist feedback">
+              <UFormField label="Specialist feedback" class="w-full">
                 <UTextarea
                   v-model="specialistFeedback"
                   placeholder="Notes, conclusion, recommendation..."
                   :rows="5"
                   class="w-full border-primary-200 dark:border-primary-800 focus:border-primary-400 dark:focus:border-primary-600"
                 />
-              </UFormGroup>
+              </UFormField>
               <div class="flex flex-col sm:flex-row gap-2 pt-2">
                 <UButton
                   color="primary"

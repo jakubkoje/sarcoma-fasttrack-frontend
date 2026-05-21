@@ -259,33 +259,31 @@ async function remove(org: OrganizationRead) {
             </h2>
           </template>
 
-          <div class="space-y-4">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <UFormGroup label="Name" required>
-                <UInput v-model="form.name" placeholder="Masarykův onkologický ústav" />
-              </UFormGroup>
-              <UFormGroup label="Type code" required>
-                <UInput v-model="form.type_code" placeholder="prov" />
-              </UFormGroup>
-              <UFormGroup label="Address" required class="md:col-span-2">
-                <UInput v-model="form.address" placeholder="Žlutý kopec 7, Brno" />
-              </UFormGroup>
-              <UFormGroup label="Contact" required>
-                <UInput v-model="form.contact" placeholder="+420 543 131 111" />
-              </UFormGroup>
-              <UFormGroup label="Email">
-                <UInput v-model="form.email" type="email" placeholder="info@center.cz" />
-              </UFormGroup>
-              <UFormGroup label="Capacity" help="Beds or annual case load.">
-                <UInput v-model.number="form.capacity" type="number" min="0" placeholder="120" />
-              </UFormGroup>
-              <UFormGroup label="Region">
-                <UInput v-model="form.region" placeholder="Jihomoravský" />
-              </UFormGroup>
-              <UFormGroup label="Catchment area" class="md:col-span-2">
-                <UInput v-model="form.catchment_area" placeholder="Morava a Slezsko" />
-              </UFormGroup>
-            </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-5">
+            <UFormField label="Name" required class="w-full">
+              <UInput v-model="form.name" placeholder="Masarykův onkologický ústav" class="w-full" />
+            </UFormField>
+            <UFormField label="Type code" required class="w-full">
+              <UInput v-model="form.type_code" placeholder="prov" class="w-full" />
+            </UFormField>
+            <UFormField label="Address" required class="md:col-span-2 w-full">
+              <UInput v-model="form.address" placeholder="Žlutý kopec 7, Brno" class="w-full" />
+            </UFormField>
+            <UFormField label="Contact" required class="w-full">
+              <UInput v-model="form.contact" placeholder="+420 543 131 111" class="w-full" />
+            </UFormField>
+            <UFormField label="Email" class="w-full">
+              <UInput v-model="form.email" type="email" placeholder="info@center.cz" class="w-full" />
+            </UFormField>
+            <UFormField label="Capacity" help="Beds or annual case load." class="w-full">
+              <UInput v-model.number="form.capacity" type="number" min="0" placeholder="120" class="w-full" />
+            </UFormField>
+            <UFormField label="Region" class="w-full">
+              <UInput v-model="form.region" placeholder="Jihomoravský" class="w-full" />
+            </UFormField>
+            <UFormField label="Catchment area" class="md:col-span-2 w-full">
+              <UInput v-model="form.catchment_area" placeholder="Morava a Slezsko" class="w-full" />
+            </UFormField>
           </div>
 
           <template #footer>

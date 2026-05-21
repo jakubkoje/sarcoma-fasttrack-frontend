@@ -135,40 +135,45 @@ const cancel = () => {
       </UCard>
 
       <UCard v-else>
-        <div class="space-y-5">
-          <UFormGroup label="Title" required>
-            <UInput v-model="form.title" placeholder="Sarcoma red flags" size="lg" />
-          </UFormGroup>
+        <div class="space-y-6">
+          <UFormField label="Title" required class="w-full">
+            <UInput v-model="form.title" placeholder="Sarcoma red flags" size="lg" class="w-full" />
+          </UFormField>
 
-          <UFormGroup label="Summary" required help="Short description shown in the article list.">
-            <UTextarea v-model="form.summary" :rows="2" placeholder="A two-sentence summary..." />
-          </UFormGroup>
+          <UFormField
+            label="Summary"
+            required
+            help="Short description shown in the article list."
+            class="w-full"
+          >
+            <UTextarea v-model="form.summary" :rows="3" placeholder="A two-sentence summary..." class="w-full" />
+          </UFormField>
 
-          <UFormGroup label="Body (markdown)" required>
+          <UFormField label="Body (markdown)" required class="w-full">
             <UTextarea
               v-model="form.body"
               :rows="14"
-              placeholder="## Section\n\n- one\n- two"
-              class="font-mono text-sm"
+              placeholder="## Section&#10;&#10;- one&#10;- two"
+              class="w-full font-mono text-sm"
             />
-          </UFormGroup>
+          </UFormField>
 
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <UFormGroup label="Category">
-              <UInput v-model="form.category" placeholder="Diagnostika" />
-            </UFormGroup>
-            <UFormGroup label="Read time (minutes)">
-              <UInput v-model.number="form.read_time_minutes" type="number" min="0" />
-            </UFormGroup>
-            <UFormGroup label="Hero image URL">
-              <UInput v-model="form.image_url" placeholder="https://..." />
-            </UFormGroup>
-            <UFormGroup label="Author name">
-              <UInput v-model="form.author_name" placeholder="MUDr. ..." />
-            </UFormGroup>
-            <UFormGroup label="Author avatar URL" class="md:col-span-2">
-              <UInput v-model="form.author_avatar_url" placeholder="https://..." />
-            </UFormGroup>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-6">
+            <UFormField label="Category" class="w-full">
+              <UInput v-model="form.category" placeholder="Diagnostika" class="w-full" />
+            </UFormField>
+            <UFormField label="Read time (minutes)" class="w-full">
+              <UInput v-model.number="form.read_time_minutes" type="number" min="0" placeholder="5" class="w-full" />
+            </UFormField>
+            <UFormField label="Hero image URL" class="w-full">
+              <UInput v-model="form.image_url" placeholder="https://..." class="w-full" />
+            </UFormField>
+            <UFormField label="Author name" class="w-full">
+              <UInput v-model="form.author_name" placeholder="MUDr. ..." class="w-full" />
+            </UFormField>
+            <UFormField label="Author avatar URL" class="md:col-span-2 w-full">
+              <UInput v-model="form.author_avatar_url" placeholder="https://..." class="w-full" />
+            </UFormField>
           </div>
 
           <div class="flex justify-end gap-3 pt-4 border-t border-gray-200 dark:border-gray-800">
