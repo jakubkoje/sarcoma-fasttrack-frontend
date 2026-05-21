@@ -65,6 +65,10 @@ type Schema = z.output<typeof schema>
 
 const router = useRouter()
 
+definePageMeta({
+  layout: false
+})
+
 async function onSubmit(payload: FormSubmitEvent<Schema>) {
   isSubmitting.value = true
   errorMessage.value = null
@@ -90,30 +94,34 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-  <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-800 p-4">
+  <div class="fixed inset-0 flex flex-col items-center justify-center bg-gray-100 dark:bg-gray-800 p-4 overflow-hidden">
     <UPageCard class="w-full max-w-md">
-      <UFormField label="Test account" class="mb-4">
-        <USelect
-          v-model="selectedAccountId"
-          :items="testAccounts.map((a) => ({ label: a.label, value: a.id }))"
-          trailing-icon="i-lucide-chevron-down"
-          class="w-full"
-          @update:model-value="onAccountChange"
-        />
-      </UFormField>
-
       <UAuthForm
         :key="formKey"
         :schema="schema"
         title="Login"
-        description="Enter your credentials."
         icon="i-lucide-user"
         :fields="fields"
         :loading="isSubmitting"
         :error="errorMessage"
         :submit="{ label: 'Log in', block: true }"
         @submit="onSubmit"
-      />
+      >
+        <template #description>
+          <div class="space-y-4">
+            <p>Enter your credentials.</p>
+            <UFormField label="Test account">
+              <USelect
+                v-model="selectedAccountId"
+                :items="testAccounts.map((a) => ({ label: a.label, value: a.id }))"
+                trailing-icon="i-lucide-chevron-down"
+                class="w-full"
+                @update:model-value="onAccountChange"
+              />
+            </UFormField>
+          </div>
+        </template>
+      </UAuthForm>
 
       <!-- Disclaimer -->
       <div class="mt-6 px-4">

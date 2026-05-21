@@ -435,6 +435,7 @@ const submitForm = async () => {
                   value-key="value"
                   placeholder="Select a center..."
                   size="lg"
+                  trailing-icon="i-lucide-chevron-down"
                   class="max-w-md"
                 />
               </UFormField>

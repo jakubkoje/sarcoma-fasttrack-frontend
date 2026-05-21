@@ -2,6 +2,10 @@
 import * as z from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
 
+definePageMeta({
+  layout: false
+})
+
 const roleOptions = [
   { label: 'Doctor', value: 'doktor' },
   { label: 'Coordinator', value: 'koordinator' }
@@ -34,8 +38,8 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 </script>
 
 <template>
-  <div class="flex items-center justify-center min-h-screen bg-linear-to-br from-gray-50 to-gray-100 p-4">
-    <div class="w-full max-w-md">
+  <div class="fixed inset-0 flex items-center justify-center bg-linear-to-br from-gray-50 to-gray-100 p-4 overflow-hidden">
+    <div class="w-full max-w-md max-h-full overflow-y-auto">
       <!-- Logo/Header Section -->
       <div class="text-center mb-8">
         <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary-600 mb-4 shadow-lg">
@@ -82,6 +86,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                   :items="roleOptions"
                   placeholder="Select your role..."
                   size="xl"
+                  trailing-icon="i-lucide-chevron-down"
                   class="shadow-sm w-full"
                 />
               </UFormGroup>

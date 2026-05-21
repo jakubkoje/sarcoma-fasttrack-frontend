@@ -426,7 +426,7 @@ const handleLogout = () => {
       </template>
     </UHeader>
 
-    <UMain>
+    <UMain class="overflow-x-hidden">
       <slot />
     </UMain>
   </UApp>
