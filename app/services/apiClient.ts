@@ -26,7 +26,13 @@ import type {
   UserListResponse,
   UserRead
 } from '~/types/api'
-import type { ApiError } from '~/types/auth'
+
+export interface ApiError {
+  message: string
+  statusCode?: number
+  code?: string
+  details?: unknown
+}
 
 export class ApiClient {
   private readonly client: typeof $fetch
@@ -238,8 +244,6 @@ export class ApiClient {
     }
   }
 }
-
-export const apiClient = createApiClient()
 
 export function createApiClient(baseURL?: string, tokenProvider?: () => string | null) {
   const resolvedBase = baseURL ?? process.env.NUXT_PUBLIC_API_BASE ?? ''
