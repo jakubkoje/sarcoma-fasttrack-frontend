@@ -1,29 +1,30 @@
 <template>
-  <UApp :portal="false" class="light sft-shell">
-    <header class="sft-topbar">
-      <button class="sft-brand" type="button" @click="go(token ? 'dashboard' : 'login')">
-        <span class="sft-kicker">Sarkom FastTrack</span>
-        <strong>{{ title }}</strong>
-      </button>
-      <nav class="sft-actions">
-        <template v-if="token">
-          <UButton size="sm" variant="ghost" icon="i-lucide-layout-dashboard" @click="go('dashboard')">Dashboard</UButton>
-          <UButton size="sm" variant="ghost" icon="i-lucide-list" @click="go('reports')">Overview</UButton>
-          <UButton v-if="isDoctor" size="sm" variant="ghost" icon="i-lucide-plus" @click="go('new')">New record</UButton>
-          <UButton size="sm" variant="ghost" icon="i-lucide-book-open" @click="go('articles')">Articles</UButton>
-          <UButton size="sm" variant="ghost" icon="i-lucide-flask-conical" @click="go('api-tester')">API</UButton>
-          <UButton size="sm" color="neutral" variant="outline" icon="i-lucide-log-out" @click="logout">Log out</UButton>
-        </template>
-        <template v-else>
-          <UButton size="sm" variant="ghost" icon="i-lucide-log-in" @click="go('login')">Log in</UButton>
-          <UButton size="sm" variant="ghost" icon="i-lucide-user-plus" @click="go('signup')">Sign up</UButton>
-          <UButton size="sm" variant="ghost" icon="i-lucide-book-open" @click="go('articles')">Articles</UButton>
-        </template>
-      </nav>
-    </header>
+  <UApp :portal="false">
+    <div class="light sft-shell">
+      <header class="sft-topbar">
+        <button class="sft-brand" type="button" @click="go(token ? 'dashboard' : 'login')">
+          <span class="sft-kicker">Sarkom FastTrack</span>
+          <strong>{{ title }}</strong>
+        </button>
+        <nav class="sft-actions">
+          <template v-if="token">
+            <UButton size="sm" variant="ghost" icon="i-lucide-layout-dashboard" @click="go('dashboard')">Dashboard</UButton>
+            <UButton size="sm" variant="ghost" icon="i-lucide-list" @click="go('reports')">Overview</UButton>
+            <UButton v-if="isDoctor" size="sm" variant="ghost" icon="i-lucide-plus" @click="go('new')">New record</UButton>
+            <UButton size="sm" variant="ghost" icon="i-lucide-book-open" @click="go('articles')">Articles</UButton>
+            <UButton size="sm" variant="ghost" icon="i-lucide-flask-conical" @click="go('api-tester')">API</UButton>
+            <UButton size="sm" color="neutral" variant="outline" icon="i-lucide-log-out" @click="logout">Log out</UButton>
+          </template>
+          <template v-else>
+            <UButton size="sm" variant="ghost" icon="i-lucide-log-in" @click="go('login')">Log in</UButton>
+            <UButton size="sm" variant="ghost" icon="i-lucide-user-plus" @click="go('signup')">Sign up</UButton>
+            <UButton size="sm" variant="ghost" icon="i-lucide-book-open" @click="go('articles')">Articles</UButton>
+          </template>
+        </nav>
+      </header>
 
-    <main class="sft-main">
-      <div v-if="message" class="sft-message" :class="message.kind">{{ message.text }}</div>
+      <main class="sft-main">
+        <div v-if="message" class="sft-message" :class="message.kind">{{ message.text }}</div>
 
       <section v-if="visibleView === 'login'" class="sft-panel sft-auth">
         <div>
@@ -494,7 +495,8 @@
           <div v-if="!filteredReports.length && !loading" class="sft-empty">No records</div>
         </div>
       </section>
-    </main>
+      </main>
+    </div>
   </UApp>
 </template>
 
@@ -1007,6 +1009,7 @@ onUnmounted(() => {
   --sft-page-bg: #f8fafc;
   --sft-surface: #ffffff;
   --sft-surface-raised: #f1f5f9;
+  --sft-heading: #0f172a;
   --sft-text: #334155;
   --sft-muted: #64748b;
   --sft-border: #e2e8f0;
@@ -1031,7 +1034,7 @@ onUnmounted(() => {
   --ui-error-700: var(--sft-error);
   box-sizing: border-box;
   width: 100%;
-  min-height: 100%;
+  min-height: max(720px, calc(100vh - 80px));
   color: var(--ui-text);
   background: var(--ui-bg-muted);
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -1070,6 +1073,7 @@ onUnmounted(() => {
 .sft-reader h2 {
   display: block;
   margin: 0;
+  color: var(--sft-heading);
   font-size: 1.35rem;
   line-height: 1.2;
 }
@@ -1077,6 +1081,7 @@ onUnmounted(() => {
 .sft-panel h3,
 .sft-reader h3 {
   margin: 0 0 0.75rem;
+  color: var(--sft-heading);
   font-size: 1rem;
 }
 
@@ -1184,6 +1189,7 @@ onUnmounted(() => {
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
+  color: var(--sft-text);
   font-size: 0.9rem;
   font-weight: 700;
 }
@@ -1194,10 +1200,15 @@ onUnmounted(() => {
   border: 1px solid var(--ui-border);
   border-radius: 6px;
   background: var(--ui-bg);
-  color: inherit;
+  color: var(--sft-heading);
   padding: 0.55rem 0.7rem;
   font: inherit;
   font-weight: 500;
+}
+
+.sft-input::placeholder {
+  color: #94a3b8;
+  opacity: 1;
 }
 
 textarea.sft-input {
@@ -1231,7 +1242,7 @@ textarea.sft-input {
   border: 1px solid var(--ui-border);
   border-radius: 8px;
   background: var(--ui-bg);
-  color: inherit;
+  color: var(--sft-text);
   padding: 1rem;
   text-align: left;
 }
@@ -1275,7 +1286,7 @@ button.sft-stat {
   border: 0;
   border-bottom: 1px solid var(--ui-border);
   background: var(--ui-bg);
-  color: inherit;
+  color: var(--sft-text);
   display: flex;
   align-items: center;
   justify-content: space-between;

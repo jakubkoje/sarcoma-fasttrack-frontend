@@ -54,7 +54,11 @@ function generateColorsCss(): string {
   return `@layer theme {
   :host {
     display: block;
-    min-height: 100%;
+    width: 100%;
+    min-height: max(720px, calc(100vh - 80px));
+    background: #f8fafc;
+    color: #334155;
+    color-scheme: light;
   }
   :root, :host {
   ${shadesCSS}

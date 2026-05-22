@@ -21,6 +21,12 @@ assert.ok(!bundle.includes("ui-avatars.com"), "bundle still references blocked e
 assert.ok(!bundle.includes("api.iconify.design"), "bundle still references the external Iconify API");
 assert.ok(!bundle.includes("api.simplesvg.com"), "bundle still references the external SimpleSVG API");
 assert.ok(!bundle.includes("api.unisvg.com"), "bundle still references the external Unisvg API");
+assert.match(
+  bundle,
+  /:host\s*\{\s*display:\s*block;\s*width:\s*100%;\s*min-height:\s*max\(720px,\s*calc\(100vh - 80px\)\);\s*background:\s*#f8fafc;\s*color:\s*#334155;/,
+  "bundle does not include the custom-element host layout fallback",
+);
+assert.ok(bundle.includes("color:var(--sft-heading)"), "bundle does not include explicit heading/input colors");
 
 const html = await readFile(htmlPath, "utf8");
 assert.ok(html.includes("sarcoma-fasttrack-app"), "dist/index.html does not mount the main component");
