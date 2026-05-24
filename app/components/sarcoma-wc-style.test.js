@@ -12,6 +12,10 @@ const themeSource = readFileSync(resolve(here, "../assets/css/main.css"), "utf8"
 test("web component keeps its production layout centered", () => {
   assert.match(componentSource, /<UApp\s+:portal="false">\s*<div class="light sft-shell">/);
   assert.doesNotMatch(componentSource, /<UApp[^>]*class="light sft-shell"/);
+  assert.match(componentSource, /<header\s+v-if="token"\s+class="sft-topbar">/);
+  assert.match(componentSource, /publicViews\s*=\s*new Set<View>\(\["login",\s*"signup"\]\)/);
+  assert.doesNotMatch(componentSource, /publicViews[\s\S]*"articles"/);
+  assert.match(componentSource, /\.sft-main-auth\s*\{[\s\S]*justify-content:\s*center;/);
   assert.match(entrySource, /:host\s*\{[\s\S]*min-height:\s*max\(720px,\s*calc\(100vh - 80px\)\);[\s\S]*background:\s*#f8fafc;[\s\S]*color:\s*#334155;/);
   assert.match(componentSource, /\.sft-topbar\s*\{[\s\S]*width:\s*min\(100%,\s*1180px\);[\s\S]*margin:\s*0 auto;/);
   assert.match(componentSource, /\.sft-main\s*\{[\s\S]*width:\s*min\(100%,\s*1180px\);[\s\S]*margin:\s*0 auto;/);

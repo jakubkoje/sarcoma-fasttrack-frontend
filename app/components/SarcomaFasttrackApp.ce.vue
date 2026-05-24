@@ -1,29 +1,22 @@
 <template>
   <UApp :portal="false">
     <div class="light sft-shell">
-      <header class="sft-topbar">
-        <button class="sft-brand" type="button" @click="go(token ? 'dashboard' : 'login')">
+      <header v-if="token" class="sft-topbar">
+        <button class="sft-brand" type="button" @click="go('dashboard')">
           <span class="sft-kicker">Sarkom FastTrack</span>
           <strong>{{ title }}</strong>
         </button>
         <nav class="sft-actions">
-          <template v-if="token">
-            <UButton size="sm" variant="ghost" icon="i-lucide-layout-dashboard" @click="go('dashboard')">Dashboard</UButton>
-            <UButton size="sm" variant="ghost" icon="i-lucide-list" @click="go('reports')">Overview</UButton>
-            <UButton v-if="isDoctor" size="sm" variant="ghost" icon="i-lucide-plus" @click="go('new')">New record</UButton>
-            <UButton size="sm" variant="ghost" icon="i-lucide-book-open" @click="go('articles')">Articles</UButton>
-            <UButton size="sm" variant="ghost" icon="i-lucide-flask-conical" @click="go('api-tester')">API</UButton>
-            <UButton size="sm" color="neutral" variant="outline" icon="i-lucide-log-out" @click="logout">Log out</UButton>
-          </template>
-          <template v-else>
-            <UButton size="sm" variant="ghost" icon="i-lucide-log-in" @click="go('login')">Log in</UButton>
-            <UButton size="sm" variant="ghost" icon="i-lucide-user-plus" @click="go('signup')">Sign up</UButton>
-            <UButton size="sm" variant="ghost" icon="i-lucide-book-open" @click="go('articles')">Articles</UButton>
-          </template>
+          <UButton size="sm" variant="ghost" icon="i-lucide-layout-dashboard" @click="go('dashboard')">Dashboard</UButton>
+          <UButton size="sm" variant="ghost" icon="i-lucide-list" @click="go('reports')">Overview</UButton>
+          <UButton v-if="isDoctor" size="sm" variant="ghost" icon="i-lucide-plus" @click="go('new')">New record</UButton>
+          <UButton size="sm" variant="ghost" icon="i-lucide-book-open" @click="go('articles')">Articles</UButton>
+          <UButton size="sm" variant="ghost" icon="i-lucide-flask-conical" @click="go('api-tester')">API</UButton>
+          <UButton size="sm" color="neutral" variant="outline" icon="i-lucide-log-out" @click="logout">Log out</UButton>
         </nav>
       </header>
 
-      <main class="sft-main">
+      <main class="sft-main" :class="{ 'sft-main-auth': isAuthView }">
         <div v-if="message" class="sft-message" :class="message.kind">{{ message.text }}</div>
 
       <section v-if="visibleView === 'login'" class="sft-panel sft-auth">
@@ -523,7 +516,7 @@ type View = "login" | "signup" | "dashboard" | "reports" | "new" | "detail" | "a
 type ApiProbeOptions = RequestInit & { raw?: boolean };
 
 const knownViews = new Set<View>(["login", "signup", "dashboard", "reports", "new", "detail", "articles", "article", "api-tester"]);
-const publicViews = new Set<View>(["login", "signup", "articles", "article"]);
+const publicViews = new Set<View>(["login", "signup"]);
 const storageKey = "sarcoma-fasttrack-wc";
 
 const token = ref("");
@@ -608,6 +601,7 @@ const apiRoot = computed(() => normalizeApiBase(props.apiBase));
 const isDoctor = computed(() => role.value === "doctor" || role.value === "admin");
 const isSpecialist = computed(() => role.value === "specialist" || role.value === "admin");
 const visibleView = computed<View>(() => (!token.value && !publicViews.has(view.value) ? "login" : view.value));
+const isAuthView = computed(() => visibleView.value === "login" || visibleView.value === "signup");
 const title = computed(() => {
   const labels: Record<View, string> = {
     login: "Login",
@@ -1137,6 +1131,19 @@ onUnmounted(() => {
 .sft-auth {
   max-width: 460px;
   margin-inline: auto;
+}
+
+.sft-main-auth {
+  min-height: max(640px, calc(100vh - 80px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.sft-main-auth .sft-auth,
+.sft-main-auth .sft-message {
+  width: min(100%, 460px);
 }
 
 .sft-hero {
