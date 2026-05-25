@@ -2,6 +2,7 @@
 import { ref, computed } from 'vue'
 import * as z from 'zod'
 import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui'
+import { definePageMeta, useRouter, useToast } from '#imports'
 import { useApiClient } from '~/services/apiClient'
 import { useAuthStore } from '~/stores/auth'
 

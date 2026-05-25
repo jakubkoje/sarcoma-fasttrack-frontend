@@ -1,5 +1,7 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
+import { publicAsset, useRoute, useRouter } from '#imports'
 import { useAuthStore } from '~/stores/auth'
 
 const router = useRouter()
@@ -150,12 +152,12 @@ const handleLogout = () => {
 </script>
 
 <template>
-  <UApp>
+  <UApp :portal="false">
     <UHeader title="Sarkom FastTrack" :toggle="{ color: 'neutral', variant: 'ghost' }">
       <template #title>
         <NuxtLink :to="isAuthenticated ? '/dashboard' : '/'" class="flex items-center gap-2 lg:gap-3 hover:opacity-80 transition-opacity">
           <img
-            src="/sarkom-logo.png"
+            :src="publicAsset('sarkom-logo.png')"
             alt="Sarkom FastTrack Logo"
             class="h-8 lg:h-10 w-auto object-contain"
           />

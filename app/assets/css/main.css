@@ -2,17 +2,29 @@
 @import "@nuxt/ui";
 
 @theme static {
-    --color-primary-50: #ecfdf5;
-    --color-primary-100: #ccfbf1;
-    --color-primary-200: #99f6e4;
-    --color-primary-300: #5eead4;
-    --color-primary-400: #2dd4bf;
-    --color-primary-500: #14b8a6;
-    --color-primary-600: #0d9488;
-    --color-primary-700: #0f766e;
-    --color-primary-800: #115e59;
-    --color-primary-900: #134e4a;
-    --color-primary-950: #042f2e;
+    --color-green-50: #fdf4f9;
+    --color-green-100: #fce8f3;
+    --color-green-200: #fad1e8;
+    --color-green-300: #f6acd4;
+    --color-green-400: #ef7bb7;
+    --color-green-500: #D89FC4;
+    --color-green-600: #c67aa8;
+    --color-green-700: #a8608a;
+    --color-green-800: #8b5172;
+    --color-green-900: #73455f;
+    --color-green-950: #462738;
+
+    --color-primary-50: #fdf4f9;
+    --color-primary-100: #fce8f3;
+    --color-primary-200: #fad1e8;
+    --color-primary-300: #f6acd4;
+    --color-primary-400: #ef7bb7;
+    --color-primary-500: #D89FC4;
+    --color-primary-600: #c67aa8;
+    --color-primary-700: #a8608a;
+    --color-primary-800: #8b5172;
+    --color-primary-900: #73455f;
+    --color-primary-950: #462738;
 
     /* Ensure warning/yellow colors are defined */
     --color-yellow-50: #fefce8;

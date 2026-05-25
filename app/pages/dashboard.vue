@@ -177,9 +177,11 @@
 </template>
 
 <script setup lang="ts">
+import { computed, onMounted, ref } from 'vue'
 import { useAuthStore } from '~/stores/auth'
 import { useApiClient } from '~/services/apiClient'
 import type { ArticleRead, ReportRead } from '~/types/api'
+import { definePageMeta } from '#imports'
 
 definePageMeta({
   layout: 'default',

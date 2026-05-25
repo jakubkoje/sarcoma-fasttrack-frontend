@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
-import { useToast } from '#imports'
+import { definePageMeta, useToast } from '#imports'
 import { useApiClient } from '~/services/apiClient'
 import type { OrganizationCreate, OrganizationRead, OrganizationUpdate } from '~/types/api'
 

@@ -17,6 +17,7 @@ export const wcRootTags = [
   "sarcoma-fasttrack-report-detail",
   "sarcoma-fasttrack-articles",
   "sarcoma-fasttrack-article-detail",
+  "sarcoma-fasttrack-centers",
   "sarcoma-fasttrack-api-tester",
 ];
 
@@ -176,6 +177,7 @@ export function pathToView(pathname, basePath = "") {
   if (clean === "new" || clean === "sarcoma-form") return { view: "new" };
   if (clean === "reports") return { view: "reports" };
   if (clean === "clanky" || clean === "articles") return { view: "articles" };
+  if (clean === "centers" || clean === "admin/organizations") return { view: "centers" };
   if (clean === "api-tester") return { view: "api-tester" };
   const match = clean.match(/^reports\/(\d+)$/);
   if (match) return { view: "detail", reportId: Number(match[1]) };
@@ -193,6 +195,7 @@ export function viewToPath(view, detailId) {
   if (view === "detail") return `reports/${detailId || ""}`.replace(/\/$/, "");
   if (view === "articles") return "clanky";
   if (view === "article") return `clanky/${detailId || "0"}`;
+  if (view === "centers") return "admin/organizations";
   if (view === "api-tester") return "api-tester";
   return "dashboard";
 }

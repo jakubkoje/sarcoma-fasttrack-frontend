@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
+import { definePageMeta, navigateTo } from '#imports'
+
 // Redirect root to dashboard
 definePageMeta({
   layout: 'default'

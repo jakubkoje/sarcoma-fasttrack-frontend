@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from 'vue'
-import { useRoute, useRouter, useToast } from '#imports'
+import { definePageMeta, useRoute, useRouter, useToast } from '#imports'
 import { useApiClient } from '~/services/apiClient'
 import type { ArticleCreate, ArticleUpdate } from '~/types/api'
 

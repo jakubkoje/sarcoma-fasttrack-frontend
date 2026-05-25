@@ -1,3 +1,6 @@
+import { computed } from 'vue'
+import { navigateTo, useCookie } from '#imports'
+
 export function useAuthStore() {
   const token = useCookie<string | null>('auth_token', {
     default: () => null,

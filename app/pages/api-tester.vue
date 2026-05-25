@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
+import { definePageMeta } from '#imports'
 import { useApiClient } from '~/services/apiClient'
 import type { UserRole } from '~/types/api'
 

@@ -3,6 +3,7 @@ import { computed, onMounted, ref } from 'vue'
 import { useApiClient } from '~/services/apiClient'
 import { useAuthStore } from '~/stores/auth'
 import type { ArticleRead } from '~/types/api'
+import { definePageMeta, useRouter } from '#imports'
 
 definePageMeta({
   layout: 'default',

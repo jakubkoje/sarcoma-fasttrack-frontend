@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { reactive } from 'vue'
 import * as z from 'zod'
 import type { FormSubmitEvent } from '#ui/types'
+import { definePageMeta } from '#imports'
 
 definePageMeta({
   layout: false

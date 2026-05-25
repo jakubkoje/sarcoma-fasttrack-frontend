@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { useRoute, useRouter, useToast } from '#imports'
+import { definePageMeta, useRoute, useRouter, useToast } from '#imports'
 import { useApiClient } from '~/services/apiClient'
 import { useAuthStore } from '~/stores/auth'
 import type { ArticleRead, ArticleStatus } from '~/types/api'

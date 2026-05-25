@@ -26,6 +26,10 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      "~": fileURLToPath(new URL("./app", import.meta.url)),
+      "@": fileURLToPath(new URL("./app", import.meta.url)),
+      "#imports": fileURLToPath(new URL("./app/components/nuxt-wc-runtime.ts", import.meta.url)),
+      "#ui/types": fileURLToPath(new URL("./node_modules/@nuxt/ui/dist/types.d.mts", import.meta.url)),
       "@iconify/vue": fileURLToPath(new URL("./app/components/local-iconify.js", import.meta.url)),
     },
   },
