@@ -1,5 +1,5 @@
-import { $fetch, type FetchError } from 'ofetch'
-import { useRuntimeConfig } from '#imports'
+import { $fetch, type FetchResponse } from 'ofetch'
+import { navigateTo, useRuntimeConfig } from '#imports'
 import { useAuthStore } from '~/stores/auth'
 import type {
   ArticleCreate,
@@ -39,9 +39,11 @@ export class ApiClient {
   private readonly apiPrefix = '/api/v1'
   private authToken: string | null = null
   private readonly tokenProvider?: () => string | null
+  private readonly onUnauthorized?: () => void
 
-  constructor(baseURL = '', tokenProvider?: () => string | null) {
+  constructor(baseURL = '', tokenProvider?: () => string | null, onUnauthorized?: () => void) {
     this.tokenProvider = tokenProvider
+    this.onUnauthorized = onUnauthorized
     this.client = $fetch.create({
       baseURL,
       onRequest: ({ options }) => {
@@ -52,8 +54,12 @@ export class ApiClient {
           options.headers = headers
         }
       },
-      onResponseError: ({ error }) => {
-        throw this.normalizeError(error)
+      onResponseError: ({ request, response }) => {
+        const apiError = this.normalizeResponseError(response)
+        if (response.status === 401 && !String(request).includes('/auth/login')) {
+          this.onUnauthorized?.()
+        }
+        throw apiError
       }
     })
   }
@@ -230,28 +236,38 @@ export class ApiClient {
     })
   }
 
-  private normalizeError(error: unknown): ApiError {
-    const fetchError = error as FetchError<HTTPValidationError> | undefined
-    const detailMessages = fetchError?.data?.detail?.map((item) => item.msg).filter(Boolean)
+  private normalizeResponseError(response?: FetchResponse<HTTPValidationError | { detail?: string; message?: string }>): ApiError {
+    const data = response?._data
+    const detail = data?.detail
+    const detailMessages = Array.isArray(detail)
+      ? detail.map((item) => item.msg).filter(Boolean)
+      : typeof detail === 'string'
+        ? [detail]
+        : undefined
     const message = detailMessages?.length
       ? detailMessages.join(', ')
-      : fetchError?.message || 'Request failed'
+      : data && 'message' in data && typeof data.message === 'string'
+        ? data.message
+        : response?.statusText || 'Request failed'
 
     return {
       message,
-      statusCode: fetchError?.response?.status,
-      details: fetchError?.data
+      statusCode: response?.status,
+      details: data
     }
   }
 }
 
-export function createApiClient(baseURL?: string, tokenProvider?: () => string | null) {
+export function createApiClient(baseURL?: string, tokenProvider?: () => string | null, onUnauthorized?: () => void) {
   const resolvedBase = baseURL ?? process.env.NUXT_PUBLIC_API_BASE ?? ''
-  return new ApiClient(resolvedBase, tokenProvider)
+  return new ApiClient(resolvedBase, tokenProvider, onUnauthorized)
 }
 
 export function useApiClient(baseURL?: string) {
   const config = useRuntimeConfig()
   const auth = useAuthStore()
-  return createApiClient(baseURL ?? config.public.apiBase, () => auth.token.value)
+  return createApiClient(baseURL ?? config.public.apiBase, () => auth.token.value, () => {
+    auth.clearToken()
+    navigateTo('/login', { replace: true })
+  })
 }

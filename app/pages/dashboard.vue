@@ -137,7 +137,7 @@
               <UCard class="overflow-hidden hover:shadow-xl transition-all h-full">
                 <div v-if="article.image_url" class="relative h-48 overflow-hidden">
                   <img
-                    :src="article.image_url"
+                    :src="publicAsset(safeLocalAsset(article.image_url))"
                     :alt="article.title"
                     class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
@@ -180,8 +180,9 @@
 import { computed, onMounted, ref } from 'vue'
 import { useAuthStore } from '~/stores/auth'
 import { useApiClient } from '~/services/apiClient'
+import { safeLocalAsset } from '~/components/sarcoma-wc-utils.js'
 import type { ArticleRead, ReportRead } from '~/types/api'
-import { definePageMeta } from '#imports'
+import { definePageMeta, publicAsset } from '#imports'
 
 definePageMeta({
   layout: 'default',

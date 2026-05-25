@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watchEffect } from 'vue'
 import type { NavigationMenuItem } from '@nuxt/ui'
 import { publicAsset, useRoute, useRouter } from '#imports'
 import { useAuthStore } from '~/stores/auth'
@@ -149,12 +149,18 @@ const formatTimestamp = (timestamp: string) => {
 const handleLogout = () => {
   logout()
 }
+
+watchEffect(() => {
+  if (!isAuthenticated.value && route.path !== '/login' && route.path !== '/signup') {
+    router.replace('/login')
+  }
+})
 </script>
 
 <template>
   <UApp :portal="false">
     <UHeader title="Sarkom FastTrack" :toggle="{ color: 'neutral', variant: 'ghost' }">
-      <template #title>
+      <template #left>
         <NuxtLink :to="isAuthenticated ? '/dashboard' : '/'" class="flex items-center gap-2 lg:gap-3 hover:opacity-80 transition-opacity">
           <img
             :src="publicAsset('sarkom-logo.png')"
@@ -172,7 +178,7 @@ const handleLogout = () => {
       <!-- Right slot for authenticated users -->
       <template #right v-if="isAuthenticated">
         <!-- Notifications Bell - Desktop Only -->
-        <UPopover v-model:open="isNotificationsOpen" :popper="{ placement: 'bottom-end' }" class="hidden lg:block">
+        <UPopover v-model:open="isNotificationsOpen" :portal="false" :popper="{ placement: 'bottom-end' }" class="hidden lg:block">
           <UButton
             color="neutral"
             variant="ghost"
@@ -429,7 +435,7 @@ const handleLogout = () => {
     </UHeader>
 
     <UMain class="overflow-x-hidden">
-      <slot />
+      <slot v-if="isAuthenticated" />
     </UMain>
   </UApp>
 </template>

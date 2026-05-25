@@ -165,6 +165,13 @@ export function patientDisplayName(patient) {
   return [first, last].filter(Boolean).join(" ").trim() || `#${patient.id}`;
 }
 
+export function safeLocalAsset(value, fallback = "sarkom-logo.png") {
+  if (!value) return fallback;
+  if (value.startsWith("data:")) return value;
+  if (/^(?:https?:)?\/\//.test(value)) return fallback;
+  return value.replace(/^\.\//, "");
+}
+
 export function pathToView(pathname, basePath = "") {
   const base = basePath || "";
   const relative = base && pathname.startsWith(base)

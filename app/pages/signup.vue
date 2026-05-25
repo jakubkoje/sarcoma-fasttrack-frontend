@@ -86,6 +86,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
                 <UInputMenu
                   v-model="state.role"
                   :items="roleOptions"
+                  :portal="false"
                   placeholder="Select your role..."
                   size="xl"
                   trailing-icon="i-lucide-chevron-down"

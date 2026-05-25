@@ -270,7 +270,7 @@ async function updateStatus(newStatus: string) {
               Report #{{ report.id }}
             </h1>
             <!-- Editable status for specialists and admins -->
-            <UPopover v-if="isSpecialist" :popper="{ placement: 'bottom-start' }">
+            <UPopover v-if="isSpecialist" :portal="false" :popper="{ placement: 'bottom-start' }">
               <div
                 v-if="statusLabels[report.status]"
                 :class="[

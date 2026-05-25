@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { definePageMeta, useRoute, useRouter, useToast } from '#imports'
+import { definePageMeta, publicAsset, useRoute, useRouter, useToast } from '#imports'
 import { useApiClient } from '~/services/apiClient'
 import { useAuthStore } from '~/stores/auth'
+import { safeLocalAsset } from '~/components/sarcoma-wc-utils.js'
 import type { ArticleRead, ArticleStatus } from '~/types/api'
 
 definePageMeta({
@@ -166,7 +167,7 @@ const statusBadgeColor = (status?: ArticleStatus): 'primary' | 'neutral' | 'warn
 
           <div v-if="article.author_name" class="flex items-center gap-4 py-6 border-y border-gray-200 dark:border-gray-800">
             <UAvatar
-              :src="article.author_avatar_url || undefined"
+              :src="article.author_avatar_url ? publicAsset(safeLocalAsset(article.author_avatar_url, 'sarkom-logo.png')) : undefined"
               :alt="article.author_name"
               size="xl"
             />
@@ -180,7 +181,7 @@ const statusBadgeColor = (status?: ArticleStatus): 'primary' | 'neutral' | 'warn
         </header>
 
         <div v-if="article.image_url" class="mb-12 rounded-2xl overflow-hidden shadow-lg">
-          <img :src="article.image_url" :alt="article.title" class="w-full h-auto object-cover" />
+          <img :src="publicAsset(safeLocalAsset(article.image_url))" :alt="article.title" class="w-full h-auto object-cover" />
         </div>
 
         <div class="mb-12">

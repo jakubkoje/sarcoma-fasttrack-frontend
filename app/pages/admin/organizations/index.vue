@@ -250,7 +250,7 @@ async function remove(org: OrganizationRead) {
       </UCard>
     </div>
 
-    <UModal v-model:open="isFormOpen" :ui="{ width: 'sm:max-w-2xl' }">
+    <UModal v-model:open="isFormOpen" :portal="false" :ui="{ width: 'sm:max-w-2xl' }">
       <template #content>
         <UCard>
           <template #header>

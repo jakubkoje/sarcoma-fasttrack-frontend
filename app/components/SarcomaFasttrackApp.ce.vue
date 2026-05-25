@@ -1,7 +1,9 @@
 <template>
   <div class="light sft-nuxt-wc">
-    <RouterView v-slot="{ Component, route }">
-      <component :is="Component" v-if="Component && route?.meta?.layout === false" />
+    <RouterView v-slot="{ Component }">
+      <UApp v-if="Component && isLayoutlessRoute" :portal="false">
+        <component :is="Component" />
+      </UApp>
       <DefaultLayout v-else-if="Component">
         <component :is="Component" />
       </DefaultLayout>
@@ -33,10 +35,18 @@ const props = withDefaults(defineProps<{
 const route = useRoute();
 const router = useRouter();
 const normalizedBasePath = computed(() => normalizeBasePath(props.basePath));
+const isLayoutlessRoute = computed(() => route.meta.layout === false || route.path === "/login" || route.path === "/signup");
 let syncingFromHost = false;
 let syncingToHost = false;
 
 watch(() => props.apiBase, (apiBase) => setRuntimeApiBase(apiBase), { immediate: true });
+watch(
+  () => [props.basePath, props.initialView, props.reportId, props.articleId],
+  () => {
+    void syncRouterFromHost(true);
+  },
+  { immediate: true },
+);
 
 function normalizeBasePath(value: string) {
   if (!value) return "";

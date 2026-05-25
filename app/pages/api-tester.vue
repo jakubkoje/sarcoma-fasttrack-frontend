@@ -242,7 +242,7 @@ const checkDbHealth = () => run('db health', () => client.dbHealth())
               <UInput v-model="userForm.password" type="password" placeholder="password" />
             </UFormGroup>
             <UFormGroup label="Role">
-              <USelect v-model="userForm.role" :options="['doctor','specialist','admin']" />
+              <USelect v-model="userForm.role" :options="['doctor','specialist','admin']" :portal="false" />
             </UFormGroup>
             <UFormGroup label="Organization ID">
               <UInput v-model="userForm.organization_id" placeholder="org id (optional)" />

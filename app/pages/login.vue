@@ -35,16 +35,17 @@ const formKey = ref(0)
 const fields = computed<AuthFormField[]>(() => [{
   name: 'email',
   type: 'email',
-  modelValue: selectedAccount.value.email,
+  defaultValue: selectedAccount.value.email,
   label: 'Email',
   placeholder: 'Enter your email',
-  required: false
+  required: true
 }, {
   name: 'password',
   label: 'Password',
-  modelValue: selectedAccount.value.password,
+  defaultValue: selectedAccount.value.password,
   type: 'password',
-  placeholder: 'Enter your password'
+  placeholder: 'Enter your password',
+  required: true
 }, {
   name: 'remember',
   label: 'Remember me',
@@ -106,7 +107,7 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
         :loading="isSubmitting"
         :error="errorMessage"
         :submit="{ label: 'Log in', block: true }"
-        @submit="onSubmit"
+        :on-submit="onSubmit"
       >
         <template #description>
           <div class="space-y-4">
@@ -115,6 +116,7 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
               <USelect
                 v-model="selectedAccountId"
                 :items="testAccounts.map((a) => ({ label: a.label, value: a.id }))"
+                :portal="false"
                 trailing-icon="i-lucide-chevron-down"
                 class="w-full"
                 @update:model-value="onAccountChange"

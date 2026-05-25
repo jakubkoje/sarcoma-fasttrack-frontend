@@ -66,8 +66,6 @@ router.beforeEach((to) => {
   }
 });
 
-void router.replace("/dashboard");
-
 function readStoredAuthToken() {
   return readStoredString("auth_token");
 }
@@ -111,6 +109,9 @@ function configureApp(app: any) {
   app.use(router);
   app.component("NuxtLink", RouterLink);
   app.component("NuxtRouteAnnouncer", { template: "" });
+  app.component("ULoadingIcon", {
+    template: '<span class="i-lucide-loader-circle animate-spin" aria-hidden="true" />',
+  });
 }
 
 const uiColors: Record<string, string> = {
@@ -182,6 +183,10 @@ function generateColorsCss(): string {
   }
   .dark {
   ${darkColors}
+  }
+  [data-reka-popper-content-wrapper],
+  [data-reka-teleport-wrapper] {
+    z-index: 1000 !important;
   }
 }`;
 }

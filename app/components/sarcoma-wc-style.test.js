@@ -11,14 +11,15 @@ const runtimeSource = readFileSync(resolve(here, "nuxt-wc-runtime.ts"), "utf8");
 const themeSource = readFileSync(resolve(here, "../assets/css/main.css"), "utf8");
 const layoutSource = readFileSync(resolve(here, "../layouts/default.vue"), "utf8");
 const loginSource = readFileSync(resolve(here, "../pages/login.vue"), "utf8");
+const formSource = readFileSync(resolve(here, "../pages/sarcoma-form.vue"), "utf8");
 const dashboardSource = readFileSync(resolve(here, "../pages/dashboard.vue"), "utf8");
 const viteSource = readFileSync(resolve(here, "../../vite.config.ts"), "utf8");
 const copyScriptSource = readFileSync(resolve(here, "../../scripts/copy-wc-test.mjs"), "utf8");
 const testHtmlSource = readFileSync(resolve(here, "../../test.html"), "utf8");
 
 test("web component hosts the real Nuxt route tree", () => {
-  assert.match(componentSource, /<RouterView\s+v-slot="\{ Component, route \}">/);
-  assert.match(componentSource, /v-if="Component && route\?\.meta\?\.layout === false"/);
+  assert.match(componentSource, /<RouterView\s+v-slot="\{ Component \}">/);
+  assert.match(componentSource, /<UApp v-if="Component && isLayoutlessRoute" :portal="false">/);
   assert.match(componentSource, /<DefaultLayout v-else-if="Component">/);
   assert.match(entrySource, /import DashboardPage from "\.\.\/pages\/dashboard\.vue"/);
   assert.match(entrySource, /import ReportsPage from "\.\.\/pages\/reports\/index\.vue"/);
@@ -28,6 +29,9 @@ test("web component hosts the real Nuxt route tree", () => {
   assert.match(entrySource, /app\.component\("NuxtLink", RouterLink\)/);
   assert.match(entrySource, /"sarcoma-fasttrack-centers": "centers"/);
   assert.match(componentSource, /watch\(\(\) => props\.apiBase, \(apiBase\) => setRuntimeApiBase\(apiBase\), \{ immediate: true \}\)/);
+  assert.match(componentSource, /isLayoutlessRoute = computed\(\(\) => route\.meta\.layout === false \|\| route\.path === "\/login"/);
+  assert.match(componentSource, /\[props\.basePath, props\.initialView, props\.reportId, props\.articleId\]/);
+  assert.doesNotMatch(entrySource, /router\.replace\("\/dashboard"\)/);
   assert.ok(
     componentSource.indexOf("setRuntimeApiBase(apiBase)") < componentSource.indexOf("onMounted(async"),
     "api-base must be copied into the runtime before routed pages create API clients",
@@ -42,6 +46,9 @@ test("web component provides the Nuxt runtime pieces used by the pages", () => {
   assert.match(runtimeSource, /export function useRuntimeConfig\(\)/);
   assert.match(runtimeSource, /export function setRuntimeRouter\(router/);
   assert.match(runtimeSource, /export function useCookie<T>/);
+  assert.match(runtimeSource, /const stateKey = `cookie:\$\{name\}`/);
+  assert.match(runtimeSource, /stateMap\.has\(stateKey\)/);
+  assert.match(runtimeSource, /readStoredValue<T>\(storageKey, name\)/);
   assert.match(runtimeSource, /apiBase:\s*""/);
   assert.match(runtimeSource, /const router = runtimeRouter \?\? useRouter\(\)/);
   assert.match(runtimeSource, /export function definePageMeta/);
@@ -70,12 +77,21 @@ test("web component enforces auth in its standalone router", () => {
 test("web component reuses Nuxt auth and content shells", () => {
   assert.match(layoutSource, /<UApp\s+:portal="false">/);
   assert.match(layoutSource, /<UHeader title="Sarkom FastTrack"/);
+  assert.match(layoutSource, /<template #left>/);
+  assert.match(layoutSource, /watchEffect\(\(\) => \{/);
+  assert.match(layoutSource, /router\.replace\('\/login'\)/);
+  assert.match(layoutSource, /<slot v-if="isAuthenticated" \/>/);
   assert.match(layoutSource, /<UNavigationMenu v-if="isAuthenticated" :items="items"/);
   assert.match(layoutSource, /:src="publicAsset\('sarkom-logo\.png'\)"/);
   assert.match(loginSource, /<UAuthForm/);
+  assert.match(loginSource, /:on-submit="onSubmit"/);
+  assert.match(loginSource, /defaultValue: selectedAccount\.value\.email/);
+  assert.match(loginSource, /<USelect[\s\S]*:portal="false"/);
+  assert.match(formSource, /<UInputMenu[\s\S]*:portal="false"/);
   assert.match(loginSource, /The application is intended for healthcare professionals\./);
   assert.match(dashboardSource, /Quick overview of all sarcoma cases/);
   assert.match(dashboardSource, /Expert articles on sarcomas/);
+  assert.match(entrySource, /app\.component\("ULoadingIcon"/);
   assert.doesNotMatch(componentSource, /class="sft-auth-screen"/);
   assert.doesNotMatch(componentSource, /class="sft-stat-grid/);
   assert.match(copyScriptSource, /"\/sarcoma-fasttrack\.js"/);
@@ -87,5 +103,6 @@ test("web component owns stable clinical color tokens", () => {
   assert.match(themeSource, /--color-green-500:\s*#D89FC4/i);
   assert.match(entrySource, /500:\s*"#D89FC4"/);
   assert.match(entrySource, /`--ui-\$\{key\}: var\(--ui-color-\$\{key\}-500\);`/);
+  assert.match(entrySource, /\[data-reka-popper-content-wrapper\]/);
   assert.match(componentSource, /background:\s*#ffffff;/);
 });

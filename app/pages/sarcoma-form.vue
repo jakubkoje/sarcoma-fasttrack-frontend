@@ -433,6 +433,7 @@ const submitForm = async () => {
                 <UInputMenu
                   v-model="formData.careCenter"
                   :items="careCenters"
+                  :portal="false"
                   value-key="value"
                   placeholder="Select a center..."
                   size="lg"
@@ -577,6 +578,7 @@ const submitForm = async () => {
                       <USelect
                         v-model="formData.insurance"
                         :items="insuranceCompanies"
+                        :portal="false"
                         placeholder="Select an insurance company"
                         size="lg"
                       />
@@ -1068,6 +1070,7 @@ const submitForm = async () => {
                       <UInputMenu
                         v-model="formData.mkn10"
                         :items="mkn10Options"
+                        :portal="false"
                         value-key="value"
                         placeholder="Select a diagnosis..."
                         size="lg"

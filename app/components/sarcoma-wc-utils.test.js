@@ -5,6 +5,7 @@ import {
   normalizeApiBase,
   patientDisplayName,
   pathToView,
+  safeLocalAsset,
   statusLabels,
   viewToPath,
   wcRootTags,
@@ -21,6 +22,13 @@ test("patientDisplayName uses legacy and FHIR names", () => {
   assert.equal(patientDisplayName({ id: 7, first_name: "Ján", last_name: "Novák" }), "Ján Novák");
   assert.equal(patientDisplayName({ id: 8, given_name: "Eva", family_name: "Malá" }), "Eva Malá");
   assert.equal(patientDisplayName({ id: 9 }), "#9");
+});
+
+test("safeLocalAsset keeps API-provided images inside the web component bundle", () => {
+  assert.equal(safeLocalAsset("https://example.com/image.jpg"), "sarkom-logo.png");
+  assert.equal(safeLocalAsset("//example.com/image.jpg"), "sarkom-logo.png");
+  assert.equal(safeLocalAsset("./mou-logo.jpg"), "mou-logo.jpg");
+  assert.equal(safeLocalAsset("data:image/png;base64,abc"), "data:image/png;base64,abc");
 });
 
 test("pathToView maps host paths to internal custom element views", () => {

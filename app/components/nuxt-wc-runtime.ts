@@ -150,9 +150,15 @@ export function navigateTo(to: string, options: { replace?: boolean } = {}) {
 }
 
 export function useCookie<T>(name: string, options: { default?: () => T } = {}): Ref<T> {
+  const stateKey = `cookie:${name}`;
+  if (stateMap.has(stateKey)) {
+    return stateMap.get(stateKey) as Ref<T>;
+  }
+
   const storageKey = `sarcoma-fasttrack:${name}`;
-  const initialValue = readStoredValue<T>(storageKey) ?? (options.default ? options.default() : null as T);
+  const initialValue = readStoredValue<T>(storageKey, name) ?? (options.default ? options.default() : null as T);
   const state = ref(initialValue) as Ref<T>;
+  stateMap.set(stateKey, state as Ref<unknown>);
 
   watch(state, (value) => {
     if (typeof localStorage === "undefined" || typeof document === "undefined") return;
@@ -178,9 +184,20 @@ export function useToast() {
   };
 }
 
-function readStoredValue<T>(storageKey: string): T | null {
-  if (typeof localStorage === "undefined") return null;
-  const value = localStorage.getItem(storageKey);
+function readStoredValue<T>(storageKey: string, cookieName?: string): T | null {
+  let value: string | null = null;
+
+  if (typeof localStorage !== "undefined") {
+    value = localStorage.getItem(storageKey);
+  }
+
+  if (!value && cookieName && typeof document !== "undefined") {
+    const cookie = document.cookie
+      .split("; ")
+      .find((entry) => entry.startsWith(`${encodeURIComponent(cookieName)}=`));
+    value = cookie ? decodeURIComponent(cookie.split("=").slice(1).join("=")) : null;
+  }
+
   if (!value) return null;
   try {
     return JSON.parse(value) as T;
