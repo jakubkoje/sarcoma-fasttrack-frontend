@@ -16,6 +16,9 @@ const runtimeConfig: RuntimeConfig = {
 let publicAssetBase = new URL(/* @vite-ignore */ "./", import.meta.url).href;
 let runtimeRouter: Router | null = null;
 const stateMap = new Map<string, Ref<unknown>>();
+const storagePrefix = "sarcoma-fasttrack-wc";
+const legacyStoragePrefix = "sarcoma-fasttrack";
+const authCookieNames = new Set(["auth_token", "auth_role"]);
 const appConfig = {
   ui: {
     prefix: "",
@@ -149,28 +152,50 @@ export function navigateTo(to: string, options: { replace?: boolean } = {}) {
   return options.replace ? router.replace(to) : router.push(to);
 }
 
+export function clearLegacyAuthStorage() {
+  for (const name of authCookieNames) {
+    try {
+      if (typeof localStorage !== "undefined") {
+        localStorage.removeItem(`${legacyStoragePrefix}:${name}`);
+      }
+    } catch {
+      // Ignore blocked storage APIs. The router will still behave as unauthenticated.
+    }
+
+    expireCookie(name, "/");
+    expireCookie(name, "/fea");
+    expireCookie(name, "/fea/sarcoma-fasttrack");
+  }
+}
+
 export function useCookie<T>(name: string, options: { default?: () => T } = {}): Ref<T> {
   const stateKey = `cookie:${name}`;
   if (stateMap.has(stateKey)) {
     return stateMap.get(stateKey) as Ref<T>;
   }
 
-  const storageKey = `sarcoma-fasttrack:${name}`;
-  const initialValue = readStoredValue<T>(storageKey, name) ?? (options.default ? options.default() : null as T);
+  if (authCookieNames.has(name)) {
+    clearLegacyAuthStorage();
+  }
+
+  const storageKey = `${storagePrefix}:${name}`;
+  const initialValue = readStoredValue<T>(storageKey) ?? (options.default ? options.default() : null as T);
   const state = ref(initialValue) as Ref<T>;
   stateMap.set(stateKey, state as Ref<unknown>);
 
   watch(state, (value) => {
-    if (typeof localStorage === "undefined" || typeof document === "undefined") return;
+    if (authCookieNames.has(name)) {
+      clearLegacyAuthStorage();
+    }
+
+    if (typeof localStorage === "undefined") return;
     if (value === null || value === undefined || (value as unknown) === "") {
       localStorage.removeItem(storageKey);
-      document.cookie = `${encodeURIComponent(name)}=; Max-Age=0; path=/; SameSite=Lax`;
       return;
     }
 
     const serialized = JSON.stringify(value);
     localStorage.setItem(storageKey, serialized);
-    document.cookie = `${encodeURIComponent(name)}=${encodeURIComponent(serialized)}; path=/; SameSite=Lax`;
   }, { deep: true });
 
   return state;
@@ -184,18 +209,11 @@ export function useToast() {
   };
 }
 
-function readStoredValue<T>(storageKey: string, cookieName?: string): T | null {
+function readStoredValue<T>(storageKey: string): T | null {
   let value: string | null = null;
 
   if (typeof localStorage !== "undefined") {
     value = localStorage.getItem(storageKey);
-  }
-
-  if (!value && cookieName && typeof document !== "undefined") {
-    const cookie = document.cookie
-      .split("; ")
-      .find((entry) => entry.startsWith(`${encodeURIComponent(cookieName)}=`));
-    value = cookie ? decodeURIComponent(cookie.split("=").slice(1).join("=")) : null;
   }
 
   if (!value) return null;
@@ -215,6 +233,11 @@ function normalizePublicAssetBase(base: string) {
     }
     return new URL(/* @vite-ignore */ "./", import.meta.url).href;
   }
+}
+
+function expireCookie(name: string, path: string) {
+  if (typeof document === "undefined") return;
+  document.cookie = `${encodeURIComponent(name)}=; Max-Age=0; path=${path}; SameSite=Lax`;
 }
 
 export { computed, useRoute, useRouter };

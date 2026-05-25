@@ -266,7 +266,7 @@ export function createApiClient(baseURL?: string, tokenProvider?: () => string |
 export function useApiClient(baseURL?: string) {
   const config = useRuntimeConfig()
   const auth = useAuthStore()
-  return createApiClient(baseURL ?? config.public.apiBase, () => auth.token.value, () => {
+  return createApiClient(baseURL ?? config.public.apiBase, () => auth.validToken.value, () => {
     auth.clearToken()
     navigateTo('/login', { replace: true })
   })

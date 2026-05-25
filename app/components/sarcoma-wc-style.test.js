@@ -49,7 +49,12 @@ test("web component provides the Nuxt runtime pieces used by the pages", () => {
   assert.match(runtimeSource, /export function useCookie<T>/);
   assert.match(runtimeSource, /const stateKey = `cookie:\$\{name\}`/);
   assert.match(runtimeSource, /stateMap\.has\(stateKey\)/);
-  assert.match(runtimeSource, /readStoredValue<T>\(storageKey, name\)/);
+  assert.match(runtimeSource, /const storagePrefix = "sarcoma-fasttrack-wc"/);
+  assert.match(runtimeSource, /export function clearLegacyAuthStorage\(\)/);
+  assert.match(runtimeSource, /localStorage\.removeItem\(`\$\{legacyStoragePrefix\}:\$\{name\}`\)/);
+  assert.match(runtimeSource, /expireCookie\(name, "\/"\)/);
+  assert.match(runtimeSource, /readStoredValue<T>\(storageKey\)/);
+  assert.doesNotMatch(runtimeSource, /document\.cookie = `\$\{encodeURIComponent\(name\)\}=\$\{encodeURIComponent\(serialized\)\}/);
   assert.match(runtimeSource, /apiBase:\s*""/);
   assert.match(runtimeSource, /const router = runtimeRouter \?\? useRouter\(\)/);
   assert.match(runtimeSource, /export function definePageMeta/);
@@ -69,11 +74,14 @@ test("web component provides the Nuxt runtime pieces used by the pages", () => {
 test("web component enforces auth in its standalone router", () => {
   assert.match(entrySource, /router\.beforeEach\(\(to\) =>/);
   assert.match(entrySource, /useAuthStore\(\)/);
-  assert.match(entrySource, /auth\.token\.value \|\| readStoredAuthToken\(\)/);
+  assert.match(entrySource, /auth\.validToken\.value \|\| readStoredAuthToken\(\)/);
   assert.match(entrySource, /if \(!meta\.public && !isAuthenticated\) \{/);
   assert.match(entrySource, /return "\/login"/);
   assert.match(entrySource, /meta\.roles && role !== "admin"/);
   assert.match(entrySource, /readStoredString\("auth_token"\)/);
+  assert.match(entrySource, /const storageKey = `sarcoma-fasttrack-wc:\$\{name\}`/);
+  assert.match(entrySource, /isAccessTokenFresh\(token\) \? token : null/);
+  assert.doesNotMatch(entrySource, /document\.cookie\s*\n\s*\.split/);
   assert.match(entrySource, /setRuntimeRouter\(router\)/);
 });
 

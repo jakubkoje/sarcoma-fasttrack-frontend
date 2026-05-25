@@ -123,7 +123,7 @@ const fetchPatientName = async (id: number): Promise<string> => {
 
   try {
     const baseURL = config.public.apiBase || ''
-    const token = auth.token.value
+    const token = auth.validToken.value
     const response = await $fetch<{ name: string }>(`/api/v1/patients/${id}/name`, {
       baseURL,
       headers: token ? { Authorization: `Bearer ${token}` } : {}
@@ -145,7 +145,7 @@ const fetchOrganizationName = async (id: number): Promise<string> => {
 
   try {
     const baseURL = config.public.apiBase || ''
-    const token = auth.token.value
+    const token = auth.validToken.value
     const response = await $fetch<{ name: string }>(`/api/v1/organizations/${id}/name`, {
       baseURL,
       headers: token ? { Authorization: `Bearer ${token}` } : {}

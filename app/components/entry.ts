@@ -3,9 +3,9 @@ import { createMemoryHistory, createRouter, RouterLink } from "vue-router";
 import colors from "tailwindcss/colors";
 import SarcomaFasttrackApp from "./SarcomaFasttrackApp.ce.vue";
 import cssText from "../assets/css/main.css?inline";
-import { setRuntimeRouter } from "./nuxt-wc-runtime";
+import { clearLegacyAuthStorage, setRuntimeRouter } from "./nuxt-wc-runtime";
 import { wcRootTags } from "./sarcoma-wc-utils.js";
-import { useAuthStore } from "../stores/auth";
+import { isAccessTokenFresh, useAuthStore } from "../stores/auth";
 import ApiTesterPage from "../pages/api-tester.vue";
 import ArticleDetailPage from "../pages/clanky/[id].vue";
 import ArticleEditorPage from "../pages/clanky/new.vue";
@@ -45,6 +45,8 @@ const router = createRouter({
   ],
 });
 
+clearLegacyAuthStorage();
+
 router.beforeEach((to) => {
   const meta = to.meta as SarcomaRouteMeta;
   const { token, role } = readAuthSnapshot();
@@ -71,7 +73,7 @@ function readAuthSnapshot() {
   try {
     const auth = useAuthStore();
     return {
-      token: auth.token.value || readStoredAuthToken(),
+      token: auth.validToken.value || readStoredAuthToken(),
       role: auth.role.value || readStoredRole(),
     };
   } catch {
@@ -83,7 +85,8 @@ function readAuthSnapshot() {
 }
 
 function readStoredAuthToken() {
-  return readStoredString("auth_token");
+  const token = readStoredString("auth_token");
+  return isAccessTokenFresh(token) ? token : null;
 }
 
 function readStoredRole() {
@@ -91,21 +94,14 @@ function readStoredRole() {
 }
 
 function readStoredString(name: string) {
-  const storageKey = `sarcoma-fasttrack:${name}`;
+  const storageKey = `sarcoma-fasttrack-wc:${name}`;
   try {
     if (typeof localStorage !== "undefined") {
       const value = localStorage.getItem(storageKey);
       if (value) return parseStoredString(value);
     }
   } catch {
-    // Fall back to the cookie written by the Nuxt-compatible useCookie shim.
-  }
-
-  if (typeof document !== "undefined") {
-    const cookie = document.cookie
-      .split("; ")
-      .find((entry) => entry.startsWith(`${encodeURIComponent(name)}=`));
-    if (cookie) return parseStoredString(decodeURIComponent(cookie.split("=").slice(1).join("=")));
+    return null;
   }
 
   return null;
