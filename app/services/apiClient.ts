@@ -50,6 +50,7 @@ export class ApiClient {
         const token = this.authToken ?? this.tokenProvider?.()
         if (token) {
           const headers = new Headers(options.headers as HeadersInit | undefined)
+          headers.set('X-Sarcoma-Token', token)
           headers.set('Authorization', `Bearer ${token}`)
           options.headers = headers
         }

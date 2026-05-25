@@ -112,6 +112,7 @@ test("web component reuses Nuxt auth and content shells", () => {
   assert.match(entrySource, /app\.component\("ULoadingIcon"/);
   assert.match(entrySource, /render: \(\) => h\("span"/);
   assert.doesNotMatch(entrySource, /template:/);
+  assert.match(readFileSync(resolve(here, "../services/apiClient.ts"), "utf8"), /headers\.set\('X-Sarcoma-Token', token\)/);
   assert.doesNotMatch(componentSource, /class="sft-auth-screen"/);
   assert.doesNotMatch(componentSource, /class="sft-stat-grid/);
   assert.match(copyScriptSource, /"\/sarcoma-fasttrack\.js"/);

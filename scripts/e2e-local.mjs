@@ -5,7 +5,7 @@ import { resolve } from "node:path";
 
 const port = Number(process.env.E2E_API_PORT || 18081);
 const apiBase = `http://127.0.0.1:${port}`;
-const backendDir = resolve(import.meta.dirname, "../../WAC-BE");
+const backendDir = resolve(import.meta.dirname, "../../sarcoma-fasttrack-api");
 
 const api = spawn("go", ["run", "./cmd/sarcoma-api-service"], {
   cwd: backendDir,

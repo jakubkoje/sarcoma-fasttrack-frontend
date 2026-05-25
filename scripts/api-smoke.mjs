@@ -36,8 +36,12 @@ const login = await request("/api/v1/auth/login", {
 assert.ok(login.access_token);
 
 const authHeaders = { Authorization: `Bearer ${login.access_token}` };
+const appTokenHeaders = { "X-Sarcoma-Token": login.access_token };
 const users = await request("/api/v1/users", { headers: authHeaders });
 assert.ok(users.some((user) => user.email === "admin@admin.com"));
+
+const customHeaderReports = await request("/api/v1/reports", { headers: appTokenHeaders });
+assert.ok(Array.isArray(customHeaderReports));
 
 const organizations = await request("/api/v1/organizations", { headers: authHeaders });
 assert.ok(organizations.some((organization) => organization.id === 14));

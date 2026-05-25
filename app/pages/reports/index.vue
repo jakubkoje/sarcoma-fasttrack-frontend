@@ -126,7 +126,7 @@ const fetchPatientName = async (id: number): Promise<string> => {
     const token = auth.validToken.value
     const response = await $fetch<{ name: string }>(`/api/v1/patients/${id}/name`, {
       baseURL,
-      headers: token ? { Authorization: `Bearer ${token}` } : {}
+      headers: token ? { 'X-Sarcoma-Token': token, Authorization: `Bearer ${token}` } : {}
     })
     const name = response?.name || `#${id}`
     patientNameCache.value.set(id, name)
@@ -148,7 +148,7 @@ const fetchOrganizationName = async (id: number): Promise<string> => {
     const token = auth.validToken.value
     const response = await $fetch<{ name: string }>(`/api/v1/organizations/${id}/name`, {
       baseURL,
-      headers: token ? { Authorization: `Bearer ${token}` } : {}
+      headers: token ? { 'X-Sarcoma-Token': token, Authorization: `Bearer ${token}` } : {}
     })
     const name = response?.name || `#${id}`
     organizationNameCache.value.set(id, name)
