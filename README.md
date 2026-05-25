@@ -19,7 +19,7 @@ Nuxt development mode:
 NUXT_PUBLIC_API_BASE=http://localhost:8000 mise exec -- npm run dev
 ```
 
-For the Web Component preview, run the Go API on `127.0.0.1:8000`. Vite proxies same-origin `/api`, `/health`, and `/openapi` requests to that API so a strict `default-src 'self'` CSP still allows login and API calls.
+For the Web Component preview, run the Go API on `127.0.0.1:8000`. Vite proxies same-origin `/api`, `/health`, `/openapi`, and the production-like `/sarcoma-fasttrack-api` prefix to that API so a strict `default-src 'self'` CSP still allows login and API calls.
 
 ## Web Component Build
 
@@ -76,6 +76,7 @@ Example:
 ```html
 <sarcoma-fasttrack-app
   base-path="/sarcoma/"
+  api-base="/sarcoma-fasttrack-api"
   initial-view="dashboard"
 ></sarcoma-fasttrack-app>
 <script type="module" src="/sarcoma-fasttrack.js"></script>

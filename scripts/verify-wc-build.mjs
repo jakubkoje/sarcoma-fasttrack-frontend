@@ -32,5 +32,6 @@ assert.ok(bundle.includes("Sarkom FastTrack"), "bundle does not include the real
 const html = await readFile(htmlPath, "utf8");
 assert.ok(html.includes("sarcoma-fasttrack-app"), "dist/index.html does not mount the main component");
 assert.ok(html.includes("sarcoma-fasttrack.js"), "dist/index.html does not load the WC bundle");
+assert.ok(html.includes('api-base="/sarcoma-fasttrack-api"'), "dist/index.html does not exercise the production API prefix");
 
 console.log(`WC build verified: ${wcRootTags.length} root elements, ${bundleStat.size} bytes`);

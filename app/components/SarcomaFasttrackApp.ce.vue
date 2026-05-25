@@ -36,6 +36,8 @@ const normalizedBasePath = computed(() => normalizeBasePath(props.basePath));
 let syncingFromHost = false;
 let syncingToHost = false;
 
+watch(() => props.apiBase, (apiBase) => setRuntimeApiBase(apiBase), { immediate: true });
+
 function normalizeBasePath(value: string) {
   if (!value) return "";
   const withSlashes = `/${value.replace(/^\/+|\/+$/g, "")}/`;
@@ -92,7 +94,6 @@ function handlePopState() {
 }
 
 onMounted(async () => {
-  setRuntimeApiBase(props.apiBase);
   setPublicAssetBase(new URL(/* @vite-ignore */ "./", import.meta.url).href);
   await syncRouterFromHost(true);
   window.addEventListener("popstate", handlePopState);

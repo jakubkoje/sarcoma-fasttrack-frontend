@@ -27,10 +27,15 @@ test("web component hosts the real Nuxt route tree", () => {
   assert.match(entrySource, /\{ path: "\/login", component: LoginPage, meta: \{ layout: false, public: true, guestOnly: true \} \}/);
   assert.match(entrySource, /app\.component\("NuxtLink", RouterLink\)/);
   assert.match(entrySource, /"sarcoma-fasttrack-centers": "centers"/);
-  assert.match(componentSource, /setRuntimeApiBase\(props\.apiBase\)/);
+  assert.match(componentSource, /watch\(\(\) => props\.apiBase, \(apiBase\) => setRuntimeApiBase\(apiBase\), \{ immediate: true \}\)/);
+  assert.ok(
+    componentSource.indexOf("setRuntimeApiBase(apiBase)") < componentSource.indexOf("onMounted(async"),
+    "api-base must be copied into the runtime before routed pages create API clients",
+  );
   assert.match(componentSource, /setPublicAssetBase/);
   assert.match(copyScriptSource, /"\/sarcoma-fasttrack\.js"/);
   assert.doesNotMatch(testHtmlSource, /api-base="http:\/\/localhost:8000"/);
+  assert.match(testHtmlSource, /api-base="\/sarcoma-fasttrack-api"/);
 });
 
 test("web component provides the Nuxt runtime pieces used by the pages", () => {
@@ -48,6 +53,8 @@ test("web component provides the Nuxt runtime pieces used by the pages", () => {
   assert.match(viteSource, /"#imports": fileURLToPath\(new URL\("\.\/app\/components\/nuxt-wc-runtime\.ts"/);
   assert.match(viteSource, /preview:\s*\{\s*proxy:/);
   assert.match(viteSource, /"\/api": apiProxy/);
+  assert.match(viteSource, /"\/sarcoma-fasttrack-api": prefixedApiProxy/);
+  assert.ok(viteSource.includes('path.replace(/^\\/sarcoma-fasttrack-api(?=\\/|$)/, "")'));
   assert.match(testHtmlSource, /connect-src 'self'/);
 });
 

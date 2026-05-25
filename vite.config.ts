@@ -8,6 +8,11 @@ const apiProxy = {
   target: apiProxyTarget,
   changeOrigin: true,
 };
+const prefixedApiProxy = {
+  target: apiProxyTarget,
+  changeOrigin: true,
+  rewrite: (path: string) => path.replace(/^\/sarcoma-fasttrack-api(?=\/|$)/, "") || "/",
+};
 
 export default defineConfig({
   plugins: [
@@ -35,6 +40,7 @@ export default defineConfig({
       "/api": apiProxy,
       "/health": apiProxy,
       "/openapi": apiProxy,
+      "/sarcoma-fasttrack-api": prefixedApiProxy,
     },
   },
   preview: {
@@ -42,6 +48,7 @@ export default defineConfig({
       "/api": apiProxy,
       "/health": apiProxy,
       "/openapi": apiProxy,
+      "/sarcoma-fasttrack-api": prefixedApiProxy,
     },
   },
   resolve: {
