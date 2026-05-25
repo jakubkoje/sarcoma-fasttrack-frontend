@@ -10,11 +10,11 @@ import {
   wcRootTags,
 } from "./sarcoma-wc-utils.js";
 
-test("normalizeApiBase strips trailing slash and falls back to local API", () => {
+test("normalizeApiBase strips trailing slash and supports same-origin API calls", () => {
   assert.equal(normalizeApiBase("http://localhost:8000/"), "http://localhost:8000");
   assert.equal(normalizeApiBase("/sarcoma-fasttrack-api/"), "/sarcoma-fasttrack-api");
   assert.equal(normalizeApiBase("/"), "");
-  assert.equal(normalizeApiBase(""), "http://localhost:8000");
+  assert.equal(normalizeApiBase(""), "");
 });
 
 test("patientDisplayName uses legacy and FHIR names", () => {

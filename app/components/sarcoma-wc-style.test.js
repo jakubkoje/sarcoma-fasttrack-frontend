@@ -14,6 +14,7 @@ const loginSource = readFileSync(resolve(here, "../pages/login.vue"), "utf8");
 const dashboardSource = readFileSync(resolve(here, "../pages/dashboard.vue"), "utf8");
 const viteSource = readFileSync(resolve(here, "../../vite.config.ts"), "utf8");
 const copyScriptSource = readFileSync(resolve(here, "../../scripts/copy-wc-test.mjs"), "utf8");
+const testHtmlSource = readFileSync(resolve(here, "../../test.html"), "utf8");
 
 test("web component hosts the real Nuxt route tree", () => {
   assert.match(componentSource, /<RouterView\s+v-slot="\{ Component, route \}">/);
@@ -29,12 +30,14 @@ test("web component hosts the real Nuxt route tree", () => {
   assert.match(componentSource, /setRuntimeApiBase\(props\.apiBase\)/);
   assert.match(componentSource, /setPublicAssetBase/);
   assert.match(copyScriptSource, /"\/sarcoma-fasttrack\.js"/);
+  assert.doesNotMatch(testHtmlSource, /api-base="http:\/\/localhost:8000"/);
 });
 
 test("web component provides the Nuxt runtime pieces used by the pages", () => {
   assert.match(runtimeSource, /export function useRuntimeConfig\(\)/);
   assert.match(runtimeSource, /export function setRuntimeRouter\(router/);
   assert.match(runtimeSource, /export function useCookie<T>/);
+  assert.match(runtimeSource, /apiBase:\s*""/);
   assert.match(runtimeSource, /const router = runtimeRouter \?\? useRouter\(\)/);
   assert.match(runtimeSource, /export function definePageMeta/);
   assert.match(runtimeSource, /export function useState<T>/);
@@ -43,6 +46,9 @@ test("web component provides the Nuxt runtime pieces used by the pages", () => {
   assert.match(runtimeSource, /export \{ computed, useRoute, useRouter \}/);
   assert.match(runtimeSource, /new URL\(\/\* @vite-ignore \*\/ "\.\/", import\.meta\.url\)\.href/);
   assert.match(viteSource, /"#imports": fileURLToPath\(new URL\("\.\/app\/components\/nuxt-wc-runtime\.ts"/);
+  assert.match(viteSource, /preview:\s*\{\s*proxy:/);
+  assert.match(viteSource, /"\/api": apiProxy/);
+  assert.match(testHtmlSource, /connect-src 'self'/);
 });
 
 test("web component enforces auth in its standalone router", () => {

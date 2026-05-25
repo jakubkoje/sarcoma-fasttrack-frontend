@@ -9,7 +9,7 @@ type RuntimeConfig = {
 
 const runtimeConfig: RuntimeConfig = {
   public: {
-    apiBase: "http://localhost:8000",
+    apiBase: "",
   },
 };
 
@@ -59,7 +59,7 @@ watch(() => colorMode.preference, (preference) => {
 });
 
 export function setRuntimeApiBase(apiBase?: string) {
-  runtimeConfig.public.apiBase = apiBase || "http://localhost:8000";
+  runtimeConfig.public.apiBase = apiBase ?? "";
 }
 
 export function setRuntimeRouter(router: Router) {

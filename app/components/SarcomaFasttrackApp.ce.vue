@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<{
   reportId?: string | number;
   articleId?: string | number;
 }>(), {
-  apiBase: "http://localhost:8000",
+  apiBase: "",
   basePath: "",
   initialView: "dashboard",
   reportId: "",

@@ -2,12 +2,15 @@
 <html lang="cs">
   <head>
     <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; connect-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self'; font-src 'self' data:"
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sarcom FastTrack Web Component</title>
   </head>
   <body>
     <sarcoma-fasttrack-app
-      api-base="http://localhost:8000"
       base-path="/sarcoma/"
       initial-view="dashboard"
     ></sarcoma-fasttrack-app>

@@ -19,6 +19,8 @@ Nuxt development mode:
 NUXT_PUBLIC_API_BASE=http://localhost:8000 mise exec -- npm run dev
 ```
 
+For the Web Component preview, run the Go API on `127.0.0.1:8000`. Vite proxies same-origin `/api`, `/health`, and `/openapi` requests to that API so a strict `default-src 'self'` CSP still allows login and API calls.
+
 ## Web Component Build
 
 ```bash
@@ -63,7 +65,7 @@ The bundle registers one main app element and separate roots for every original 
 
 Common attributes:
 
-- `api-base` - backend base URL, default `http://localhost:8000`
+- `api-base` - backend base URL, default empty for same-origin `/api/v1` requests; production Polyfea passes `/sarcoma-fasttrack-api`
 - `base-path` - host route prefix used for pushState navigation
 - `initial-view` - one of `dashboard`, `login`, `signup`, `reports`, `new`, `detail`, `articles`, `article`, `api-tester`
 - `report-id` - initial report for detail roots
@@ -73,7 +75,6 @@ Example:
 
 ```html
 <sarcoma-fasttrack-app
-  api-base="http://localhost:8000"
   base-path="/sarcoma/"
   initial-view="dashboard"
 ></sarcoma-fasttrack-app>

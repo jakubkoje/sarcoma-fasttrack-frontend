@@ -3,6 +3,12 @@ import vue from "@vitejs/plugin-vue";
 import ui from "@nuxt/ui/vite";
 import { fileURLToPath, URL } from "node:url";
 
+const apiProxyTarget = process.env.SARCOMA_API_PROXY_TARGET || "http://127.0.0.1:8000";
+const apiProxy = {
+  target: apiProxyTarget,
+  changeOrigin: true,
+};
+
 export default defineConfig({
   plugins: [
     vue({
@@ -23,6 +29,20 @@ export default defineConfig({
       fileName: "sarcoma-fasttrack",
     },
     cssCodeSplit: false,
+  },
+  server: {
+    proxy: {
+      "/api": apiProxy,
+      "/health": apiProxy,
+      "/openapi": apiProxy,
+    },
+  },
+  preview: {
+    proxy: {
+      "/api": apiProxy,
+      "/health": apiProxy,
+      "/openapi": apiProxy,
+    },
   },
   resolve: {
     alias: {

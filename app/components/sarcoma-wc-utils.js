@@ -154,7 +154,7 @@ export const articles = [
 ];
 
 export function normalizeApiBase(value) {
-  const base = value || "http://localhost:8000";
+  const base = value || "";
   return base.endsWith("/") ? base.slice(0, -1) : base;
 }
 
