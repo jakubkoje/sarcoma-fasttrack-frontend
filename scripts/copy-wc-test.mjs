@@ -9,5 +9,5 @@ const html = await readFile(source, "utf8");
 await mkdir(dirname(target), { recursive: true });
 await writeFile(
   target,
-  html.replace("./dist/sarcoma-fasttrack.js", "./sarcoma-fasttrack.js"),
+  html.replace("./dist/sarcoma-fasttrack.js", "/sarcoma-fasttrack.js"),
 );
