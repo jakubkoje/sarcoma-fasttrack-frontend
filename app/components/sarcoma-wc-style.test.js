@@ -23,6 +23,8 @@ test("web component keeps its production layout centered", () => {
   assert.match(componentSource, /\.sft-auth\s*\{[\s\S]*margin-inline:\s*auto;/);
   assert.match(componentSource, /@media \(max-width: 760px\)[\s\S]*\.sft-nav\s*\{[\s\S]*grid-template-columns:\s*repeat\(2,\s*minmax\(0,\s*1fr\)\);[\s\S]*overflow:\s*visible;/);
   assert.match(componentSource, /@media \(max-width: 760px\)[\s\S]*\.sft-nav button\s*\{[\s\S]*white-space:\s*normal;/);
+  assert.match(componentSource, /\.sft-stat-icon\s*\{[\s\S]*display:\s*inline-flex;[\s\S]*align-items:\s*center;[\s\S]*justify-content:\s*center;/);
+  assert.match(componentSource, /\.sft-stat > span:not\(\.sft-stat-icon,\s*\.sft-click-badge\),[\s\S]*\.sft-stat small\s*\{/);
   assert.match(copyScriptSource, /"\/sarcoma-fasttrack\.js"/);
 });
 

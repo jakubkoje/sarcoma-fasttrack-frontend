@@ -1760,6 +1760,9 @@ button.sft-stat {
 }
 
 .sft-stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 3rem;
   height: 3rem;
   border-radius: 12px;
@@ -1770,6 +1773,11 @@ button.sft-stat {
 .sft-stat-icon.muted {
   background: #ccfbf1;
   color: var(--ui-primary);
+}
+
+.sft-stat .sft-stat-icon svg {
+  color: inherit;
+  stroke: currentColor;
 }
 
 .sft-click-badge {
@@ -1787,7 +1795,7 @@ button.sft-stat {
   font-weight: 700;
 }
 
-.sft-stat span,
+.sft-stat > span:not(.sft-stat-icon, .sft-click-badge),
 .sft-stat small {
   display: block;
   color: var(--ui-text-muted);
