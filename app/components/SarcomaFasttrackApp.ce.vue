@@ -2293,6 +2293,25 @@ button.sft-stat {
     align-items: stretch;
   }
 
+  .sft-nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    overflow: visible;
+  }
+
+  .sft-nav button {
+    width: 100%;
+    white-space: normal;
+    text-align: center;
+  }
+
+  .sft-header-actions {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+  }
+
   .sft-bars > div {
     grid-template-columns: 1fr;
   }
