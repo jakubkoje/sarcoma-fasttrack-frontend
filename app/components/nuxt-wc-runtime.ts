@@ -1,5 +1,5 @@
 import { computed, reactive, ref, watch, type Ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRoute, useRouter, type Router } from "vue-router";
 
 type RuntimeConfig = {
   public: {
@@ -13,7 +13,8 @@ const runtimeConfig: RuntimeConfig = {
   },
 };
 
-let publicAssetBase = "/";
+let publicAssetBase = new URL(/* @vite-ignore */ "./", import.meta.url).href;
+let runtimeRouter: Router | null = null;
 const stateMap = new Map<string, Ref<unknown>>();
 const appConfig = {
   ui: {
@@ -59,6 +60,10 @@ watch(() => colorMode.preference, (preference) => {
 
 export function setRuntimeApiBase(apiBase?: string) {
   runtimeConfig.public.apiBase = apiBase || "http://localhost:8000";
+}
+
+export function setRuntimeRouter(router: Router) {
+  runtimeRouter = router;
 }
 
 export function useRuntimeConfig() {
@@ -127,7 +132,7 @@ export function useState<T>(key: string, init: () => T): Ref<T> {
 }
 
 export function setPublicAssetBase(base: string) {
-  publicAssetBase = base;
+  publicAssetBase = normalizePublicAssetBase(base);
 }
 
 export function publicAsset(path: string) {
@@ -140,7 +145,7 @@ export function definePageMeta(_meta: Record<string, unknown>) {
 }
 
 export function navigateTo(to: string, options: { replace?: boolean } = {}) {
-  const router = useRouter();
+  const router = runtimeRouter ?? useRouter();
   return options.replace ? router.replace(to) : router.push(to);
 }
 
@@ -181,6 +186,17 @@ function readStoredValue<T>(storageKey: string): T | null {
     return JSON.parse(value) as T;
   } catch {
     return value as T;
+  }
+}
+
+function normalizePublicAssetBase(base: string) {
+  try {
+    return new URL(base).href;
+  } catch {
+    if (typeof document !== "undefined") {
+      return new URL(base, document.baseURI).href;
+    }
+    return new URL(/* @vite-ignore */ "./", import.meta.url).href;
   }
 }
 

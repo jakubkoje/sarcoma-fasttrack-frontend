@@ -23,7 +23,7 @@ test("web component hosts the real Nuxt route tree", () => {
   assert.match(entrySource, /import ReportsPage from "\.\.\/pages\/reports\/index\.vue"/);
   assert.match(entrySource, /import SarcomaFormPage from "\.\.\/pages\/sarcoma-form\.vue"/);
   assert.match(entrySource, /import OrganizationsPage from "\.\.\/pages\/admin\/organizations\/index\.vue"/);
-  assert.match(entrySource, /\{ path: "\/login", component: LoginPage, meta: \{ layout: false \} \}/);
+  assert.match(entrySource, /\{ path: "\/login", component: LoginPage, meta: \{ layout: false, public: true, guestOnly: true \} \}/);
   assert.match(entrySource, /app\.component\("NuxtLink", RouterLink\)/);
   assert.match(entrySource, /"sarcoma-fasttrack-centers": "centers"/);
   assert.match(componentSource, /setRuntimeApiBase\(props\.apiBase\)/);
@@ -33,14 +33,25 @@ test("web component hosts the real Nuxt route tree", () => {
 
 test("web component provides the Nuxt runtime pieces used by the pages", () => {
   assert.match(runtimeSource, /export function useRuntimeConfig\(\)/);
+  assert.match(runtimeSource, /export function setRuntimeRouter\(router/);
   assert.match(runtimeSource, /export function useCookie<T>/);
-  assert.match(runtimeSource, /export function navigateTo/);
+  assert.match(runtimeSource, /const router = runtimeRouter \?\? useRouter\(\)/);
   assert.match(runtimeSource, /export function definePageMeta/);
   assert.match(runtimeSource, /export function useState<T>/);
   assert.match(runtimeSource, /export function useAppConfig\(\)/);
   assert.match(runtimeSource, /export function useColorMode\(\)/);
   assert.match(runtimeSource, /export \{ computed, useRoute, useRouter \}/);
+  assert.match(runtimeSource, /new URL\(\/\* @vite-ignore \*\/ "\.\/", import\.meta\.url\)\.href/);
   assert.match(viteSource, /"#imports": fileURLToPath\(new URL\("\.\/app\/components\/nuxt-wc-runtime\.ts"/);
+});
+
+test("web component enforces auth in its standalone router", () => {
+  assert.match(entrySource, /router\.beforeEach\(\(to\) =>/);
+  assert.match(entrySource, /if \(!meta\.public && !isAuthenticated\) \{/);
+  assert.match(entrySource, /return "\/login"/);
+  assert.match(entrySource, /meta\.roles && role !== "admin"/);
+  assert.match(entrySource, /readStoredString\("auth_token"\)/);
+  assert.match(entrySource, /setRuntimeRouter\(router\)/);
 });
 
 test("web component reuses Nuxt auth and content shells", () => {

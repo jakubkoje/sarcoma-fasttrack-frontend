@@ -3,6 +3,7 @@ import { createMemoryHistory, createRouter, RouterLink } from "vue-router";
 import colors from "tailwindcss/colors";
 import SarcomaFasttrackApp from "./SarcomaFasttrackApp.ce.vue";
 import cssText from "../assets/css/main.css?inline";
+import { setRuntimeRouter } from "./nuxt-wc-runtime";
 import { wcRootTags } from "./sarcoma-wc-utils.js";
 import ApiTesterPage from "../pages/api-tester.vue";
 import ArticleDetailPage from "../pages/clanky/[id].vue";
@@ -17,27 +18,96 @@ import ReportsPage from "../pages/reports/index.vue";
 import SarcomaFormPage from "../pages/sarcoma-form.vue";
 import SignupPage from "../pages/signup.vue";
 
+type SarcomaRouteMeta = {
+  layout?: false;
+  public?: boolean;
+  guestOnly?: boolean;
+  roles?: string[];
+};
+
 const router = createRouter({
   history: createMemoryHistory(),
   routes: [
     { path: "/", component: IndexPage },
-    { path: "/login", component: LoginPage, meta: { layout: false } },
-    { path: "/signup", component: SignupPage, meta: { layout: false } },
+    { path: "/login", component: LoginPage, meta: { layout: false, public: true, guestOnly: true } },
+    { path: "/signup", component: SignupPage, meta: { layout: false, public: true, guestOnly: true } },
     { path: "/dashboard", component: DashboardPage },
-    { path: "/sarcoma-form", component: SarcomaFormPage },
+    { path: "/sarcoma-form", component: SarcomaFormPage, meta: { roles: ["doctor", "admin"] } },
     { path: "/reports", component: ReportsPage },
     { path: "/reports/:id", component: ReportDetailPage },
-    { path: "/clanky", component: ArticlesPage },
-    { path: "/clanky/new", component: ArticleEditorPage },
-    { path: "/clanky/:id", component: ArticleDetailPage },
-    { path: "/admin/organizations", component: OrganizationsPage },
+    { path: "/clanky", component: ArticlesPage, meta: { roles: ["doctor", "specialist", "coordinator", "admin"] } },
+    { path: "/clanky/new", component: ArticleEditorPage, meta: { roles: ["coordinator", "admin"] } },
+    { path: "/clanky/:id", component: ArticleDetailPage, meta: { roles: ["doctor", "specialist", "coordinator", "admin"] } },
+    { path: "/admin/organizations", component: OrganizationsPage, meta: { roles: ["admin"] } },
     { path: "/api-tester", component: ApiTesterPage },
     { path: "/:pathMatch(.*)*", redirect: "/dashboard" },
   ],
 });
+
+router.beforeEach((to) => {
+  const meta = to.meta as SarcomaRouteMeta;
+  const isAuthenticated = readStoredAuthToken() !== null;
+  const role = readStoredRole();
+
+  if (to.path === "/") {
+    return isAuthenticated ? "/dashboard" : "/login";
+  }
+
+  if (meta.guestOnly && isAuthenticated) {
+    return "/dashboard";
+  }
+
+  if (!meta.public && !isAuthenticated) {
+    return "/login";
+  }
+
+  if (meta.roles && role !== "admin" && (!role || !meta.roles.includes(role))) {
+    return "/dashboard";
+  }
+});
+
 void router.replace("/dashboard");
 
+function readStoredAuthToken() {
+  return readStoredString("auth_token");
+}
+
+function readStoredRole() {
+  return readStoredString("auth_role");
+}
+
+function readStoredString(name: string) {
+  const storageKey = `sarcoma-fasttrack:${name}`;
+  try {
+    if (typeof localStorage !== "undefined") {
+      const value = localStorage.getItem(storageKey);
+      if (value) return parseStoredString(value);
+    }
+  } catch {
+    // Fall back to the cookie written by the Nuxt-compatible useCookie shim.
+  }
+
+  if (typeof document !== "undefined") {
+    const cookie = document.cookie
+      .split("; ")
+      .find((entry) => entry.startsWith(`${encodeURIComponent(name)}=`));
+    if (cookie) return parseStoredString(decodeURIComponent(cookie.split("=").slice(1).join("=")));
+  }
+
+  return null;
+}
+
+function parseStoredString(value: string) {
+  try {
+    const parsed = JSON.parse(value);
+    return typeof parsed === "string" && parsed ? parsed : null;
+  } catch {
+    return value || null;
+  }
+}
+
 function configureApp(app: any) {
+  setRuntimeRouter(router);
   app.use(router);
   app.component("NuxtLink", RouterLink);
   app.component("NuxtRouteAnnouncer", { template: "" });
