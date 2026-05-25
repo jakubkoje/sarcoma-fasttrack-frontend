@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useMediaQuery } from '@vueuse/core'
-import * as z from 'zod'
+import type { FormError } from '@nuxt/ui'
 import { definePageMeta, navigateTo, useToast } from '#imports'
 import { useSarcomaFormStore } from '~/stores/sarcomaForm'
 import { useApiClient } from '~/services/apiClient'
@@ -100,16 +100,35 @@ watch(steps, (items) => {
   if (currentStep.value < 0) currentStep.value = 0
 })
 
-// Validation schemas
-const step2Schema = z.object({
-  firstName: z.string().min(1, 'Required field'),
-  lastName: z.string().min(1, 'Required field'),
-  address: z.string().min(1, 'Required field'),
-  insurance: z.string().min(1, 'Select an insurance company'),
-  birthNumber: z.string().min(1, 'Required field'),
-  phone: z.string().min(1, 'Required field'),
-  email: z.string().email('Invalid email').optional().or(z.literal(''))
-})
+type Step2Data = {
+  firstName?: string
+  lastName?: string
+  address?: string
+  insurance?: string
+  birthNumber?: string
+  phone?: string
+  email?: string
+}
+
+function validateStep2(data: Partial<Step2Data>): FormError[] {
+  const errors: FormError[] = []
+
+  if (isBlank(data.firstName)) errors.push({ name: 'firstName', message: 'Required field' })
+  if (isBlank(data.lastName)) errors.push({ name: 'lastName', message: 'Required field' })
+  if (isBlank(data.address)) errors.push({ name: 'address', message: 'Required field' })
+  if (isBlank(data.insurance)) errors.push({ name: 'insurance', message: 'Select an insurance company' })
+  if (isBlank(data.birthNumber)) errors.push({ name: 'birthNumber', message: 'Required field' })
+  if (isBlank(data.phone)) errors.push({ name: 'phone', message: 'Required field' })
+  if (data.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+    errors.push({ name: 'email', message: 'Invalid email' })
+  }
+
+  return errors
+}
+
+function isBlank(value: unknown) {
+  return String(value ?? '').trim().length === 0
+}
 
 const toast = useToast()
 
@@ -144,9 +163,13 @@ const canProceed = computed(() => {
         lastName: `"${formData.value.lastName}" (length: ${formData.value.lastName.length})`,
         insurance: `"${formData.value.insurance}" (length: ${formData.value.insurance.length})`
       })
-      step2Schema.parse(data)
-      console.log('Step 2 validation passed')
-      return true
+      const errors = validateStep2(data)
+      if (errors.length === 0) {
+        console.log('Step 2 validation passed')
+        return true
+      }
+      console.error('Step 2 validation failed:', errors)
+      return false
     } catch (e) {
       console.error('Step 2 validation failed:', e)
       return false

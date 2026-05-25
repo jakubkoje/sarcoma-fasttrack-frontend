@@ -21,6 +21,8 @@ assert.ok(!bundle.includes("ui-avatars.com"), "bundle still references blocked e
 assert.ok(!bundle.includes("api.iconify.design"), "bundle still references the external Iconify API");
 assert.ok(!bundle.includes("api.simplesvg.com"), "bundle still references the external SimpleSVG API");
 assert.ok(!bundle.includes("api.unisvg.com"), "bundle still references the external Unisvg API");
+assert.ok(!bundle.includes("Cloudflare"), "bundle includes a CSP-blocked eval capability probe");
+assert.ok(!/new [A-Za-z_$][\w$]*\(""\)/.test(bundle), "bundle includes a Function-constructor probe");
 assert.match(
   bundle,
   /:host\s*\{\s*display:\s*block;\s*width:\s*100%;\s*min-height:\s*max\(720px,\s*calc\(100vh - 80px\)\);\s*background:\s*#ffffff;\s*color:\s*#111827;/,

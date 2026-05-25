@@ -1,10 +1,11 @@
-import { defineCustomElement } from "vue";
+import { defineCustomElement, h } from "vue";
 import { createMemoryHistory, createRouter, RouterLink } from "vue-router";
 import colors from "tailwindcss/colors";
 import SarcomaFasttrackApp from "./SarcomaFasttrackApp.ce.vue";
 import cssText from "../assets/css/main.css?inline";
 import { setRuntimeRouter } from "./nuxt-wc-runtime";
 import { wcRootTags } from "./sarcoma-wc-utils.js";
+import { useAuthStore } from "../stores/auth";
 import ApiTesterPage from "../pages/api-tester.vue";
 import ArticleDetailPage from "../pages/clanky/[id].vue";
 import ArticleEditorPage from "../pages/clanky/new.vue";
@@ -46,8 +47,8 @@ const router = createRouter({
 
 router.beforeEach((to) => {
   const meta = to.meta as SarcomaRouteMeta;
-  const isAuthenticated = readStoredAuthToken() !== null;
-  const role = readStoredRole();
+  const { token, role } = readAuthSnapshot();
+  const isAuthenticated = token !== null;
 
   if (to.path === "/") {
     return isAuthenticated ? "/dashboard" : "/login";
@@ -65,6 +66,21 @@ router.beforeEach((to) => {
     return "/dashboard";
   }
 });
+
+function readAuthSnapshot() {
+  try {
+    const auth = useAuthStore();
+    return {
+      token: auth.token.value || readStoredAuthToken(),
+      role: auth.role.value || readStoredRole(),
+    };
+  } catch {
+    return {
+      token: readStoredAuthToken(),
+      role: readStoredRole(),
+    };
+  }
+}
 
 function readStoredAuthToken() {
   return readStoredString("auth_token");
@@ -108,9 +124,9 @@ function configureApp(app: any) {
   setRuntimeRouter(router);
   app.use(router);
   app.component("NuxtLink", RouterLink);
-  app.component("NuxtRouteAnnouncer", { template: "" });
+  app.component("NuxtRouteAnnouncer", { render: () => null });
   app.component("ULoadingIcon", {
-    template: '<span class="i-lucide-loader-circle animate-spin" aria-hidden="true" />',
+    render: () => h("span", { class: "i-lucide-loader-circle animate-spin", "aria-hidden": "true" }),
   });
 }
 

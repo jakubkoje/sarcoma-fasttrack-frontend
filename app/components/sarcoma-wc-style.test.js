@@ -11,6 +11,7 @@ const runtimeSource = readFileSync(resolve(here, "nuxt-wc-runtime.ts"), "utf8");
 const themeSource = readFileSync(resolve(here, "../assets/css/main.css"), "utf8");
 const layoutSource = readFileSync(resolve(here, "../layouts/default.vue"), "utf8");
 const loginSource = readFileSync(resolve(here, "../pages/login.vue"), "utf8");
+const signupSource = readFileSync(resolve(here, "../pages/signup.vue"), "utf8");
 const formSource = readFileSync(resolve(here, "../pages/sarcoma-form.vue"), "utf8");
 const dashboardSource = readFileSync(resolve(here, "../pages/dashboard.vue"), "utf8");
 const viteSource = readFileSync(resolve(here, "../../vite.config.ts"), "utf8");
@@ -67,6 +68,8 @@ test("web component provides the Nuxt runtime pieces used by the pages", () => {
 
 test("web component enforces auth in its standalone router", () => {
   assert.match(entrySource, /router\.beforeEach\(\(to\) =>/);
+  assert.match(entrySource, /useAuthStore\(\)/);
+  assert.match(entrySource, /auth\.token\.value \|\| readStoredAuthToken\(\)/);
   assert.match(entrySource, /if \(!meta\.public && !isAuthenticated\) \{/);
   assert.match(entrySource, /return "\/login"/);
   assert.match(entrySource, /meta\.roles && role !== "admin"/);
@@ -85,13 +88,22 @@ test("web component reuses Nuxt auth and content shells", () => {
   assert.match(layoutSource, /:src="publicAsset\('sarkom-logo\.png'\)"/);
   assert.match(loginSource, /<UAuthForm/);
   assert.match(loginSource, /:on-submit="onSubmit"/);
+  assert.match(loginSource, /:validate="validate"/);
   assert.match(loginSource, /defaultValue: selectedAccount\.value\.email/);
   assert.match(loginSource, /<USelect[\s\S]*:portal="false"/);
+  assert.match(signupSource, /:validate="validate"/);
   assert.match(formSource, /<UInputMenu[\s\S]*:portal="false"/);
+  assert.match(formSource, /validateStep2/);
+  assert.doesNotMatch(loginSource, /from ['"]zod['"]/);
+  assert.doesNotMatch(signupSource, /from ['"]zod['"]/);
+  assert.doesNotMatch(formSource, /from ['"]zod['"]/);
   assert.match(loginSource, /The application is intended for healthcare professionals\./);
   assert.match(dashboardSource, /Quick overview of all sarcoma cases/);
   assert.match(dashboardSource, /Expert articles on sarcomas/);
+  assert.match(entrySource, /app\.component\("NuxtRouteAnnouncer", \{ render: \(\) => null \}\)/);
   assert.match(entrySource, /app\.component\("ULoadingIcon"/);
+  assert.match(entrySource, /render: \(\) => h\("span"/);
+  assert.doesNotMatch(entrySource, /template:/);
   assert.doesNotMatch(componentSource, /class="sft-auth-screen"/);
   assert.doesNotMatch(componentSource, /class="sft-stat-grid/);
   assert.match(copyScriptSource, /"\/sarcoma-fasttrack\.js"/);

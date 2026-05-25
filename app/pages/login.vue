@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import * as z from 'zod'
-import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui'
+import type { AuthFormField, FormError, FormSubmitEvent } from '@nuxt/ui'
 import { definePageMeta, useRouter, useToast } from '#imports'
 import { useApiClient } from '~/services/apiClient'
 import { useAuthStore } from '~/stores/auth'
@@ -57,13 +56,27 @@ function onAccountChange() {
   errorMessage.value = null
 }
 
-const schema = z.object({
-  email: z.string().optional(),
-  password: z.string('Password is required').min(5, 'Password must be at least 5 characters').optional(),
-  remember: z.boolean().optional()
-})
+type Schema = {
+  email?: string
+  password?: string
+  remember?: boolean
+}
 
-type Schema = z.output<typeof schema>
+function validate(state: Partial<Schema>): FormError[] {
+  const errors: FormError[] = []
+  const email = state.email || selectedAccount.value.email
+  const password = state.password || selectedAccount.value.password
+
+  if (!email) {
+    errors.push({ name: 'email', message: 'Email is required' })
+  }
+
+  if (!password || password.length < 5) {
+    errors.push({ name: 'password', message: 'Password must be at least 5 characters' })
+  }
+
+  return errors
+}
 
 const router = useRouter()
 
@@ -100,7 +113,7 @@ async function onSubmit(payload: FormSubmitEvent<Schema>) {
     <UPageCard class="w-full max-w-md">
       <UAuthForm
         :key="formKey"
-        :schema="schema"
+        :validate="validate"
         title="Login"
         icon="i-lucide-user"
         :fields="fields"

@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
-import * as z from 'zod'
-import type { FormSubmitEvent } from '#ui/types'
+import type { FormError, FormSubmitEvent } from '@nuxt/ui'
 import { definePageMeta } from '#imports'
 
 definePageMeta({
@@ -13,24 +12,38 @@ const roleOptions = [
   { label: 'Coordinator', value: 'koordinator' }
 ]
 
-const schema = z.object({
-  email: z.string().email('Invalid email'),
-  role: z.string().min(1, 'Select a role'),
-  password: z.string().min(8, 'Password must be at least 8 characters'),
-  confirmPassword: z.string().min(8, 'Password must be at least 8 characters')
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords do not match",
-  path: ['confirmPassword']
-})
-
-type Schema = z.output<typeof schema>
-
 const state = reactive({
   email: '',
   role: undefined as { label: string; value: string } | undefined,
   password: '',
   confirmPassword: ''
 })
+
+type Schema = typeof state
+
+function validate(state: Partial<Schema>): FormError[] {
+  const errors: FormError[] = []
+
+  if (!state.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.email)) {
+    errors.push({ name: 'email', message: 'Invalid email' })
+  }
+
+  if (!state.role?.value) {
+    errors.push({ name: 'role', message: 'Select a role' })
+  }
+
+  if (!state.password || state.password.length < 8) {
+    errors.push({ name: 'password', message: 'Password must be at least 8 characters' })
+  }
+
+  if (!state.confirmPassword || state.confirmPassword.length < 8) {
+    errors.push({ name: 'confirmPassword', message: 'Password must be at least 8 characters' })
+  } else if (state.password !== state.confirmPassword) {
+    errors.push({ name: 'confirmPassword', message: 'Passwords do not match' })
+  }
+
+  return errors
+}
 
 async function onSubmit(event: FormSubmitEvent<Schema>) {
   console.log('Sign up form submitted:', event.data)
@@ -55,7 +68,7 @@ async function onSubmit(event: FormSubmitEvent<Schema>) {
 
       <!-- Form Card -->
       <UCard class="shadow-xl border-2 border-gray-200">
-        <UForm :schema="schema" :state="state" @submit="onSubmit" class="space-y-6">
+        <UForm :validate="validate" :state="state" @submit="onSubmit" class="space-y-6">
           <!-- Email Field -->
           <div class="space-y-2">
             <label class="block">
