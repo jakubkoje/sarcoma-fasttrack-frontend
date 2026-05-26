@@ -8,6 +8,7 @@ const here = dirname(fileURLToPath(import.meta.url));
 const componentSource = readFileSync(resolve(here, "SarcomaFasttrackApp.ce.vue"), "utf8");
 const entrySource = readFileSync(resolve(here, "entry.ts"), "utf8");
 const runtimeSource = readFileSync(resolve(here, "nuxt-wc-runtime.ts"), "utf8");
+const iconSource = readFileSync(resolve(here, "local-iconify.js"), "utf8");
 const themeSource = readFileSync(resolve(here, "../assets/css/main.css"), "utf8");
 const layoutSource = readFileSync(resolve(here, "../layouts/default.vue"), "utf8");
 const loginSource = readFileSync(resolve(here, "../pages/login.vue"), "utf8");
@@ -63,6 +64,7 @@ test("web component provides the Nuxt runtime pieces used by the pages", () => {
   assert.match(runtimeSource, /export function useColorMode\(\)/);
   assert.match(runtimeSource, /export \{ computed, useRoute, useRouter \}/);
   assert.match(runtimeSource, /new URL\(\/\* @vite-ignore \*\/ "\.\/", import\.meta\.url\)\.href/);
+  assert.match(runtimeSource, /menu:\s*"i-lucide-menu"/);
   assert.match(viteSource, /"#imports": fileURLToPath\(new URL\("\.\/app\/components\/nuxt-wc-runtime\.ts"/);
   assert.match(viteSource, /preview:\s*\{\s*proxy:/);
   assert.match(viteSource, /"\/api": apiProxy/);
@@ -117,6 +119,11 @@ test("web component reuses Nuxt auth and content shells", () => {
   assert.match(entrySource, /app\.component\("ULoadingIcon"/);
   assert.match(entrySource, /render: \(\) => h\("span"/);
   assert.doesNotMatch(entrySource, /template:/);
+  assert.match(iconSource, /"lucide-menu"/);
+  assert.match(iconSource, /"lucide-bell"/);
+  assert.match(iconSource, /"lucide-search"/);
+  assert.match(iconSource, /"lucide-x"/);
+  assert.match(iconSource, /name:\s*\{ type: String/);
   assert.match(readFileSync(resolve(here, "../services/apiClient.ts"), "utf8"), /headers\.set\('X-Sarcoma-Token', token\)/);
   assert.doesNotMatch(componentSource, /class="sft-auth-screen"/);
   assert.doesNotMatch(componentSource, /class="sft-stat-grid/);

@@ -41,6 +41,7 @@ const appConfig = {
       dark: "i-lucide-moon",
       light: "i-lucide-sun",
       system: "i-lucide-monitor",
+      menu: "i-lucide-menu",
       close: "i-lucide-x",
       check: "i-lucide-check",
       copy: "i-lucide-copy",
