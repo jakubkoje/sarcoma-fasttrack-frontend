@@ -94,6 +94,11 @@ test("web component reuses Nuxt auth and content shells", () => {
   assert.match(layoutSource, /<slot v-if="isAuthenticated" \/>/);
   assert.match(layoutSource, /<UNavigationMenu v-if="isAuthenticated" :items="items"/);
   assert.match(layoutSource, /:src="publicAsset\('sarkom-logo\.png'\)"/);
+  assert.match(layoutSource, /i-lucide-bell/);
+  assert.match(layoutSource, /New notifications?/);
+  assert.match(layoutSource, /Notifications/);
+  assert.doesNotMatch(layoutSource, /UColorModeButton/);
+  assert.doesNotMatch(layoutSource, /Change theme/);
   assert.match(loginSource, /<UAuthForm/);
   assert.match(loginSource, /:on-submit="onSubmit"/);
   assert.match(loginSource, /:validate="validate"/);

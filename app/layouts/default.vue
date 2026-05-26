@@ -72,7 +72,7 @@ const notifications = ref<Notification[]>([
     patientName: 'Ján Novák',
     reportId: 1,
     message: 'Note has been updated',
-    timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(), // 15 min ago
+    timestamp: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
     read: false,
     type: 'note_updated'
   },
@@ -81,7 +81,7 @@ const notifications = ref<Notification[]>([
     patientName: 'Mária Slobodová',
     reportId: 3,
     message: 'A new note has been added',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(), // 2 hours ago
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
     read: false,
     type: 'note_added'
   },
@@ -90,7 +90,7 @@ const notifications = ref<Notification[]>([
     patientName: 'Peter Dvorák',
     reportId: 4,
     message: 'Report status was changed to "Processed"',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(), // 5 hours ago
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(),
     read: true,
     type: 'status_change'
   },
@@ -99,16 +99,13 @@ const notifications = ref<Notification[]>([
     patientName: 'Ján Novák',
     reportId: 1,
     message: 'A note was added to the case',
-    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // 1 day ago
+    timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
     read: true,
     type: 'note_added'
   }
 ])
 
-const unreadCount = computed(() => 
-  notifications.value.filter(n => !n.read).length
-)
-
+const unreadCount = computed(() => notifications.value.filter(n => !n.read).length)
 const isNotificationsOpen = ref(false)
 
 const markAsRead = (notificationId: number) => {
@@ -132,18 +129,17 @@ const formatTimestamp = (timestamp: string) => {
   const date = new Date(timestamp)
   const now = new Date()
   const diff = now.getTime() - date.getTime()
-  
   const minutes = Math.floor(diff / (1000 * 60))
   const hours = Math.floor(diff / (1000 * 60 * 60))
   const days = Math.floor(diff / (1000 * 60 * 60 * 24))
-  
+
   if (minutes < 60) {
     return `${minutes} min ago`
-  } else if (hours < 24) {
-    return `${hours} h ago`
-  } else {
-    return `${days} days ago`
   }
+  if (hours < 24) {
+    return `${hours} h ago`
+  }
+  return `${days} days ago`
 }
 
 const handleLogout = () => {
@@ -195,7 +191,6 @@ watchEffect(() => {
 
           <template #content>
             <UCard class="w-96 max-h-[500px] overflow-hidden">
-              <!-- Header -->
               <div class="flex items-center justify-between mb-4">
                 <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-300">Notifications</h3>
                 <UButton
@@ -209,7 +204,6 @@ watchEffect(() => {
                 </UButton>
               </div>
 
-              <!-- Notifications List -->
               <div class="space-y-2 max-h-[400px] overflow-y-auto">
                 <div
                   v-for="notification in notifications"
@@ -219,7 +213,6 @@ watchEffect(() => {
                   :class="{ 'bg-primary-50': !notification.read }"
                 >
                   <div class="flex items-start gap-3">
-                    <!-- Icon -->
                     <div class="shrink-0 w-8 h-8 rounded-full flex items-center justify-center" :class="[
                       notification.type === 'note_added' ? 'bg-blue-100' : '',
                       notification.type === 'note_updated' ? 'bg-yellow-100' : '',
@@ -236,7 +229,6 @@ watchEffect(() => {
                       </svg>
                     </div>
 
-                    <!-- Content -->
                     <div class="flex-1 min-w-0">
                       <p class="text-sm font-semibold text-gray-900 dark:text-gray-300">
                         {{ notification.patientName }}
@@ -249,12 +241,10 @@ watchEffect(() => {
                       </p>
                     </div>
 
-                    <!-- Unread indicator -->
                     <div v-if="!notification.read" class="shrink-0 w-2 h-2 bg-primary-500 rounded-full mt-1" />
                   </div>
                 </div>
 
-                <!-- Empty State -->
                 <div v-if="notifications.length === 0" class="text-center py-8">
                   <svg class="w-12 h-12 text-gray-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
@@ -265,8 +255,6 @@ watchEffect(() => {
             </UCard>
           </template>
         </UPopover>
-
-        <UColorModeButton class="hidden lg:flex" />
 
         <UButton
           color="neutral"
@@ -283,7 +271,6 @@ watchEffect(() => {
       <!-- Right slot for non-authenticated users -->
       <template #right v-if="!isAuthenticated">
         <div class="flex items-center gap-2">
-          <UColorModeButton class="hidden lg:flex" />
           <UButton
             color="neutral"
             variant="ghost"
@@ -353,21 +340,6 @@ watchEffect(() => {
           <div class="space-y-2.5">
             <UButton
               color="neutral"
-              variant="outline"
-              size="lg"
-              block
-              class="justify-between"
-            >
-              <span class="flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-                Change theme
-              </span>
-              <UColorModeButton />
-            </UButton>
-            <UButton
-              color="neutral"
               variant="soft"
               icon="i-lucide-log-out"
               @click="handleLogout"
@@ -395,21 +367,6 @@ watchEffect(() => {
 
           <!-- Action Buttons -->
           <div class="space-y-2.5 pb-4">
-            <UButton
-              color="neutral"
-              variant="outline"
-              size="lg"
-              block
-              class="justify-between"
-            >
-              <span class="flex items-center gap-2">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-                Change theme
-              </span>
-              <UColorModeButton />
-            </UButton>
             <UButton
               color="neutral"
               variant="outline"
